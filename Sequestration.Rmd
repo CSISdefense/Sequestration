@@ -19,10 +19,12 @@ When you click the **Knit** button a document will be generated that includes bo
 library(plyr)
 require(ggplot2)
 require(scales)
-# setwd("K:\\Development\\Canada")
-setwd("K:\\Development\\Canada")
-Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
-# Path<-"C:\\Users\\Greg Sanders\\SkyDrive\\Documents\\R Scripts and Data SkyDrive\\"
+
+# setwd("K:\\Development\\Sequestration")
+setwd("D:\\Users\\Greg Sanders\\Documents\\Development\\Sequestration")
+
+# Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
+Path<-"D:\\Users\\Greg Sanders\\Documents\\Development\\R-scripts-and-data\\"
 source(paste(Path,"lookups.r",sep=""))
 source(paste(Path,"helper.r",sep=""))
 
@@ -40,18 +42,18 @@ Coloration<-subset(Coloration, variable!="")
 
 
 
-```{r ReadAndProcessDuns}
+```{r ReadAndProcess}
 
-CanadaFederal  <- read.csv(
-    paste("Data\\Location_CCCvendorIdentification2.csv", sep = ""),
+FSRShistory  <- read.csv(
+    file.path("Data","Contract_FSRSinFPDShistory.csv"),
     header = TRUE, sep = ",", dec = ".", strip.white = TRUE, 
     na.strings = c("NULL","NA",""),
     stringsAsFactors = TRUE
 )
+FSRShistory<-subset(FSRShistory,fiscal_year>=1990)
+FSRShistory<-apply_lookups(Path,FSRShistory)
 
-CanadaFederal<-apply_lookups(Path,CanadaFederal)
-
-CanadaSample<-subset(CanadaFederal,Customer %in% c("Defense","NASA","DHS","State and IAP") | 
+CanadaSample<-subset(FSRShistory,Customer %in% c("Defense","NASA","DHS","State and IAP") | 
                          SubCustomer %in% c("Interior","Transportation","Justice"))
 
 
@@ -103,287 +105,54 @@ CanadaCategoryNotVendor$Agency<-factor(CanadaCategoryNotVendor$Agency)
 
 ```
 
-
-```{r Customer}
-# 
-# CanadaCategoryNotVendor$Agency<-PrepareFactor(Coloration,
-#                                           CanadaCategoryNotVendor,
-#                                           "Agency"
-# )
-
-ggplot( CanadaCategoryNotVendor,
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=Agency
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  Agency , ncol=3)+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-
-ggplot( subset(CanadaCategoryNotVendor,Customer=="Defense"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=SubCustomer.detail
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  SubCustomer.detail ,ncol=3)+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Defense Obligated Amount (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-
-
-ggplot( subset(CanadaCategoryNotVendor,Customer!="Defense"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=Agency
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  Agency ,ncol=3)+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-
-```
-
-
-```{r BreakdownByProductServiceOrRnDarea, echo=FALSE}
-
-
-CanadaCategoryNotVendor$PlatformPortfolio.sum<-PrepareFactor(Coloration,
-                                          CanadaCategoryNotVendor,
-                                          "PlatformPortfolio.sum"
-)
-
-CanadaCategoryNotVendor$ServicesCategory.sum<-PrepareFactor(Coloration,
-                                          CanadaCategoryNotVendor,
-                                          "ServicesCategory.sum"
-)
-
-CanadaCategoryNotVendor$ProductServiceOrRnDarea<-PrepareFactor(Coloration,
-                                          CanadaCategoryNotVendor,
-                                          "ProductServiceOrRnDarea"
-)
-
-
-
-
-
-
-ggplot( CanadaCategoryNotVendor,
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=ServicesCategory.sum
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    # facet_grid( ServicesCategory.sum~., scales="free_y",space="free_y")+ #
-    scale_y_continuous("Federal Obligated Amount (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-ggplot( CanadaCategoryNotVendor,
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=PlatformPortfolio.sum
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  PlatformPortfolio.sum  ,ncol=3 )+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-ggplot( subset(CanadaCategoryNotVendor,PlatformPortfolio.sum!="Land Vehicles"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=PlatformPortfolio.sum
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  PlatformPortfolio.sum  ,ncol=3 )+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount\nExcluding Land Vehicles (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-ggplot( subset(CanadaCategoryNotVendor,ServicesCategory.sum=="Products"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=ProductServiceOrRnDarea
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  ProductServiceOrRnDarea  ,ncol=3)+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount for Products (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-ggplot( subset(CanadaCategoryNotVendor,ServicesCategory.sum=="Products"&ProductServiceOrRnDarea!="Ground Vehicles"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=ProductServiceOrRnDarea
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  ProductServiceOrRnDarea  ,ncol=3)+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount for\nProducts Excluding Ground Vehicles (2014 $s)",
-                       labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-ggplot( subset(CanadaCategoryNotVendor,ServicesCategory.sum=="Services (Non-R&D)"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=ProductServiceOrRnDarea
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  ProductServiceOrRnDarea  ,ncol=3)+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount for Non-R&D Services (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-ggplot( subset(CanadaCategoryNotVendor,ServicesCategory.sum=="R&D"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=ProductServiceOrRnDarea
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  ProductServiceOrRnDarea  ,ncol=3)+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount for R&D (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-#     #   if(is.na(VAR.override.coloration)){
-#     labels.category.DF<-PrepareLabelsAndColors(VAR.Coloration
-#                                                ,VAR.long.DF
-#                                                ,VAR.y.series
-#                                                #                                     ,VAR.override.coloration
-#     )  
-#     color.list<-c(as.character(labels.category.DF$ColorRGB))
-#     names(color.list)<-c(labels.category.DF$variable)
-#             , fill=factor(category,levels=labels.category.DF$variable),
-#     
-#     +scale_fill_manual(
-#         VAR.color.legend.label
-#         ,  values=color.list
-#         , limits=c(labels.category.DF$variable)
-#         , labels=c(labels.category.DF$Label)
-#         
-#     ) 
-#     
-# 
-#  
-#             VAR.long.DF$primary<-factor(VAR.long.DF$primary,
-#                                 levels=c(labels.primary.DF$variable),
-#                                 labels=c(labels.primary.DF$Label),
-#                                 ordered=TRUE)
-```
-
-```{r RnDadditionalDetail}
-
-
-ggplot( subset(CanadaCategoryNotVendor,ServicesCategory.sum=="R&D"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=ProductServiceOrRnDarea
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  ProductServiceOrRnDarea ,ncol=3 )+ #, scales="free_y",space="free_y"
-    theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount for R&D (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-
-
-ggplot( subset(CanadaCategoryNotVendor,ServicesCategory.sum=="R&D"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=PlatformPortfolio.sum
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  PlatformPortfolio.sum  ,ncol=3)+ #, scales="free_y",space="free_y"
-        theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount for R&D (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-
-
-ggplot( subset(CanadaCategoryNotVendor,ServicesCategory.sum=="R&D"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=Agency
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  Agency ,ncol=3 )+ #, scales="free_y",space="free_y"
-        theme(legend.position="none")+
-    scale_y_continuous("Federal Obligated Amount for R&D (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-ggplot( subset(CanadaCategoryNotVendor,ServicesCategory.sum=="R&D" & Customer=="Defense"),
-        aes(x = Fiscal.Year,
-            weight = Obligation.2014,
-            fill=SubCustomer.detail
-        )) +
-    geom_bar(alpha = 1,  colour = "black")+
-    # scale_x_continuous(limits=c(-0.05,1.05))+
-    facet_wrap(~  SubCustomer.detail ,ncol=3)+ #, scales="free_y",space="free_y"
-        theme(legend.position="none")+
-    scale_y_continuous("Defense Obligated Amount for R&D (2014 $s)",labels=comma)+theme(axis.text.x=element_text(angle=90))
-
-
-```
-
-
-```{r Vendor}
-
-
-CanadaSample$ParentIDorVendor<-as.character(CanadaSample$ParentID)
-CanadaSample$ParentIDorVendor[is.na(CanadaSample$ParentIDorVendor)]<-
-    as.character(CanadaSample$StandardizedTopContractor[is.na(CanadaSample$ParentIDorVendor)])
-CanadaSample$ParentIDorVendor[CanadaSample$ParentIDorVendor=="CANADIAN COMMERCIAL CORPORATION" & !is.na(CanadaSample$Supplier)]<-
-    as.character(CanadaSample$Supplier[CanadaSample$ParentIDorVendor=="CANADIAN COMMERCIAL CORPORATION" & !is.na(CanadaSample$Supplier)])
-
-CanadaSample$ParentIDorVendor<-factor(CanadaSample$ParentIDorVendor)
-
-
-
-
-CanadaVendor<-ddply(CanadaSample,.(ParentIDorVendor,ParentID),
-      summarize,
-      # count=length(FiscalYear),
-      # ObligatedAmount=sum(ObligatedAmount),
-      Obligation.2014=sum(Obligation.2014)
-      )
-
-
-CanadaVendor<-CanadaVendor[order(CanadaVendor$Obligation.2014,decreasing=TRUE),]
-
-```
-
-
-```{r PrimeContactSubStudy}
-CanadaFPDS<-read.csv(unz(file.path("Data","Location_CanadaRelatedFPDScomplete.zip"),
-                         "Location_CanadaRelatedFPDScomplete.csv"),
+```{r}
+FSRSstudy<-read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
                      na.strings=c("NULL","NA"),
                      header=TRUE)
-CanadaFPDS<-apply_lookups(Path,CanadaFPDS)
+FSRSstudy<-subset(FSRSstudy,fiscal_year>1990)
+FSRSstudy<-apply_lookups(Path,FSRSstudy)
 
 
-PrimeContract2011<-ddply(subset(CanadaFPDS,Fiscal.Year>=2011),
+```
+
+```{r PrimeContactSubStudy}
+FSRSstudy<-read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
+                     na.strings=c("NULL","NA"),
+                     header=TRUE)
+FSRSstudy<-subset(FSRSstudy,fiscal_year>1990)
+FSRSstudy<-apply_lookups(Path,FSRSstudy)
+
+
+PrimeContract2011<-ddply(subset(FSRSstudy,Fiscal.Year>=2011),
       .(CSIScontractID,IsSubcontractReportingContract),
       summarise,
       Obligation.2014=sum(Obligation.2014))
 
-PrimeContractCount<-ddply(CanadaFPDS2011,
+PrimeContractCount<-ddply(FSRSstudy2011,
+      .(IsSubcontractReportingContract),
+      summarise,
+      Obligation.2014=sum(Obligation.2014),
+      ContractCount=length(CSIScontractID))
+
+write("PrimeContract.csv",PrimeContract
+
+
+
+
+```{r PrimeContactSubStudy}
+FSRSstudy<-read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
+                     na.strings=c("NULL","NA"),
+                     header=TRUE)
+FSRSstudy<-subset(FSRSstudy,fiscal_year>1990)
+FSRSstudy<-apply_lookups(Path,FSRSstudy)
+
+
+PrimeContract2011<-ddply(subset(FSRSstudy,Fiscal.Year>=2011),
+      .(CSIScontractID,IsSubcontractReportingContract),
+      summarise,
+      Obligation.2014=sum(Obligation.2014))
+
+PrimeContractCount<-ddply(FSRSstudy2011,
       .(IsSubcontractReportingContract),
       summarise,
       Obligation.2014=sum(Obligation.2014),
