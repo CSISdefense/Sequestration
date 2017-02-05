@@ -15,6 +15,7 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
+#Requirements
 ```{r Requirements}
 library(plyr)
 require(ggplot2)
@@ -41,52 +42,55 @@ Coloration<-subset(Coloration, variable!="")
 
 
 
-
+#Read And Processs
 ```{r ReadAndProcess}
+#This really shouldn't just be Canada related, but working with what I have.
+FSRShistory  <- read.csv(unz(file.path("Data","Location_CCCvendorIdentification2.csv"),
+                         "Location_CCCvendorIdentification2.csv"),
+                     na.strings=c("NULL","NA"),
+                     header=TRUE)
+  
 
-FSRShistory  <- read.csv(
-    file.path("Data","Contract_FSRSinFPDShistory.csv"),
-    header = TRUE, sep = ",", dec = ".", strip.white = TRUE, 
-    na.strings = c("NULL","NA",""),
-    stringsAsFactors = TRUE
-)
-FSRShistory<-subset(FSRShistory,fiscal_year>=1990)
+# FSRShistory<-subset(FSRShistory,fiscal_year>=1990)
 FSRShistory<-apply_lookups(Path,FSRShistory)
 
-CanadaSample<-subset(FSRShistory,Customer %in% c("Defense","NASA","DHS","State and IAP") | 
-                         SubCustomer %in% c("Interior","Transportation","Justice"))
+
+
+FSRShistory<-subset(FSRShistory,Customer %in% c("Defense"))
 
 
 
-# CanadaSample$Category[CanadaSample$AnyIsSmall==0]<-"Never Small"
-# CanadaSample$Category[CanadaSample$AlwaysIsSmall==1]<-"Always Small"
-# CanadaSample$Category[CanadaSample$AlwaysIsSmall==0 & 
-#                              CanadaSample$AnyIsSmall==1]<-"Sometimes Small"
+# FSRShistory$Category[FSRShistory$AnyIsSmall==0]<-"Never Small"
+# FSRShistory$Category[FSRShistory$AlwaysIsSmall==1]<-"Always Small"
+# FSRShistory$Category[FSRShistory$AlwaysIsSmall==0 & 
+#                              FSRShistory$AnyIsSmall==1]<-"Sometimes Small"
 # 
 
-CanadaCategoryNotVendor<-ddply(CanadaSample,.(Fiscal.Year,
-                                            Customer,SubCustomer,SubCustomer.component,SubCustomer.sum,SubCustomer.detail,
-                                            PlatformPortfolio,PlatformPortfolio.sum,
-                                            ProductServiceOrRnDarea,ServicesCategory.sum,
-                                            ProductOrServiceCode,
-                                            ProductOrServiceCodeText
-                                            ),
-      summarize,
+FSRScategoryNotVendor<-ddply(FSRShistory,.(Fiscal.Year,#Is this what we want?
+                                  Customer,
+                                  SubCustomer,
+                                  SubCustomer.component,
+                                  SubCustomer.sum,
+                                  SubCustomer.detail,
+                                  PlatformPortfolio,
+                                  PlatformPortfolio.sum,
+                                  ProductServiceOrRnDarea,
+                                  ServicesCategory.sum,
+                                  ProductOrServiceCode,
+                                  ProductOrServiceCodeText
+                                  ),
+                               summarize,
       # count=length(FiscalYear),
       # ObligatedAmount=sum(ObligatedAmount),
       Obligation.2014=sum(Obligation.2014)
       )
 
-write.csv(CanadaCategoryNotVendor,"Data\\CanadaSampleCustomerPlatformBucket.csv")
-
-CanadaCategoryNotVendor$Agency<-as.character(CanadaCategoryNotVendor$Customer)
-CanadaCategoryNotVendor$Agency[CanadaCategoryNotVendor$Agency=="Other Agencies"]<-
-    as.character(CanadaCategoryNotVendor$SubCustomer[CanadaCategoryNotVendor$Agency=="Other Agencies"])
-CanadaCategoryNotVendor$Agency<-factor(CanadaCategoryNotVendor$Agency)
+write.csv(FSRScategoryNotVendor,"Data\\FSRShistoryCustomerPlatformBucket.csv")
 
 
 
-# DunsCountyByPercent<-ddply(CanadaSample,.(RoundedPercentSmall,AnyIsSmall,AlwaysIsSmall,Category),
+
+# DunsCountyByPercent<-ddply(FSRShistory,.(RoundedPercentSmall,AnyIsSmall,AlwaysIsSmall,Category),
 #       summarize,
 #       count=length(FiscalYear),
 #       ObligatedAmount=sum(ObligatedAmount),
@@ -105,22 +109,26 @@ CanadaCategoryNotVendor$Agency<-factor(CanadaCategoryNotVendor$Agency)
 
 ```
 
-```{r}
-FSRSstudy<-read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
+#Prime and Sub Top Level
+```{r PrimeContactSubSummary}
+FSRSsummary<-read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
                      na.strings=c("NULL","NA"),
                      header=TRUE)
-FSRSstudy<-subset(FSRSstudy,fiscal_year>1990)
-FSRSstudy<-apply_lookups(Path,FSRSstudy)
+FSRSsummary<-subset(FSRSsummary,fiscal_year>1990)
+FSRSsummary<-apply_lookups(Path,FSRSsummary)
+
 
 
 ```
 
+#Prime Contract Sub Study
 ```{r PrimeContactSubStudy}
-FSRSstudy<-read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
+FSRSstudy<-read.csv(unz(file.path("Data","Location_CanadaRelatedFPDScomplete.zip"),
+                         "Location_CanadaRelatedFPDScomplete.csv"),
                      na.strings=c("NULL","NA"),
                      header=TRUE)
-FSRSstudy<-subset(FSRSstudy,fiscal_year>1990)
 FSRSstudy<-apply_lookups(Path,FSRSstudy)
+
 
 
 PrimeContract2011<-ddply(subset(FSRSstudy,Fiscal.Year>=2011),
@@ -128,34 +136,14 @@ PrimeContract2011<-ddply(subset(FSRSstudy,Fiscal.Year>=2011),
       summarise,
       Obligation.2014=sum(Obligation.2014))
 
-PrimeContractCount<-ddply(FSRSstudy2011,
+PrimeContractCount<-ddply(PrimeContract2011,
       .(IsSubcontractReportingContract),
       summarise,
       Obligation.2014=sum(Obligation.2014),
       ContractCount=length(CSIScontractID))
 
-write("PrimeContract.csv",PrimeContract
+write.csv(PrimeContractCount,"PrimeContractCount.csv")
 
 
 
-
-```{r PrimeContactSubStudy}
-FSRSstudy<-read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
-                     na.strings=c("NULL","NA"),
-                     header=TRUE)
-FSRSstudy<-subset(FSRSstudy,fiscal_year>1990)
-FSRSstudy<-apply_lookups(Path,FSRSstudy)
-
-
-PrimeContract2011<-ddply(subset(FSRSstudy,Fiscal.Year>=2011),
-      .(CSIScontractID,IsSubcontractReportingContract),
-      summarise,
-      Obligation.2014=sum(Obligation.2014))
-
-PrimeContractCount<-ddply(FSRSstudy2011,
-      .(IsSubcontractReportingContract),
-      summarise,
-      Obligation.2014=sum(Obligation.2014),
-      ContractCount=length(CSIScontractID))
-
-write("PrimeContract.csv",PrimeContract
+```
