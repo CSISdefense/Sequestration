@@ -1,0 +1,8 @@
+ContractMetric,ContractMetricType,Type
+PrimeObligatedAmount,ObligatedAmount,Prime in FSRS
+SubawardAmount,ObligatedAmount,Subcontract
+NumberOfActions,NumberOfActions,Prime in FSRS
+NumberOfContracts,NumberOfContracts,Prime in FSRS
+PrimeObligatedTotal,ObligatedAmount,Total
+TotalOfActions,NumberOfActions,Total
+TotalOfContracts,NumberOfContracts,Total
