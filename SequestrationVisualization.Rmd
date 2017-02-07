@@ -21,8 +21,8 @@ require(plyr)
 require(ggplot2)
 require(scales)
 
-# Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
-Path<-"D:\\Users\\Greg Sanders\\Documents\\Development\\R-scripts-and-data\\"
+Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
+# Path<-"D:\\Users\\Greg Sanders\\Documents\\Development\\R-scripts-and-data\\"
 source(paste(Path,"lookups.r",sep=""))
 source(paste(Path,"helper.r",sep=""))
 
@@ -42,7 +42,7 @@ Coloration<-subset(Coloration, variable!="")
 #Read And Processs
 ```{r ReadAndProcess}
 #This really shouldn't just be Canada related, but working with what I have.
-FSRStopline  <- read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
+FSRStopline  <- read.csv(file.path("Data","Contract.FSRSinFPDShistoryCustomer.csv"),
                      na.strings=c("NULL","NA"),
                      header=TRUE)
 
@@ -72,9 +72,6 @@ FSRStopline$NumberOfContracts<-FSRStopline$NumberOfContracts*FSRStopline$IsInFSR
 FSRStopline<-subset(FSRStopline,
                     IsInFSRS==1 | RowCount==1, 
                     select=-c(IsInFSRS,RowCount))
-
-FSRSpercent<-Frstoplune
-#Percent off of this
 
 ```
 
