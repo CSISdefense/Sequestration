@@ -73,6 +73,13 @@ FSRStopline<-subset(FSRStopline,
                     IsInFSRS==1 | RowCount==1, 
                     select=-c(IsInFSRS,RowCount))
 
+FSRSpercent<-Frstoplune
+#Percent off of this
+
+```
+
+```{r Absolute}
+
 FSRStopline<-melt(FSRStopline,
                   .(fiscal_year),
                   variable.name = "ContractMetric")
