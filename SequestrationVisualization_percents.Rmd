@@ -1,0 +1,179 @@
+---
+title: "Prime and sub contracting data processing"
+author: "Greg Sanders"
+date: "July 14, 2016"
+output: 
+  html_document: 
+    fig_height: 4.75
+    fig_width: 8
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+#Requirements
+```{r Requirements}
+require(plyr)
+require(ggplot2)
+require(scales)
+
+Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
+# Path<-"D:\\Users\\Greg Sanders\\Documents\\Development\\R-scripts-and-data\\"
+source(paste(Path,"lookups.r",sep=""))
+source(paste(Path,"helper.r",sep=""))
+
+
+Coloration<-read.csv(
+  paste(Path,"Lookups\\","Lookup_coloration.csv",sep=""),
+  header=TRUE, sep=",", na.strings="NA", dec=".", strip.white=TRUE, 
+  stringsAsFactors=FALSE
+)
+
+#Clear out lines from the coloration CSV where no variable is listed.
+Coloration<-subset(Coloration, variable!="")
+```
+
+
+
+#Read And Processs
+```{r ReadAndProcess}
+FSRStopline  <- read.csv(file.path("Data","Contract.FSRSinFPDShistoryCustomer.csv"),
+                     na.strings=c("NULL","NA"),
+                     header=TRUE)
+
+FSRStopline<-subset(FSRStopline,fiscal_year>=2000)
+
+FSRStopline<-ddply(FSRStopline,
+                   .(fiscal_year,IsInFSRS),
+                   summarize,
+                   PrimeObligatedAmount=sum(PrimeObligatedAmount,na.rm=TRUE),
+                   SubawardAmount=sum(SubawardAmount,na.rm=TRUE),
+                   NumberOfActions=sum(NumberOfActions,na.rm=TRUE),
+                   NumberOfContracts=sum(NumberOfContracts,na.rm=TRUE))
+
+FSRStopline<-ddply(FSRStopline,
+                   .(fiscal_year),
+                   transform,
+                   PrimeObligatedTotal=sum(PrimeObligatedAmount,na.rm=TRUE),
+                   TotalOfActions=sum(NumberOfActions,na.rm=TRUE),
+                   TotalOfContracts=sum(NumberOfContracts,na.rm=TRUE),
+                   RowCount=length(fiscal_year))
+
+
+FSRStopline$PrimeObligatedAmount<-FSRStopline$PrimeObligatedAmount*FSRStopline$IsInFSRS
+FSRStopline$NumberOfActions<-FSRStopline$NumberOfActions*FSRStopline$IsInFSRS
+FSRStopline$NumberOfContracts<-FSRStopline$NumberOfContracts*FSRStopline$IsInFSRS
+
+FSRStopline<-subset(FSRStopline,
+                    IsInFSRS==1 | RowCount==1, 
+                    select=-c(IsInFSRS,RowCount))
+
+```
+
+*Inserted for production of graphs with percentage on Y-axis*
+
+```{r}
+FSRStopline_pct <- FSRStopline
+```
+
+
+
+```{r Percentage}
+
+FSRStopline<-melt(FSRStopline,
+                  .(fiscal_year),
+                  variable.name = "ContractMetric")
+
+FSRStopline<-read_and_join(
+            ""
+            ,"Lookup_ContractMetric.csv"
+            ,FSRStopline
+        )
+
+
+
+FSRStopline<-dcast(FSRStopline,
+      fiscal_year + Type ~ ContractMetricType,
+      value.var="value"
+     )
+
+FSRStopline<-apply_lookups(Path,FSRStopline)
+
+ggplot(data=FSRStopline,
+       aes(x=Fiscal.Year,
+           y=Obligation.2015,
+                       color=Type)
+       )+geom_line()+
+  scale_y_continuous(labels=comma
+        )
+
+
+
+
+ggplot(data=FSRStopline,
+       aes(x=Fiscal.Year,
+           y=NumberOfActions,
+                       color=Type)
+       )+geom_line()+
+  scale_y_log10(labels=comma
+        )
+
+
+
+ggplot(data=FSRStopline,
+       aes(x=Fiscal.Year,
+           y=NumberOfContracts,
+                       color=Type)
+       )+geom_line()+
+  scale_y_log10(labels=comma
+        )
+
+
+
+```
+
+```{r Percent plots}
+FSRStopline_pct$PrimePct <- 
+  (FSRStopline_pct$PrimeObligatedAmount / 
+  FSRStopline_pct$PrimeObligatedTotal) * 100
+
+FSRStopline_pct$SubPct <- 
+  (FSRStopline_pct$SubawardAmount / FSRStopline_pct$PrimeObligatedTotal) * 100
+
+FSRStopline_pct$TotalPct <- 100
+
+FSRStopline_pct <- melt(FSRStopline_pct,
+                  .(fiscal_year),
+                  variable.name = "ContractMetric")
+
+FSRStopline_pct <- FSRStopline_pct[
+  FSRStopline_pct$ContractMetric == "PrimePct" |
+  FSRStopline_pct$ContractMetric == "SubPct" |
+  FSRStopline_pct$ContractMetric == "TotalPct",]
+
+ggplot(data=FSRStopline_pct,
+       aes(x=fiscal_year,
+           y=value,
+                       color=ContractMetric)
+       )+geom_line()+
+  scale_y_continuous(labels=comma) +
+  ylab("percent")
+```
+
+
+
+#Prime and Sub Top Level
+```{r PrimeContactSubSummary}
+FSRSsummary<-read.csv(file.path("Data","Contract_FSRSinFPDShistory.csv"),
+                     na.strings=c("NULL","NA"),
+                     header=TRUE)
+FSRSsummary<-subset(FSRSsummary,fiscal_year>1990)
+FSRSsummary<-apply_lookups(Path,FSRSsummary)
+
+
+
+```
