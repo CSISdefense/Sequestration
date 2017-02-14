@@ -1,0 +1,37 @@
+################################################################################
+# FSRS REPORTING SHINY UI.R
+################################################################################
+
+library(shiny)
+
+shinyUI(fluidPage(
+  
+  titlePanel("FSRS REPORTING"),
+  
+  
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(
+        inputId ="year",
+        label = "Years",
+        min = 1987,
+        max = 2016,
+        value = c(2000,2016)
+      ),
+      selectInput(
+        inputId = "yvar",
+        label = "Variable",
+        choices = c("Amount","Actions", "Contracts"),
+        selected = "Amount",
+        width = "100%",
+        selectize = FALSE,
+        size = 3
+      )
+    ),
+    
+    
+    mainPanel(
+       plotOutput("plot")
+    )
+  )
+))
