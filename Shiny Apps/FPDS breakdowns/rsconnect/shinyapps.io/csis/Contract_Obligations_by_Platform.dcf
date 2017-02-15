@@ -1,0 +1,9 @@
+name: Contract_Obligations_by_Platform
+account: csis
+server: shinyapps.io
+appId: 109042
+bundleId: 483081
+url: https://csis.shinyapps.io/Contract_Obligations_by_Platform/
+when: 1466185892.5381
+asMultiple: FALSE
+asStatic: FALSE
