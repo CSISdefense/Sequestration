@@ -41,7 +41,6 @@ Coloration<-subset(Coloration, variable!="")
 
 #Read And Processs
 ```{r ReadAndProcess}
-#This really shouldn't just be Canada related, but working with what I have.
 FSRStopline  <- read.csv(file.path("Data","Contract.FSRSinFPDShistoryCustomer.csv"),
                      na.strings=c("NULL","NA"),
                      header=TRUE)
@@ -75,7 +74,15 @@ FSRStopline<-subset(FSRStopline,
 
 ```
 
-```{r Absolute}
+*Inserted for production of graphs with percentage on Y-axis*
+
+```{r}
+FSRStopline_pct <- FSRStopline
+```
+
+
+
+```{r Percentage}
 
 FSRStopline<-melt(FSRStopline,
                   .(fiscal_year),
@@ -86,6 +93,8 @@ FSRStopline<-read_and_join(
             ,"Lookup_ContractMetric.csv"
             ,FSRStopline
         )
+
+
 
 FSRStopline<-dcast(FSRStopline,
       fiscal_year + Type ~ ContractMetricType,
@@ -126,6 +135,36 @@ ggplot(data=FSRStopline,
 
 
 ```
+
+```{r Percent plots}
+FSRStopline_pct$PrimePct <- 
+  (FSRStopline_pct$PrimeObligatedAmount / 
+  FSRStopline_pct$PrimeObligatedTotal) * 100
+
+FSRStopline_pct$SubPct <- 
+  (FSRStopline_pct$SubawardAmount / FSRStopline_pct$PrimeObligatedTotal) * 100
+
+FSRStopline_pct$TotalPct <- 100
+
+FSRStopline_pct <- melt(FSRStopline_pct,
+                  .(fiscal_year),
+                  variable.name = "ContractMetric")
+
+FSRStopline_pct <- FSRStopline_pct[
+  FSRStopline_pct$ContractMetric == "PrimePct" |
+  FSRStopline_pct$ContractMetric == "SubPct" |
+  FSRStopline_pct$ContractMetric == "TotalPct",]
+
+ggplot(data=FSRStopline_pct,
+       aes(x=fiscal_year,
+           y=value,
+                       color=ContractMetric)
+       )+geom_line()+
+  scale_y_continuous(labels=comma) +
+  ylab("percent")
+```
+
+
 
 #Prime and Sub Top Level
 ```{r PrimeContactSubSummary}
