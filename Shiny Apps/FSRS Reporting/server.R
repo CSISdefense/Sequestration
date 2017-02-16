@@ -13,21 +13,32 @@ shinyServer(function(input, output) {
   options(scipen = 99)
    
   #_________________ Read in data __________________#
-  data <- read_csv("..//Contract_FSRSinFPDShistory.csv")
+  data <- read_csv("Contract.FSRSinFPDShistoryCustomer.csv")
+  
+  data <- gather(data, "Presence", "Amount",
+    PrimeObligatedAmount, SubawardAmount)
+  
+  
+  ############## LEFT OFF HERE 2/15/17
+  
   
   data <- data %>%
-    filter(fiscal_year != "NULL") %>%
-    mutate(fiscal_year = as.numeric(fiscal_year))
-  
-  data <- data %>%
-    mutate(Amount = ifelse(PrimeObligatedAmount == "NULL",
-      SubawardAmount,
-      PrimeObligatedAmount
+    mutate(Presence = ifelse(
+      Presence == "PrimeObligatedAmount" & IsInFSRS == 1,
+      "Prime in FSRS",
+      Presence
       )
-  )
+    )
+  
+  FSRSprime <- data %>%
+    filter(Presence == "Prime in FSRS")
+  
+  data
   
   data <- data %>%
     mutate(Amount = as.numeric(Amount)) 
+  
+  
   
   data <- data %>%
     mutate(
