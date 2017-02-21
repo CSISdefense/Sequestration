@@ -1,4 +1,4 @@
-create procedure Vendor.SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform
+alter procedure Vendor.SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform
 
 as
 

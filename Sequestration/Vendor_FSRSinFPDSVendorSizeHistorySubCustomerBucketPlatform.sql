@@ -37,15 +37,15 @@ as
 		ELSE 'Medium <1B'
 	END AS VendorSize	
   ,c.obligatedamount as PrimeObligatedAmount
-  ,p.SubawardAmount as SubawardAmount
   ,c.numberofactions as PrimeNumberOfActions
+  ,p.SubawardAmount as SubawardAmount
  ,p.CSIScontractID
   ,iif(p.CSIScontractID is not null, 1,0) as IsInFSRS
   from contract.FPDS c
   inner join contract.CSIStransactionID t
   on t.CSIStransactionID = c.CSIStransactionID
-  left outer join [Contract].[FSRSprimeHistory] p
-  on c.fiscal_year=p.PrimeFiscalYear
+  left outer join [Contract].[ContractFSRSprimeHistory] p
+  on c.fiscal_year=p.PrimeAwardDateSignedFiscalYear
 	and t.CSIScontractID=p.CSIScontractID
 	LEFT OUTER JOIN FPDSTypeTable.AgencyID AS A
 		ON (C.contractingofficeagencyid=A.AgencyID)
