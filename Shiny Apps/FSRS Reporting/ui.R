@@ -26,6 +26,21 @@ shinyUI(fluidPage(
         width = "100%",
         selectize = FALSE,
         size = 3
+      ),
+      selectInput(
+        inputId = "customer",
+        label = "Customer",
+        multiple = TRUE,
+        choices = c(
+          "Defense", "NASA", "DHS", "Energy",
+          "GSA", "HHS", "Other Agencies", "State and IAP", "NULL"
+        ),
+        selected = c(
+          "Defense", "NASA", "DHS", "Energy",
+          "GSA", "HHS", "Other Agencies", "State and IAP", "NULL"
+        ),
+        selectize = FALSE,
+        size = 9
       )
     ),
     
