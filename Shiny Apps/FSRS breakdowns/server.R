@@ -5,6 +5,8 @@ library(magrittr)
 
 shinyServer(function(input, output, session) {
 
+  options(scipen = 99)
+  
   # read data  
   full_data <- read_csv("FSRSprocessed.csv")
   
@@ -12,9 +14,9 @@ shinyServer(function(input, output, session) {
   full_data %<>%
     mutate(SubCustomer = factor(SubCustomer)) %>%
     mutate(ProductOrServiceArea = factor(ProductOrServiceArea)) %>%
-    mutate(Simple = factor(Simple)) %>%
+    mutate(SimpleArea = factor(SimpleArea)) %>%
     mutate(PlatformPortfolio = factor(PlatformPortfolio)) %>%
-    mutate(VendorSize = factor(VendorSize)) %>%
+    mutate(Vendor.Size = factor(Vendor.Size)) %>%
     mutate(IsInFSRS = factor(IsInFSRS))
   
   
@@ -32,9 +34,33 @@ shinyServer(function(input, output, session) {
   #   a tibble of filtered data 
   shown_data <- full_data
   
-  return(shown_data)
-    
+  shown_data %<>%
+    filter(Fiscal.Year >= input$year[1] & Fiscal.Year <= input$year[2])
+  
+  
+  
+  
+  
+  # aggregate to the breakout level
+  if(input$breakout == "None"){
+    shown_data %<>%
+      group_by(Fiscal.Year, IsInFSRS) %>%
+      summarize(
+        PrimeObligatedAmount = sum(PrimeObligatedAmount, na.rm = TRUE),
+        PrimeNumberOfActions = sum(PrimeNumberOfActions, na.rm = TRUE)
+      )
+  } else {
+    shown_data %<>% 
+      # see vignette("nse")
+      group_by_(.dots = c("Fiscal.Year", "IsInFSRS", input$breakout)) %>%
+      summarize(
+        PrimeObligatedAmount = sum(PrimeObligatedAmount),
+        PrimeNumberOfActions = sum(PrimeNumberOfActions)
+      )
   }
+  
+  return(shown_data)
+}
   
   mainplot <- reactive({
   # Builds a ggplot based on user settings, for display on the main panel.
@@ -44,13 +70,33 @@ shinyServer(function(input, output, session) {
   # Returns:
   #   a fully built ggplot object
     current_data <- dataset(input$filter, "dummy")
-    mainplot <- ggplot(
-      data = current_data,
-      aes(
-        x = fiscal_year,
-        y = 
-      ))
     
+  if(input$y_var == "Amount"){
+    mainplot <- ggplot(data = current_data, aes(x = Fiscal.Year,
+          y = PrimeObligatedAmount, color = IsInFSRS)) +
+      ylab("$ 2016")
+    }
+  if(input$y_var == "Actions"){
+    mainplot <- ggplot(data = current_data, aes(x = Fiscal.Year,
+          y = PrimeNumberOfActions, color = IsInFSRS)) +
+      ylab("Number of Actions")
+    }  
+  
+  mainplot <- mainplot + geom_line()
+  
+  mainplot <- switch(input$breakout,
+    "None" = mainplot,
+    "Customer" = mainplot + facet_wrap(~ Customer),
+    "SubCustomer" = mainplot + facet_wrap(~ SubCustomer),
+    "ProductOrServiceArea" = mainplot + facet_wrap(~ ProductOrServiceArea),
+    "SimpleArea" = mainplot + facet_wrap(~ SimpleArea),
+    "PlatformPortfolio" = facet_wrap(~ PlatformPortfolio),
+    "Vendor.Size" = facet_wrap(~ Vendor.Size)
+  )
+  
+  if(input$use_log) mainplot <- mainplot + scale_y_log10()
+  
+  return(mainplot)
   })
   
   output$plot <- renderPlot({
