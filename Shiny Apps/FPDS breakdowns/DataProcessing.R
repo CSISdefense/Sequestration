@@ -1,38 +1,41 @@
 ################################################################################
 # Data Pre-Processing for Vendor Size Shiny Graphic
-# L. Lipsey for DIIG, May 2016
+# UPDATED 2/22/17
 #
-# This script does pre-processing to get VendorSizeShiny.csv into proper form
-# for use in the Shiny graphic.  The purpose is to avoid doing this processing
-# in the Shiny script itself, thus reducing the graphic's load times for users.
+# This script does pre-processing to get a SQL query into usable form for shiny
+# graphics
 #
 # Input: CSV-format results from SQL query:
-# sp_VendorSizeHistoryPlatformPortfolioSubCustomer on 5/13/2016
+# Vendor_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer 
 #
 # Output: CSV file (CleanedVendorSize.csv)
 # with data in the minimal form needed by Shiny script
 ################################################################################
 
-library(dplyr)
+library(tidyverse)
+library(magrittr)
+source("K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\lookups.R")
+source("K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\helper.R")
 
 # read in data            
-FullData <- read.csv("VendorSizeShiny.csv")
+FullData <- read_csv(
+  "2016_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.csv",
+  col_names = FALSE, col_types = "cccccccccc")
 
-# change header names to be shorter / more useful
-names(FullData) <- c("FY","Customer","Portfolio","Category","Area","VendorSize",
-                     "Amount","Actions")
+# header names didn't read well, enter manually
+names(FullData) <- c("Fiscal.Year","Customer", "SubCustomer",
+  "ServicesCategory", "PlatformPortfolio", "VendorSize",
+  "CompetitionClassification", "ClassifyNumberOfOffers",
+  "SumOfobligatedAmount","SumOfnumberOfActions")
+
+FullData <- standardize_variable_names(
+  "K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\",
+  FullData)
 
 # coerce Amount to be a numeric variable
-FullData$Amount <- suppressWarnings(as.numeric(as.character(FullData$Amount)))
+FullData$Action.Obligation %<>% as.numeric()
+FullData$SumOfnumberOfActions %<>% as.numeric()
 
-# remove lines with NA obligation amounts and unlabeled vendor sizes
-FullData <- FullData[!is.na(FullData$Amount) & FullData$VendorSize !=
-                         "Unlabeled",]
-
-# subset to years of focus (2000-2014)
-FullData <- suppressWarnings(subset(FullData, 
-                                    1999 < as.numeric(as.character(FY))
-))
 
 # create lookup table for VendorSize, used in next command
 vendorClassification <- c("Large" = "Large",
@@ -49,8 +52,8 @@ vendorClassification <- c("Large" = "Large",
                           "Unlabeled" = "Small")
 
 # reduce VendorSize variable to four categories, as guided by lookup table
-FullData$VendorSize <- as.factor(
-    vendorClassification[as.character(FullData$VendorSize)])
+FullData$Vendor.Size <- as.factor(
+    vendorClassification[as.character(FullData$Vendor.Size)])
 
 
 # This line discards the "Area" and "Actions" columns and aggregates Amount
