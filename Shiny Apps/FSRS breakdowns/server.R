@@ -46,8 +46,8 @@ shinyServer(function(input, output, session) {
     shown_data %<>%
       group_by(Fiscal.Year, IsInFSRS) %>%
       summarize(
-        PrimeObligatedAmount = sum(PrimeObligatedAmount),
-        PrimeNumberOfActions = sum(PrimeNumberOfActions)
+        PrimeObligatedAmount = sum(PrimeObligatedAmount, na.rm = TRUE),
+        PrimeNumberOfActions = sum(PrimeNumberOfActions, na.rm = TRUE)
       )
   } else {
     shown_data %<>% 
