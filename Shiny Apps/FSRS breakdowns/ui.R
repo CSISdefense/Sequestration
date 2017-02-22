@@ -20,29 +20,54 @@ shinyUI(fluidPage(
       ),
       
       selectInput(
-        inputId = "yvar",
-        label = "Variable",
-        choices = c("Amount","Actions", "Contracts"),
+        inputId = "y_var",
+        label = "Y Variable",
+        choices = c("Amount", "Actions"),
         selected = "Amount",
         width = "100%",
         selectize = FALSE,
-        size = 3
+        size = 2
       ),
+      
+      checkboxInput(
+        inputID = "use_log",
+        label = "Use log scale",
+        value = FALSE
+      ),
+      
       selectInput(
-        inputId = "customer",
-        label = "Customer",
+        inputId = "breakout",
+        label = "Breakout Variable",
+        multiple = FALSE,
+        choices = c(
+          "None",
+          "Customer",
+          "SubCustomer",
+          "ProductOrServiceArea",
+          "Simple",
+          "PlatformPortfolio",
+          "VendorSize"
+          ),
+        selected = "None",
+        selectize = FALSE,
+        size = 7
+      ),
+      
+      selectInput(
+        inputId = "filter",
+        label = "Filter by Variable(s)",
         multiple = TRUE,
         choices = c(
-          "Defense", "NASA", "DHS", "Energy",
-          "GSA", "HHS", "Other Agencies", "State and IAP", "NULL"
-        ),
-        selected = c(
-          "Defense", "NASA", "DHS", "Energy",
-          "GSA", "HHS", "Other Agencies", "State and IAP", "NULL"
+          "Customer",
+          "SubCustomer",
+          "ProductOrServiceArea",
+          "Simple",
+          "PlatformPortfolio",
+          "VendorSize"
         ),
         selectize = FALSE,
-        size = 9
-      )
+        size = 6
+      )  
     ),
     
     

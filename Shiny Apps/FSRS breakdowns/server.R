@@ -6,10 +6,10 @@ library(magrittr)
 shinyServer(function(input, output, session) {
 
   # read data  
-  FullData <- read_csv("FSRSprocessed.csv")
+  full_data <- read_csv("FSRSprocessed.csv")
   
   # set correct data types
-  FullData %<>%
+  full_data %<>%
     mutate(SubCustomer = factor(SubCustomer)) %>%
     mutate(ProductOrServiceArea = factor(ProductOrServiceArea)) %>%
     mutate(Simple = factor(Simple)) %>%
@@ -30,16 +30,31 @@ shinyServer(function(input, output, session) {
   #   
   # Returns:
   #   a tibble of filtered data 
-
+  shown_data <- full_data
+  
+  return(shown_data)
     
   }
   
-  plotsettings <- reactive({
+  mainplot <- reactive({
+  # Builds a ggplot based on user settings, for display on the main panel.
+  # Reactive binding will cause the ggplot to update when the user changes any
+  # relevant setting.  
+  #  
+  # Returns:
+  #   a fully built ggplot object
+    current_data <- dataset(input$filter, "dummy")
+    mainplot <- ggplot(
+      data = current_data,
+      aes(
+        x = fiscal_year,
+        y = 
+      ))
     
   })
   
   output$plot <- renderPlot({
-
+    mainplot()
   })
 
 })
