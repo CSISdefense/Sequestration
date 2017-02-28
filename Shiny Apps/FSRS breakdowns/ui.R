@@ -36,6 +36,11 @@ shinyUI(fluidPage(
           inputId = "use_log",
           label = "Use log scale",
           value = FALSE
+        ),
+        checkboxInput(
+          inputId = "use_share",
+          label = "Show as share",
+          value = TRUE
         )
       )
     ),
