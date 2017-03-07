@@ -5,25 +5,52 @@
 ################################################################################
 
 library(shiny)
+library(tidyverse)
 
 shinyUI(fluidPage(
-
-  # Application title
-  titlePanel("Old Faithful Geyser Data"),
-
-  # Sidebar with a slider input for number of bins
+  
   sidebarLayout(
     sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+      titlePanel("FPDS breakouts"),
+      wellPanel(
+        sliderInput(
+          inputId ="year",
+          label = "Years",
+          min = 2000,
+          max = 2016,
+          value = c(2010,2015)
+        )
+      ),  
+      wellPanel(
+        selectInput(
+          inputId = "y_var",
+          label = "Y Variable",
+          choices = "Action.Obligation",
+          selected = "Action.Obligation",
+          width = "100%",
+          selectize = TRUE
+        ),
+        selectInput(
+          inputId = "color_var",
+          label = "Color Breakout Variable",
+          choices = "None",
+          selected = "None",
+          width = "100%",
+          selectize = TRUE
+        ),
+        selectInput(
+          inputId = "facet_var",
+          label = "Facet Breakout Variable",
+          choices = "None",
+          selected = "None",
+          width = "100%",
+          selectize = TRUE
+        )
+      )
     ),
-
-    # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      plotOutput("plot"),
+      width = 8
     )
   )
 ))
