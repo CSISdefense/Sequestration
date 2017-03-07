@@ -3,6 +3,8 @@
 #
 ################################################################################
 
+library(tidyverse)
+library(lazyeval)
 
   propegate_category_vars_to_ui <- function(session, current_data){
     # Fills the ui menus (y_var, color_var, facet_var) with whatever categorical
@@ -37,21 +39,26 @@
   
   
   # aggregate to appropriate level for breakouts
+  # pain in the ass to figure out; see stack overflow at
+  # https://tinyurl.com/z82ywf3
   breakouts <- c(input$color_var, input$facet_var)
   breakouts <- breakouts[breakouts != "None"]
   y <- get(input$y_var, shown_data)
   if(length(breakouts) == 0){
     shown_data %<>%
-      group_by_("Fiscal.Year")
-   
-    ## help ##
-    
-    
+      group_by_("Fiscal.Year") %>%
+      summarize_(
+        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
   } else {
-  shown_data %<>%
-      group_by_(c("Fiscal.Year",breakouts)) 
-    shown_data <- summarize_(shown_data, ~sum(input$y_var))
+    shown_data %<>%
+      group_by_(.dots = c("Fiscal.Year", breakouts))
+    shown_data %<>%
+      group_by_("Fiscal.Year") %>%
+      summarize_(
+        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
   }
+  
+  names(shown_data)[which(names(shown_data) == "sum_val")] <- input$y_var
   
   # calculate shares if share checkbox is checked
   # if(input$use_share == TRUE){
