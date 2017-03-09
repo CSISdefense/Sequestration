@@ -47,7 +47,7 @@ shinyServer(function(input, output, session) {
     
   
   # define plot based on appropriate data  
-  mainplot <- ggplot(data = dataset(session, input, current_data))
+  mainplot <- ggplot(data = dataset(current_data, session, input))
   
   
   # add a line layer, broken out by color if requested
@@ -59,7 +59,13 @@ shinyServer(function(input, output, session) {
       geom_line(aes_q(x = as.name("Fiscal.Year"), y = as.name(input$y_var),
         color = as.name(input$color_var)))
   }
-    
+  
+  # add faceting if requested
+  if(input$facet_var != "None"){
+    mainplot <- mainplot +
+      facet_wrap(as.formula(paste("~",input$facet_var))) 
+  }
+  
   # add other settings to the plot
   
   
@@ -71,5 +77,14 @@ shinyServer(function(input, output, session) {
   output$plot <- renderPlot({
     mainplot()
   })
-    
+
+  
+  
+  
+  
+  
+  
+  
+  
+      
 })

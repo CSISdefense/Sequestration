@@ -28,6 +28,8 @@ names(FullData) <- c("Fiscal.Year","Customer", "SubCustomer",
   "CompetitionClassification", "ClassifyNumberOfOffers",
   "SumOfobligatedAmount","SumOfnumberOfActions")
 
+FullData$Fiscal.Year[1] <- 1988
+
 FullData <- standardize_variable_names(
   "K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\",
   FullData)
@@ -40,10 +42,10 @@ FullData$SumOfnumberOfActions %<>% as.numeric()
 # create lookup table for VendorSize, used in next command
 vendorClassification <- c("Large" = "Large",
                           "Large(Small Subsidiary)" = "Large",
-                          "Large: Big 5" = "Big Five",
-                          "Large: Big 5 (Small Subsidiary)" = "Big Five",
-                          "Large: Big 5 JV" = "Big Five",
-                          "Large: Big 5 JV (Small Subsidiary)" = "Big Five",
+                          "Large: Big 6" = "Big Five",
+                          "Large: Big 6 (Small Subsidiary)" = "Big Five",
+                          "Large: Big 6 JV" = "Big Five",
+                          "Large: Big 6 JV (Small Subsidiary)" = "Big Five",
                           "Large: Pre-Big 6" = "Large",
                           "Medium <1B" = "Medium",
                           "Medium >1B" = "Medium",

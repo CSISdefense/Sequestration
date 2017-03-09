@@ -11,7 +11,7 @@ shinyUI(fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      titlePanel("FPDS breakouts"),
+      titlePanel("FPDS Charts"),
       wellPanel(
         sliderInput(
           inputId ="year",
@@ -20,7 +20,31 @@ shinyUI(fluidPage(
           max = 2016,
           value = c(2010,2015)
         )
-      ),  
+      ),
+      wellPanel(
+        radioButtons(
+          inputId = "chart_geom",
+          label = NULL,
+          choices = c("Bar Chart", "Line Chart"),
+          selected = "Line Chart"
+        ),
+        selectInput(
+          inputId = "color_var",
+          label = "Color Breakout",
+          choices = "None",
+          selected = "None",
+          width = "100%",
+          selectize = TRUE
+        ),
+        selectInput(
+          inputId = "facet_var",
+          label = "Facet Breakout",
+          choices = "None",
+          selected = "None",
+          width = "100%",
+          selectize = TRUE
+        )
+      ),
       wellPanel(
         selectInput(
           inputId = "y_var",
@@ -30,21 +54,11 @@ shinyUI(fluidPage(
           width = "100%",
           selectize = TRUE
         ),
-        selectInput(
-          inputId = "color_var",
-          label = "Color Breakout Variable",
-          choices = "None",
-          selected = "None",
-          width = "100%",
-          selectize = TRUE
-        ),
-        selectInput(
-          inputId = "facet_var",
-          label = "Facet Breakout Variable",
-          choices = "None",
-          selected = "None",
-          width = "100%",
-          selectize = TRUE
+        radioButtons(
+          inputId = "y_total_or_share",
+          label = NULL,
+          choices = c("As Total", "As Share"),
+          selected = "As Total"
         )
       )
     ),
