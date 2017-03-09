@@ -63,8 +63,80 @@ shinyUI(fluidPage(
       )
     ),
     mainPanel(
-      plotOutput("plot"),
-      width = 8
+      width = 8,
+      tabsetPanel(
+        id = "current_tab",
+        tabPanel("Charts",
+          plotOutput("plot")
+        ),
+        tabPanel("Edit Data",
+          fluidRow(
+            column(
+              width = 5,
+              tags$div(id = "edit_var_placeholder"),
+              textInput(
+                inputId = "rename_var_txt",
+                label = NULL
+              ),
+              bsButton(
+                inputId = "rename_var_btn",
+                label = "Rename",
+                style = "info"
+              )
+            ),
+            column(
+              width = 6,
+              tags$div(id = "edit_value_placeholder"),
+              textInput(
+                inputId = "rename_value_txt",
+                label = NULL
+              ),
+              fluidRow(
+                column(
+                  width = 5,
+                  bsButton(
+                    inputId = "rename_value_btn",
+                    label = "Rename",
+                    style = "info",
+                    block = TRUE
+                  ),
+                  bsButton(
+                    inputId = "color_value_btn",
+                    label = "Color",
+                    block = TRUE
+                  )
+                ),
+                column(
+                  width = 5,
+                  bsButton(
+                    inputId = "drop_value_btn",
+                    label = "Drop",
+                    block = TRUE
+                  ),
+                  bsButton(
+                    inputId = "keep_value_btn",
+                    label = "Keep",
+                    block = TRUE
+                  )
+                ),
+                column(
+                  width = 2,
+                  bsButton(
+                    inputId = "move_up_value_btn",
+                    label = "△",
+                    block = TRUE
+                  ),
+                  bsButton(
+                    inputId = "move_down_value_btn",
+                    label = "▽",
+                    block = TRUE
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
     )
   )
 ))

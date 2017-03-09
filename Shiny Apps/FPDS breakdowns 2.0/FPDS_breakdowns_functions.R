@@ -6,12 +6,13 @@
 library(tidyverse)
 library(lazyeval)
 
-populate_ui_var_lists <- function(data_source, session){
+populate_ui_var_lists <- function(
   # Fills the ui menus with appropriate variables from the tibble passed to it
   #
   # Args:
-  #   session: the active session of the shiny app, from server.R
-  #   data_source: tibble from which to populate the ui menus    
+  data_source,    # tibble from which to populate the ui menus  
+  session = getDefaultReactiveDomain()  # shiny app session
+  ){
   
   # get the class for each variable (except fiscal year)
   var_class <- sapply(data_source[-1], class)
@@ -27,17 +28,18 @@ populate_ui_var_lists <- function(data_source, session){
   updateSelectInput(session, "facet_var", choices = categories)
 }  
 
-format_data_for_plot <- function(incoming_data, session, input){
+format_data_for_plot <- function(
   # Returns data in the appropriate format for the user-specified plot
   #
   # Args:
-  #   incoming_data: tibble of data to format
-  #   session: current session of shiny, passed from server.R
-  #   input: the user input object from the shiny session
-  # 
+  incoming_data,   # data to format for the plot, as a tibble
+  input,           # shiny input object
+  session = getDefaultReactiveDomain()  # shiny app session
+  #
   # Returns:
   #   a tibble of formatted data
-  
+  ){  
+
   shown_data <- incoming_data
   
   # filter by year
@@ -120,18 +122,19 @@ format_data_for_plot <- function(incoming_data, session, input){
   return(shown_data)
 }
 
-build_plot_from_input <- function(plot_data, session, input) {
+build_plot_from_input <- function(
   # Adds a geom layer to a ggplot object based on user input.  
   # Intended to handle ggplot settings that depend on user input.
   # Settings that apply universally should be added in server.R
   #
   # Args:
-  #   plot_data: data tibble for use in the plot
-  #   session: current session of shiny, passed from server.R
-  #   input: the user input object from the shiny session
-  # 
+  plot_data,    # tibble of formatted data for the ggplot
+  input,        # shiny input object
+  session = getDefaultReactiveDomain() # shiny app session
+  #
   # Returns:
   #   A ggplot object including user-specified geom layer
+  ){
   
   mainplot <- ggplot(data = plot_data)
   
@@ -182,3 +185,125 @@ build_plot_from_input <- function(plot_data, session, input) {
   # return the plot to server.R
   return(mainplot)
 }
+
+
+populate_edit_var <- function(
+  # Populates the edit_var element on the edit page, based on the current data
+  
+  # Args:
+  current_data,    # the current data for the app
+  input,           # shiny input object
+  session = getDefaultReactiveDomain() # shiny app session
+  ){
+  
+  # insert the variable selection list
+  insertUI(
+    selector = "#edit_var_placeholder",
+    ui = tags$div(
+      selectInput(
+        inputId = "edit_var",
+        label = "Variables",
+        choices = names(current_data),
+        selected = names(current_data)[1],
+        multiple = FALSE,
+        selectize = FALSE,
+        size = length(names(current_data))
+      ),
+      id = "edit_var_select"
+    )
+  )
+  
+  
+  # update the variable renaming text box
+  updateTextInput(
+    session,
+    inputId = "rename_var_txt",
+    value = names(current_data)[1]
+  )
+  
+}
+
+
+create_edit_values_list <- function(
+  # creates the list of values available for editing, when the user changes the
+  # variable they are examining
+  #
+  # Args:
+  current_data,  # current data frame in the app
+  input,         # shiny input object
+  session = getDefaultReactiveDomain()  # shiny session object
+  ){
+
+  
+  edit_var_class <- class(unlist(
+    current_data[which(names(current_data) == input$edit_var)]
+  ))
+  
+  if(edit_var_class != "factor") {
+    values_shown <- "*Not a Category Variable*"
+    
+    insertUI(
+      selector = "#edit_value_placeholder",
+      ui = tags$div(
+        selectInput(
+          inputId = "edit_value",
+          label = "Values",
+          choices = values_shown,
+          multiple = FALSE,
+          selectize = FALSE,
+          size = 2
+        ),
+        id = "edit_value_select"
+      )
+    )
+  } else {
+    values_shown <- levels(unlist(
+      current_data[which(names(current_data) == input$edit_var)]))
+    
+    insertUI(
+      selector = "#edit_value_placeholder",
+      ui = tags$div(
+        selectInput(
+          inputId = "edit_value",
+          label = "Values",
+          choices = values_shown,
+          multiple = FALSE,
+          selectize = FALSE,
+          size = length(values_shown)
+        ),
+        id = "edit_value_select"
+      )
+    )
+  }
+  
+  # update the rename text box
+  updateTextInput(
+    session,
+    inputId = "rename_value_txt",
+    value = values_shown[1]
+  )
+  
+}
+
+
+clear_edit_ui <- function(
+  # removes the variable and value selection selectInputs from the Edit Data tab
+  #
+  # Args:
+  input,    # shiny input object
+  session = getDefaultReactiveDomain()  # shiny session object
+  ){
+  
+  removeUI(
+    selector = "#edit_value_select",
+    multiple = TRUE,
+    immediate = TRUE
+  )
+  
+  removeUI(
+    selector = "#edit_var_select",
+    multiple = TRUE,
+    immediate = TRUE
+  )
+  
+}  
