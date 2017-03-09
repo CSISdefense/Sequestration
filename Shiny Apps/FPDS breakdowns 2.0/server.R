@@ -28,13 +28,12 @@ shinyServer(function(input, output, session) {
     mutate(ClassifyNumberOfOffers = factor(ClassifyNumberOfOffers)) %>%
     mutate(Simple = factor(Simple))
   
+  # create a working copy of the data for user modification, while retaining
+  # the original data in case the user wants to reset to it
   current_data <- original_data
-  propegate_category_vars_to_ui(session, current_data)
   
-  
-  # create currently shown filter vector
-  # current <- reactiveValues()
-  # current$filter <- character(length = 0)
+  # fill the variable lists in the ui with variables from current_data
+  populate_ui_var_lists(current_data, session)
   
   
  mainplot <- reactive({
@@ -46,27 +45,13 @@ shinyServer(function(input, output, session) {
   #   a fully built ggplot object
     
   
-  # define plot based on appropriate data  
-  mainplot <- ggplot(data = dataset(current_data, session, input))
+  # get appropriately formatted data to use in the plot 
+  plot_data <- format_data_for_plot(current_data, session, input)
   
+  # build plot with user-specified geoms
+  mainplot <- build_plot_from_input(plot_data, session, input)
   
-  # add a line layer, broken out by color if requested
-  if(input$color_var == "None"){
-    mainplot <- mainplot +
-      geom_line(aes_q(x = as.name("Fiscal.Year"), y = as.name(input$y_var)))
-  } else {
-    mainplot <- mainplot +
-      geom_line(aes_q(x = as.name("Fiscal.Year"), y = as.name(input$y_var),
-        color = as.name(input$color_var)))
-  }
-  
-  # add faceting if requested
-  if(input$facet_var != "None"){
-    mainplot <- mainplot +
-      facet_wrap(as.formula(paste("~",input$facet_var))) 
-  }
-  
-  # add other settings to the plot
+  # add overall visual settings to the plot
   
   
   
