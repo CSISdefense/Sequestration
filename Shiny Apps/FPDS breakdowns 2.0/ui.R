@@ -5,6 +5,7 @@
 ################################################################################
 
 library(shiny)
+library(shinyBS)
 library(tidyverse)
 
 shinyUI(fluidPage(
@@ -67,12 +68,32 @@ shinyUI(fluidPage(
       tabsetPanel(
         id = "current_tab",
         tabPanel("Charts",
-          plotOutput("plot")
+          plotOutput("plot"),
+          br(),
+          br(),
+          downloadButton(
+            outputId = "download_plot",
+            label = "Download Plotted Data"
+          )
         ),
         tabPanel("Edit Data",
           fluidRow(
             column(
-              width = 5,
+              width = 6,
+              bsButton(
+                inputId = "apply_changes_btn",
+                label = "Apply Data Changes",
+                style = "warning",
+                size = "large",
+                block = TRUE
+              ),
+              bsButton(
+                inputId = "discard_btn",
+                label = "Discard Data Changes",
+                style = "primary",
+                block = TRUE
+              ),
+              br(),
               tags$div(id = "edit_var_placeholder"),
               textInput(
                 inputId = "rename_var_txt",
@@ -82,10 +103,27 @@ shinyUI(fluidPage(
                 inputId = "rename_var_btn",
                 label = "Rename",
                 style = "info"
+              ),
+              br(),
+              br(),
+              downloadButton(
+                outputId = "download_current",
+                label = "Download this view"
               )
             ),
             column(
               width = 6,
+              bsButton(
+                inputId = "restore_btn",
+                label = "Restore Original Data",
+                style = "success",
+                size = "default",
+                block = TRUE
+              ),
+              br(),
+              br(),
+              br(),
+              br(),
               tags$div(id = "edit_value_placeholder"),
               textInput(
                 inputId = "rename_value_txt",
