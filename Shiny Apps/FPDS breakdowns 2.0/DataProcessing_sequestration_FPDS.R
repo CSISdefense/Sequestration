@@ -5,8 +5,9 @@
 # This script does pre-processing to get a SQL query into usable form for shiny
 # graphics
 #
-# Input: CSV-format results from SQL query:
-# Vendor_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer 
+# Input:
+#   CSV-format results from SQL query:
+#     Vendor_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer 
 #
 # Output: CSV file (CleanedVendorSize.csv)
 # with data in the minimal form needed by Shiny script
@@ -157,3 +158,4 @@ FullData$Simple <- PSC[FullData$ProductOrServiceArea]
 
 # write output to CleanedVendorSize.csv
 write_csv(FullData, "2016_unaggregated_FPDS.csv")
+
