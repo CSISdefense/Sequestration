@@ -18,7 +18,8 @@ populate_ui_var_lists <- function(
   var_class <- sapply(data_source[-1], class)
   
   # put numeric variables in the y_var list
-  numerics <- names(data_source[-1])[var_class == "numeric"]
+  numerics <- names(data_source[-1])[
+    var_class == "numeric" | var_class == "integer"]
   updateSelectInput(session, "y_var", choices = numerics)
   
   # put categorical variables in the color_var and facet_var lists
@@ -182,6 +183,29 @@ build_plot_from_input <- function(
       facet_wrap(as.formula(paste("~",input$facet_var))) 
   }
 
+  mainplot <- mainplot +
+    scale_x_continuous(labels = function(x){str_sub(as.character(x), -2, -1)}) +
+    scale_y_continuous(
+      labels = function(x){
+        sapply(x, function(y){
+          if(is.na(y)) return("NA")
+          y_lab <- "yuge"
+          if(abs(y) < 1e15) y_lab <- paste0(round(y/1e12), "T")
+          if(abs(y) < 1e13) y_lab <- paste0(round(y/1e12, 1), "T")
+          if(abs(y) < 1e12) y_lab <- paste0(round(y/1e9), "B")
+          if(abs(y) < 1e10) y_lab <- paste0(round(y/1e9,1), "B")
+          if(abs(y) < 1e9) y_lab <- paste0(round(y/1e6), "M")
+          if(abs(y) < 1e7) y_lab <- paste0(round(y/1e6,1), "M")
+          if(abs(y) < 1e6) y_lab <- paste0(round(y/1000), "k")
+          if(abs(y) < 1e4) y_lab <- paste0(round(y/1000, 1), "k")
+          if(abs(y) < 1000) ylab <- as.character(round(y))
+          if(abs(y) < 100) y_lab <- as.character(round(y,1))
+          if(abs(y) < 10) y_lab <- as.character(round(y,2))
+          return(y_lab)
+        })
+        
+      })
+  
   # return the plot to server.R
   return(mainplot)
 }

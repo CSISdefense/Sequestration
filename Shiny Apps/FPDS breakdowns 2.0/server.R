@@ -9,6 +9,8 @@ library(magrittr)
 library(forcats)
 library(Cairo)
 library(shinyBS)
+library(diigtheme1)
+library(stringr)
 library(tidyverse)
 
 shinyServer(function(input, output, session) {
@@ -53,10 +55,8 @@ shinyServer(function(input, output, session) {
     mainplot <- build_plot_from_input(plot_data, input)
     
     # add overall visual settings to the plot
-    
-    ####################################### ggplot call here ###################
-    # mainplot <- mainplot +
-    
+    mainplot <- mainplot + diigtheme1:::diiggraph()
+        
     # return the built plot
     return(mainplot)
   })

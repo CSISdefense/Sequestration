@@ -31,7 +31,7 @@ shinyUI(fluidPage(
         ),
         selectInput(
           inputId = "color_var",
-          label = "Color Breakout",
+          label = "Breakout",
           choices = "None",
           selected = "None",
           width = "100%",
@@ -39,7 +39,7 @@ shinyUI(fluidPage(
         ),
         selectInput(
           inputId = "facet_var",
-          label = "Facet Breakout",
+          label = "Facet",
           choices = "None",
           selected = "None",
           width = "100%",
