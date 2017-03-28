@@ -11,6 +11,8 @@ library(tidyverse)
     "Defense_Vendor_sp_EntityCountHistorySubCustomer.csv")
   platform_only <- read.csv(
     "Defense_Vendor_sp_EntityCountHistoryPlatformCustomer.csv")
+  top_level <- read.csv(
+    "Vendor_sp_EntityCountHistoryCustomer.csv")
   
   # remove unused variables
   platform_sub %<>%
@@ -85,6 +87,37 @@ library(tidyverse)
       SumOfObligatedAmount = sum(SumOfObligatedAmount)) %>%
     filter(fiscal_year >= 2000)
   
+  names(top_level)[1] <- "fiscal_year"
+  
+  top_level %<>%
+    filter(Customer == "Defense") %>%
+    rename(EntityCount = EntityCounty) %>%
+    select(-Customer, -EntityCategory, -EntitySizeCode) %>%
+    mutate(
+      SumOfNumberOfActions = as.character(SumOfNumberOfActions),
+      SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
+    mutate(
+      SumOfNumberOfActions = as.integer(
+        ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
+      SumOfObligatedAmount = as.numeric(
+        ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+    group_by(
+      fiscal_year, EntitySizeText,
+      AnyEntityUSplaceOfPerformance,
+      IsEntityAbove1990constantReportingThreshold,
+      IsEntityAbove2016constantReportingThreshold) %>%
+    summarize(
+      EntityCount = sum(EntityCount), 
+      AllContractorCount = sum(AllContractorCount),
+      SumOfNumberOfActions = sum(SumOfNumberOfActions),
+      SumOfObligatedAmount = sum(SumOfObligatedAmount)) %>%
+    filter(fiscal_year >= 2000)
+  
+  
+  
+  
+  
+  
   deflate <- c(
   "2000"= 0.707312744,
   "2001"= 0.726215832,
@@ -108,6 +141,7 @@ library(tidyverse)
 sub_only$fiscal_year <- factor(sub_only$fiscal_year)
 platform_only$fiscal_year <- factor(platform_only$fiscal_year)
 platform_sub$fiscal_year <- factor(platform_sub$fiscal_year)
+top_level$fiscal_year <- factor(top_level$fiscal_year)
   
 sub_only$SumOfObligatedAmount <- round(sub_only$SumOfObligatedAmount /
                            deflate[sub_only$fiscal_year])
@@ -115,6 +149,8 @@ platform_only$SumOfObligatedAmount <- round(platform_only$SumOfObligatedAmount /
                            deflate[platform_only$fiscal_year])
 platform_sub$SumOfObligatedAmount <- round(platform_sub$SumOfObligatedAmount /
                            deflate[platform_sub$fiscal_year])
+top_level$SumOfObligatedAmount <- round(top_level$SumOfObligatedAmount /
+                           deflate[top_level$fiscal_year])
 
 
   
@@ -122,4 +158,5 @@ platform_sub$SumOfObligatedAmount <- round(platform_sub$SumOfObligatedAmount /
   write_csv(platform_only, "platform_only.csv")
   write_csv(sub_only, "sub_only.csv")
   write_csv(platform_sub, "platform_sub.csv")
+  write_csv(top_level, "top_level.csv")
   
