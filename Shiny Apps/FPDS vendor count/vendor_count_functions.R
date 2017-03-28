@@ -3,8 +3,10 @@
 #
 ################################################################################
 
+library(magrittr)
 library(tidyverse)
 library(lazyeval)
+library(forcats)
 
 populate_ui_var_lists <- function(
   # Fills the ui menus with appropriate variables from the tibble passed to it
@@ -331,3 +333,91 @@ clear_edit_ui <- function(
   )
   
 }  
+
+drop_from_frame <- function(
+  # filters out and drops factor levels from a factor in a data frame
+  #
+  # Args:
+  passed_frame,    # the data frame, as an object
+  passed_var,   # the name of the variable, as a string
+  passed_levels,    # the name of the levels to drop, as a string
+  session = getDefaultReactiveDomain()    # shiny session object
+  #
+  # Returns:
+  #   The data frame with the factor level removed
+){
+  # stack overflow: https://tinyurl.com/mtys7xo
+  passed_frame %<>%
+    filter_(interp(~!val %in% passed_levels, val = as.name(passed_var)))
+    
+  passed_frame[[passed_var]] <- fct_drop(passed_frame[[passed_var]])
+  
+  return(passed_frame)
+}
+
+
+
+choose_data_frame <- function(
+  # chooses which level of aggregation the main plot should use
+  # 
+  # Args:
+  platform_sub,  # the least aggregated data frame
+  input,    # the shiny input object
+  double_count_vars,    # vector of the names of the vars to avoid doublecounting
+  session = getDefaultReactiveDomain()   # shiny session object
+  #
+  # Returns:
+  #   The name of the data frame with the correct level of aggregation
+){
+  
+  # define which variables are used
+  use_sub <- (
+    input$color_var == double_count_vars["SubCustomer"] |
+    input$facet_var == double_count_vars["SubCustomer"] |
+    length(unique(platform_sub[[double_count_vars["SubCustomer"]]])) == 1)
+  
+  use_platform <- (
+    input$color_var == double_count_vars["PlatformPortfolio"] |
+    input$facet_var == double_count_vars["PlatformPortfolio"] |
+    length(unique(platform_sub[[double_count_vars["PlatformPortfolio"]]])) == 1)
+  
+  if(use_sub & use_platform) return("current_platform_sub")
+  if(use_sub) return("current_sub_only")
+  if(use_platform) return("current_platform_only")
+  return("current_top_level")
+}
+  
+
+build_title <- function(
+  # makes a title for ggplot based on data and input
+  # 
+  # Args:
+  passed_data,   # the data used in the plot
+  input,    # shiny input object
+  session = getDefaultReactiveDomain()   # shiny session object
+  #
+  # Returns:
+  #   The title as a string
+){
+  title <- input$y_var
+  if(input$color_var != "None"){
+    if(input$facet_var != "None"){
+      title <- paste(
+        title, "by", input$color_var, "and", input$facet_var)
+    } else {
+      title <- paste(title, "by", input$color_var)
+    }
+  } else if(input$facet_var != "None"){
+    title <- paste(title, "by", input$facet_var)
+  }
+  
+  # check for a single-level filter
+  cats <- names(passed_data)[sapply(passed_data, class) == "factor"]
+  for(i in seq_along(cats)){
+    if(length(unique(passed_data[[i]])) == 1){
+      title <- paste(unlist(unique(passed_data[[i]])), title)
+    }
+  }
+  
+  return(title)    
+  }

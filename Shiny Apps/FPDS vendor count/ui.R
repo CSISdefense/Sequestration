@@ -61,11 +61,9 @@ shinyUI(fluidPage(
           choices = c("As Total", "As Share"),
           selected = "As Total"
         ),
-        radioButtons(
-          inputId = "agg_level",
-          label = "Aggregation",
-          choices = c("SubCustomer", "PlatformPortfolio", "Both (Double Counts)"),
-          selected = "PlatformPortfolio"
+        br(),
+        textOutput(
+          outputId = "current_frame"
         )
       )
     ),

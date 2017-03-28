@@ -20,13 +20,14 @@ shinyServer(function(input, output, session) {
   platform_sub <- read.csv("platform_sub.csv")
   sub_only <- read.csv("sub_only.csv")
   platform_only <- read.csv("platform_only.csv")
+  top_level <- read.csv("top_level.csv")
   
   # in case user renames the data-frame choosing variables
   vars <- reactiveValues(
     double_counted = c(
       "PlatformPortfolio" = "PlatformPortfolio",
       "SubCustomer" = "SubCustomer"),
-    frame = "current_platform_only")
+    frame = "current_top_level")
   
   # create working copies of the data for user modification, while retaining
   # the original data in case the user wants to reset to it
@@ -36,9 +37,11 @@ shinyServer(function(input, output, session) {
   changed_platform_only <- platform_only
   current_sub_only <- sub_only
   changed_sub_only <- sub_only
+  current_top_level <- top_level
+  changed_top_level <- top_level
   
   # fill the variable lists in the ui with variables from current_platform_sub
-  populate_ui_var_lists(current_platform_only)
+  populate_ui_var_lists(current_platform_sub)
   
   
   mainplot <- reactive({
@@ -53,6 +56,7 @@ shinyServer(function(input, output, session) {
     plot_data <- format_data_for_plot(get(vars$frame), input)
     # build plot with user-specified geoms
     mainplot <- build_plot_from_input(plot_data, input)
+    title <- build_title(current_platform_sub, input)
     
     # add overall visual settings to the plot
     mainplot <- mainplot + 
@@ -69,7 +73,7 @@ shinyServer(function(input, output, session) {
     theme(plot.title = element_text(
       family = "Open Sans",
       color = "#554449",
-      size = 26, face="bold",
+      size = 21, face="bold",
       margin=margin(20,0,20,0),
       hjust = 0.5)) +
     theme(axis.text.x = element_text(
@@ -105,7 +109,8 @@ shinyServer(function(input, output, session) {
       color ="#554449")) +
     theme(legend.position = 'bottom') +
     theme(legend.background = element_rect(fill = "white")
-    )
+    ) +
+    ggtitle(title)  
         
     # return the built plot
     return(mainplot)
@@ -115,10 +120,14 @@ shinyServer(function(input, output, session) {
     mainplot()
   })
   
+  output$current_frame <- renderText({
+    paste("displayed data: \n", vars$frame)
+  })
+  
   output$download_current <- downloadHandler(
     filename = "edited_data_view.csv",
     content = function(file){
-      write_csv(get(gsub("current", "changed", vars$frame)), file) 
+      write_csv(get(vars$frame), file) 
     }
   )
   
@@ -132,11 +141,11 @@ shinyServer(function(input, output, session) {
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
     if(input$current_tab == "Edit Data"){  
-      populate_edit_var(get(gsub("current", "changed", vars$frame)), input)
-      create_edit_values_list(get(vars$frame), input)
+      populate_edit_var(current_platform_sub, input)
+      create_edit_values_list(current_platform_sub, input)
     } else {
       clear_edit_ui(input)
-      populate_ui_var_lists(get(vars$frame))
+      populate_ui_var_lists(current_platform_sub)
     }
   })
   
@@ -152,65 +161,59 @@ shinyServer(function(input, output, session) {
     # delete previous values edit box
     removeUI(selector = "#edit_value_select")
     # make a new values edit box
-    create_edit_values_list(get(gsub("current", "changed", vars$frame)), input)
+    create_edit_values_list(current_platform_sub, input)
   })
   
   
-  # drop values from changed_platform_sub at user request
+  # drop values from all frames at user request
   observeEvent(input$drop_value_btn, {
-    changed_platform_sub <<- 
-      changed_platform_sub[changed_platform_sub[[input$edit_var]] !=
-        input$edit_value, ]
-    changed_platform_sub[[input$edit_var]] <<-
-      fct_drop(changed_platform_sub[[input$edit_var]])
+    
+    changed_platform_sub <<- changed_platform_sub %>%
+      drop_from_frame(input$edit_var, input$edit_value)
     
     if(input$edit_var != vars$double_counted["SubCustomer"]){
-      changed_platform_only <<- 
-        changed_platform_only[changed_platform_only[[input$edit_var]] !=
-                              input$edit_value, ]
-      changed_platform_only[[input$edit_var]] <<-
-        fct_drop(changed_platform_only[[input$edit_var]])
+      changed_platform_only <<- changed_platform_only %>%
+        drop_from_frame(input$edit_var, input$edit_value)
     }
-    
     if(input$edit_var != vars$double_counted["PlatformPortfolio"]){
-    changed_sub_only <<- 
-      changed_sub_only[changed_sub_only[[input$edit_var]] !=
-        input$edit_value, ]
-    changed_sub_only[[input$edit_var]] <<-
-      fct_drop(changed_sub_only[[input$edit_var]])
+      changed_sub_only <<- changed_sub_only %>%
+        drop_from_frame(input$edit_var, input$edit_value)
+    }
+    if(input$edit_var != vars$double_counted["PlatformPortfolio"] &
+       input$edit_var != vars$double_counted["SubCustomer"]) {
+      changed_top_level <<- changed_top_level %>%
+        drop_from_frame(input$edit_var, input$edit_value)
     }
     
     # update edit_value list to reflect dropped value
     removeUI(selector = "#edit_value_select")
-    create_edit_values_list(get(gsub("current", "changed", vars$frame)), input)
+    create_edit_values_list(changed_platform_sub, input)
   })
   
   observeEvent(input$keep_value_btn, {
-    changed_platform_sub <<-
-      changed_platform_sub[changed_platform_sub[[input$edit_var]] ==
-        input$edit_value, ]
-    changed_platform_sub[[input$edit_var]] <<-
-      fct_drop(changed_platform_sub[[input$edit_var]])
+    
+    dropped <- unique(changed_platform_sub[[input$edit_var]])
+    dropped <- dropped[dropped != input$edit_value]
+    
+    changed_platform_sub <<- changed_platform_sub %>%
+      drop_from_frame(input$edit_var, dropped)
     
     if(input$edit_var != vars$double_counted["SubCustomer"]){
-      changed_platform_only <<-
-        changed_platform_only[changed_platform_only[[input$edit_var]] ==
-                              input$edit_value, ]
-      changed_platform_only[[input$edit_var]] <<-
-        fct_drop(changed_platform_only[[input$edit_var]])
+      changed_platform_only <<- changed_platform_only %>%
+        drop_from_frame(input$edit_var, dropped)
     }
-    
     if(input$edit_var != vars$double_counted["PlatformPortfolio"]){
-      changed_sub_only <<-
-        changed_sub_only[changed_sub_only[[input$edit_var]] ==
-                           input$edit_value, ]
-      changed_sub_only[[input$edit_var]] <<-
-        fct_drop(changed_sub_only[[input$edit_var]])
+      changed_sub_only <<- changed_sub_only %>%
+        drop_from_frame(input$edit_var, dropped)
+    }
+    if(!(input$edit_var %in% vars$double_counted)) {
+      changed_top_level <<- changed_top_level %>%
+        drop_from_frame(input$edit_var, dropped)
     }
     
     # update edit_value list to reflect dropped value
     removeUI(selector = "#edit_value_select")
-    create_edit_values_list(get(gsub("current", "changed", vars$frame)), input)
+    create_edit_values_list(changed_platform_sub, input)
   })
   
   # apply data edits when user says so
@@ -218,11 +221,14 @@ shinyServer(function(input, output, session) {
     current_platform_sub <<- changed_platform_sub
     current_platform_only <<- changed_platform_only
     current_sub_only <<- changed_sub_only
+    current_top_level <<- changed_top_level
     updateTabsetPanel(
       session,
       inputId = "current_tab",
       selected = "Charts"
       )
+    vars$frame <- 
+      choose_data_frame(current_platform_sub, input, vars$double_counted)
   })
   
   # discard data changes when user says so
@@ -230,8 +236,9 @@ shinyServer(function(input, output, session) {
     changed_platform_sub <<- current_platform_sub
     changed_sub_only <<- current_sub_only
     changed_platform_only <<- current_platform_only
+    changed_top_level <<- current_top_level
     removeUI(selector = "#edit_value_select")
-    create_edit_values_list(get(gsub("current", "changed", vars$frame)), input)
+    create_edit_values_list(current_platform_sub, input)
   })
   
   # restore orginal data on request
@@ -239,22 +246,24 @@ shinyServer(function(input, output, session) {
     changed_platform_sub <<- platform_sub
     changed_platform_only <<- platform_only
     changed_sub_only <<- sub_only
+    changed_top_level <<- top_level
     current_platform_sub <<- platform_sub
     current_platform_only <<- platform_only
     current_sub_only <<- sub_only
+    current_top_level <<- top_level
     removeUI(selector = "#edit_value_select")
-    create_edit_values_list(get(gsub("current", "changed", vars$frame)), input)
+    create_edit_values_list(current_platform_sub, input)
   })
   
-  observeEvent(input$agg_level, {
-    if(input$agg_level == "SubCustomer") {
-      vars$frame <- "current_sub_only"}
-    if(input$agg_level == "PlatformPortfolio") {
-      vars$frame <- "current_platform_only"}
-    if(input$agg_level == "Both (Double Counts)") {  
-      vars$frame <- "current_platform_sub"}
-    populate_ui_var_lists(get(vars$frame))
+  # choose the active data frame depending on user selections
+  observeEvent(input$color_var, {
+    vars$frame <- 
+      choose_data_frame(current_platform_sub, input, vars$double_counted) 
   })
-  
-  
+    
+  observeEvent(input$facet_var, {
+    vars$frame <- 
+      choose_data_frame(current_platform_sub, input, vars$double_counted)
+  })
+    
 })
