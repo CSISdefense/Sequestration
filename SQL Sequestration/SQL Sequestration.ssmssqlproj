@@ -1,0 +1,856 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SQL Sequestration">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="VMDatabase:CSIS\gsanders">
+          <Created>2017-03-16T12:29:30.4807425-04:00</Created>
+          <Type>SQL</Type>
+          <Server>VMDatabase</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>DIIG</InitialDB>
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="Vendor.AllVendorHistoryDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorHistoryDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorHistoryFundingMechanismProdServAreaSubCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorHistoryFundingMechanismProdServAreaSubCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorHistoryProdServAreaSubCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorHistoryProdServAreaSubCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorHistorySubCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorHistorySubCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorHistorySubCustomerRegimeDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorHistorySubCustomerRegimeDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorIsServiceHistoryCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorIsServiceHistoryCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorIsServiceHistoryDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorIsServiceHistoryDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorIsServiceHistoryDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorIsServiceHistoryDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorIsServiceHistorySubCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorIsServiceHistorySubCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorIsServiceHistorySubCustomerSumDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorIsServiceHistorySubCustomerSumDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.AllVendorIsServiceHistorySubCustomerSystemEquipDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.AllVendorIsServiceHistorySubCustomerSystemEquipDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.ComparisonLocationGrantContractHistory.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.ComparisonLocationGrantContractHistory.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.ComparisonLocationGrantContractHistoryPartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.ComparisonLocationGrantContractHistoryPartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.CompetitionVendorSizeHistoryBucketSubCustomerClassification.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.CompetitionVendorSizeHistoryBucketSubCustomerClassification.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.ContractsByVendorBucketSubCustomer.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.ContractsByVendorBucketSubCustomer.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumberAlternateParentID.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumberAlternateParentID.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumberFindMaxParentDunsnumberPartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumberFindMaxParentDunsnumberPartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumberFindMaxStandardizedVendorNamePartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumberFindMaxStandardizedVendorNamePartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumberLocationHistoryVendorCountryPartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumberLocationHistoryVendorCountryPartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumberLocationVendorCountryPartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumberLocationVendorCountryPartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumberParentDunsnumberPartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumberParentDunsnumberPartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumbersDisagreementsFast.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumbersDisagreementsFast.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumberStandardizedVendorNamePartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumberStandardizedVendorNamePartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumbersToInvestigateContractSubFunder.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumbersToInvestigateContractSubFunder.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.DunsnumbersToInvestigateGrantSubFunder.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.DunsnumbersToInvestigateGrantSubFunder.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.EntityIDhistory.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.EntityIDhistory.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.EntitySizeHistoryBucketPlatformSubCustomer.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.EntitySizeHistoryBucketPlatformSubCustomer.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.FundingMechanismByContractorSizeHistoryBucketCustomerCountry.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.FundingMechanismByContractorSizeHistoryBucketCustomerCountry.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.HeadquartersCodeDunsnumbersDisagreementsFast.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.HeadquartersCodeDunsnumbersDisagreementsFast.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.LocationVendorHistoryBucketSubCustomer.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.LocationVendorHistoryBucketSubCustomer.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.NewEntrantParentIDorDunsNumberBucketCustomer.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.NewEntrantParentIDorDunsNumberBucketCustomer.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.NewEntrantParentIDorDunsNumberSimpleBucketCustomer.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.NewEntrantParentIDorDunsNumberSimpleBucketCustomer.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.NewEntrantParentIDorDunsNumberSimpleBucketSubCustomer.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.NewEntrantParentIDorDunsNumberSimpleBucketSubCustomer.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.ParentIDStandardizedVendorNameHistoryPartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.ParentIDStandardizedVendorNameHistoryPartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.ParentLocationVendorCountryPartial.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.ParentLocationVendorCountryPartial.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.PerformanceBasedLogistics.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.PerformanceBasedLogistics.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.Schema.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.Schema.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SmallBusinessSetAsideClassification.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SmallBusinessSetAsideClassification.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_AutomatedDunsnumbertoParentContractorUpdates.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_AutomatedDunsnumbertoParentContractorUpdates.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_AutomatedEntityIDupdates.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_AutomatedEntityIDupdates.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_AutomatedParentContractorNameHistoryUpdates.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_AutomatedParentContractorNameHistoryUpdates.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_AutomatedVendorSizeUpdates.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_AutomatedVendorSizeUpdates.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_ChangeParentIDYear.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_ChangeParentIDYear.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_ContractorbySizeDollarsBucketSubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_ContractorbySizeDollarsBucketSubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_CreateParentIDdunsnumber.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_CreateParentIDdunsnumber.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_CreateParentIDstandardizedVendorName.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_CreateParentIDstandardizedVendorName.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_DunsnumbersDisagreementsToInvestigateFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_DunsnumbersDisagreementsToInvestigateFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_DunsnumbersUnlabeledToInvestigateContractByFunder.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_DunsnumbersUnlabeledToInvestigateContractByFunder.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_DunsnumbersUnlabeledToInvestigateContractBySubFunder.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_DunsnumbersUnlabeledToInvestigateContractBySubFunder.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_DunsnumbersUnlabeledToInvestigateContractGrantFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_DunsnumbersUnlabeledToInvestigateContractGrantFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_DunsnumbersUnlabeledToInvestigateContractOrderFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_DunsnumbersUnlabeledToInvestigateContractOrderFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_DunsnumbersUnlabeledToInvestigateGrantByFunder.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_DunsnumbersUnlabeledToInvestigateGrantByFunder.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_DunsnumbersUnlabeledToInvestigateGrantBySubFunder.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_DunsnumbersUnlabeledToInvestigateGrantBySubFunder.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_DunsnumberWithOutOfRangeParentIDsFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_DunsnumberWithOutOfRangeParentIDsFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistory.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistory.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistoryCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistoryCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistorySubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistorySubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistorySubCustomerPlatform.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistorySubCustomerPlatform.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EraseIgnoreBeforeYear.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EraseIgnoreBeforeYear.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EraseParentID.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EraseParentID.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EraseParentIDSubsidiaryStatus.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EraseParentIDSubsidiaryStatus.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EraseParentIDwithOverrideParentDunsnumber.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EraseParentIDwithOverrideParentDunsnumber.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_FundingMechanismByContractorSizeHistoryBucketSubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_FundingMechanismByContractorSizeHistoryBucketSubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_HeadquarterCodeDunsnumbersDisagreementsToInvestigateFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_HeadquarterCodeDunsnumbersDisagreementsToInvestigateFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_HeadquarterCodeUnlabeledToInvestigateContractOrderFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_HeadquarterCodeUnlabeledToInvestigateContractOrderFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_IndividualVendorHistoryCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_IndividualVendorHistoryCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_InitiateNewYearDunsnumbertoParentContractorUpdates.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_InitiateNewYearDunsnumbertoParentContractorUpdates.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_InvestigateDunsnumber.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_InvestigateDunsnumber.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_InvestigateDunsnumberDetail.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_InvestigateDunsnumberDetail.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_InvestigateGrantNames.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_InvestigateGrantNames.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_InvestigateParentID.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_InvestigateParentID.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_InvestigateStandardizedTopContractor.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_InvestigateStandardizedTopContractor.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_InvestigateStandardTopVendorLocationDetail.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_InvestigateStandardTopVendorLocationDetail.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_InvestigateVendorLocationDetail.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_InvestigateVendorLocationDetail.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_KIET_Sector_Tier.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_KIET_Sector_Tier.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_MergeParentId.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_MergeParentId.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_MultiCorpContactInfobyContractDesc.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_MultiCorpContactInfobyContractDesc.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_NewEntrantsVendorSizeHistoryBucketCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_NewEntrantsVendorSizeHistoryBucketCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_NewEntrantsVendorSizeHistorySimpleBucketCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_NewEntrantsVendorSizeHistorySimpleBucketCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_NewEntrantsVendorSizeHistorySimpleBucketSubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_NewEntrantsVendorSizeHistorySimpleBucketSubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_ParentDunsnumbersUnlabeledToInvestigateContractOrderFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_ParentDunsnumbersUnlabeledToInvestigateContractOrderFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_ParentIDToAssignTypeGrantSubfunder.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_ParentIDToAssignTypeGrantSubfunder.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_ParentIDToInvestigateFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_ParentIDToInvestigateFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_ParentIDtoReviewHelper.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_ParentIDtoReviewHelper.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_ProcurementID.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_ProcurementID.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_RenameParentID.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_RenameParentID.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_ReviewOverrides.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_ReviewOverrides.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_ReviewRecentUpdates.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_ReviewRecentUpdates.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_Silicon_Valley_Matchups.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_Silicon_Valley_Matchups.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_SingleCorpContactInfobyContractDesc.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_SingleCorpContactInfobyContractDesc.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_SmallBusinessClassificationCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_SmallBusinessClassificationCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_StandardizedTopVendorNameUnlabeledToInvestigateFast.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_StandardizedTopVendorNameUnlabeledToInvestigateFast.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_StandardVendorQueries.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_StandardVendorQueries.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_StandardVendorQueriesCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_StandardVendorQueriesCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_SummaryDUNSnumberRollups.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_SummaryDUNSnumberRollups.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VehicleVendorSizeHistory.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VehicleVendorSizeHistory.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorHistoryBucketCrosstabCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorHistoryBucketCrosstabCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorHistoryBySubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorHistoryBySubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistoryCustomerPlatform.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistoryCustomerPlatform.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistory.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistory.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistoryBucketCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistoryBucketCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistoryBucketCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistoryBucketCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistoryBucketCustomerCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistoryBucketCustomerCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistoryBucketProgramCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistoryBucketProgramCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistoryBucketSubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistoryBucketSubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistoryBucketSubCustomerCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistoryBucketSubCustomerCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistoryBucketSubCustomerNewStart.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistoryBucketSubCustomerNewStart.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistoryBucketSubCustomerRegime.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistoryBucketSubCustomerRegime.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistoryCOCOM.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistoryCOCOM.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistoryCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistoryCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistoryCustomerCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistoryCustomerCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistoryPlatformPortfolioCustomerCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistoryPlatformPortfolioCustomerCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistoryPlatformPortfolioSubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistoryPlatformPortfolioSubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistoryPlatformPortfolioSubCustomerCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistoryPlatformPortfolioSubCustomerCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistorySimpleBucketCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistorySimpleBucketCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistorySimpleBucketCustomerCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistorySimpleBucketCustomerCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistorySimpleBucketSubCustomerCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistorySimpleBucketSubCustomerCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistorySubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistorySubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_VendorSizeHistorySubCustomerCount.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_VendorSizeHistorySubCustomerCount.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_VendorSizeHistorySubCustomerInvestigation.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_VendorSizeHistorySubCustomerInvestigation.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.StandardizedVendorParentIDHistoryNoContradictions.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.StandardizedVendorParentIDHistoryNoContradictions.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.StandardizedVendorParentIDNoContradictions.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.StandardizedVendorParentIDNoContradictions.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VehicleVendorSizeHistoryBucketSubCustomerClassification.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VehicleVendorSizeHistoryBucketSubCustomerClassification.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorFPDShistoryBucketSimpleCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorFPDShistoryBucketSimpleCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorFPDShistoryBucketSimpleDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorFPDShistoryBucketSimpleDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorFPDShistoryBucketSimpleSubCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorFPDShistoryBucketSimpleSubCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorFPDShistoryCOCOMCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorFPDShistoryCOCOMCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorFPDShistoryForeignFundsDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorFPDShistoryForeignFundsDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorFPDShistoryPlatformCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorFPDShistoryPlatformCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorFPDShistoryPlatformSubCustomerDirectDiscretization.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorFPDShistoryPlatformSubCustomerDirectDiscretization.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorSizeFPDShistoryBucketCustomerCountry.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorSizeFPDShistoryBucketCustomerCountry.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorSizeFPDShistoryBucketCustomerCountryATLRegime.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorSizeFPDShistoryBucketCustomerCountryATLRegime.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorSizeFPDShistoryBucketCustomerCountryTest.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorSizeFPDShistoryBucketCustomerCountryTest.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorSizeFPDShistoryBucketCustomerProgramCountry.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorSizeFPDShistoryBucketCustomerProgramCountry.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.VendorSizeFPDShistoryDoDOutlaysToSmallBusinessCharacteristics.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.VendorSizeFPDShistoryDoDOutlaysToSmallBusinessCharacteristics.View.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>
