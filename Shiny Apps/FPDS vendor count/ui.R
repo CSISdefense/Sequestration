@@ -71,13 +71,92 @@ shinyUI(fluidPage(
       width = 8,
       tabsetPanel(
         id = "current_tab",
-        tabPanel("Charts",
+        tabPanel(
+          "Charts",
           plotOutput("plot"),
           br(),
           br(),
-          downloadButton(
-            outputId = "download_plot",
-            label = "Download Plotted Data"
+          fluidRow(
+            column(
+              width = 5,
+              wellPanel(
+                downloadButton(
+                  outputId = "download_image",
+                  label = "Save Plot as JPG (300 DPI)",
+                  width = "100%"
+                ),
+                br(),
+                br(),
+                fluidRow(
+                  column(
+                    width = 6,
+                    p("Width (inches):")
+                  ),
+                  column(
+                    width = 6,
+                    numericInput(
+                      inputId = "save_plot_width",
+                      label = NULL,
+                      value = 6,
+                      min = 0.5,
+                      max = 20.5,
+                      step = 0.5
+                    )
+                  )
+                ),
+                fluidRow(
+                  column(
+                    width = 6,
+                    p("Height (inches):")
+                  ),
+                  column(
+                    width = 6,
+                    numericInput(
+                      inputId = "save_plot_height",
+                      label = NULL,
+                      value = 6,
+                      min = 0.5,
+                      max = 20.5,
+                      step = 0.5
+                    )
+                  )
+                )
+              ),
+              downloadButton(
+                outputId = "download_plot",
+                label = "Download Plotted Data",
+                width = "100%"
+              )
+            ),
+            column(
+              width = 7,
+              wellPanel(
+                textInput(
+                  inputId = "title_text",
+                  label = "Plot title"
+                ),
+                fluidRow(
+                  column(
+                    width = 6,
+                    checkboxInput(
+                      inputId = "show_title",
+                      label = "Show title",
+                      value = FALSE,
+                      width = "100%"
+                    )
+                  ),
+                  column(
+                    width = 6,
+                    bsButton(
+                      inputId = "lock_title",
+                      label = "Lock",
+                      width = "100%",
+                      type = "toggle"
+                    )
+                  )
+                )
+              )
+            )
           )
         ),
         tabPanel("Edit Data",
