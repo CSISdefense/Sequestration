@@ -36,6 +36,7 @@ format_data_for_plot <- function(
   #
   # Args:
   incoming_data,   # data to format for the plot, as a tibble
+  fy_var,          # name of fiscal year variable, as string
   input,           # shiny input object
   session = getDefaultReactiveDomain()  # shiny app session
   #
@@ -45,23 +46,34 @@ format_data_for_plot <- function(
 
   shown_data <- incoming_data
   
-  # filter by year
+  breakouts <- c(input$color_var, input$facet_var)
+  breakouts <- breakouts[breakouts != "None"]
+  
+  # account for potential spaces in breakouts and fy_var
+  if(grepl(" ", fy_var)) fy_var <- paste0("`", fy_var, "`")
+  if(length(breakouts) >= 1){
+    if(grepl(" ", breakouts[1])) breakouts[1] <- paste0("`", breakouts[1], "`")
+  }
+  if(length(breakouts) == 2){
+    if(grepl(" ", breakouts[2])) breakouts[2] <- paste0("`", breakouts[2], "`")
+  }
+  # filter by year - see https://tinyurl.com/lm2u8xs
   shown_data %<>%
-    filter(fiscal_year >= input$year[1] & fiscal_year <= input$year[2])
+    filter_(paste0(fy_var, ">=", as.character(input$year[1]), "&", fy_var,
+                   "<=", as.character(input$year[2])))
   
   # aggregate to the level of [fiscal year x breakouts]
   # the evaluation for dplyr::summarize_ was a pain in the ass to figure out;
   # see stack overflow at https://tinyurl.com/z82ywf3
-  breakouts <- c(input$color_var, input$facet_var)
-  breakouts <- breakouts[breakouts != "None"]
+  
   if(length(breakouts) == 0){
     shown_data %<>%
-      group_by_(names(shown_data)[1]) %>%
+      group_by_(fy_var) %>%
       summarize_(
         sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
   } else {
     shown_data %<>%
-      group_by_(.dots = c("fiscal_year", breakouts)) %>%
+      group_by_(.dots = c(fy_var, breakouts)) %>%
       summarize_(
         sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
   }
@@ -182,7 +194,7 @@ build_plot_from_input <- function(
   # add faceting if requested
   if(input$facet_var != "None"){
     mainplot <- mainplot +
-      facet_wrap(as.formula(paste("~",input$facet_var))) 
+      facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) 
   }
 
   mainplot <- mainplot +
@@ -388,17 +400,22 @@ choose_data_frame <- function(
 }
   
 
-build_title <- function(
-  # makes a title for ggplot based on data and input
+update_title <- function(
+  # populates the title field with a dynamic title, if appropriate
   # 
   # Args:
   passed_data,   # the data used in the plot
   input,    # shiny input object
+  user_title,   # "None" unless the user has manually entered a title
   session = getDefaultReactiveDomain()   # shiny session object
   #
-  # Returns:
-  #   The title as a string
+
 ){
+  if(user_title != "None") {
+    updateTextInput(session, "title_text", value = user_title)
+    return()
+    }
+  
   title <- input$y_var
   if(input$color_var != "None"){
     if(input$facet_var != "None"){
@@ -419,5 +436,9 @@ build_title <- function(
     }
   }
   
-  return(title)    
-  }
+  if(input$y_total_or_share == "As Total") title <- paste("Total", title)
+  if(input$y_total_or_share == "As Share") title <- paste("Share of", title)
+      
+  updateTextInput(session, "title_text", value = title)
+  
+}

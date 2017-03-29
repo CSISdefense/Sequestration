@@ -14,6 +14,7 @@ library(tidyverse)
 
 shinyServer(function(input, output, session) {
   options(scipen = 99)
+  windowsFonts(`Open Sans` = windowsFont("Open Sans"))
   source("vendor_count_functions.R")
   
   # read data  
@@ -27,7 +28,9 @@ shinyServer(function(input, output, session) {
     double_counted = c(
       "PlatformPortfolio" = "PlatformPortfolio",
       "SubCustomer" = "SubCustomer"),
-    frame = "current_top_level")
+    frame = "current_top_level",
+    fiscal_year = "fiscal_year",
+    user_title = "None")
   
   # create working copies of the data for user modification, while retaining
   # the original data in case the user wants to reset to it
@@ -53,10 +56,9 @@ shinyServer(function(input, output, session) {
     #   a fully built ggplot object
     
     # get appropriately formatted data to use in the plot
-    plot_data <- format_data_for_plot(get(vars$frame), input)
+    plot_data <- format_data_for_plot(get(vars$frame), vars$fiscal_year, input)
     # build plot with user-specified geoms
     mainplot <- build_plot_from_input(plot_data, input)
-    title <- build_title(current_platform_sub, input)
     
     # add overall visual settings to the plot
     mainplot <- mainplot + 
@@ -109,8 +111,11 @@ shinyServer(function(input, output, session) {
       color ="#554449")) +
     theme(legend.position = 'bottom') +
     theme(legend.background = element_rect(fill = "white")
-    ) +
-    ggtitle(title)  
+    ) 
+    
+    if(input$show_title == TRUE){
+      mainplot <- mainplot + ggtitle(input$title_text) 
+    }
         
     # return the built plot
     return(mainplot)
@@ -127,7 +132,7 @@ shinyServer(function(input, output, session) {
   output$download_current <- downloadHandler(
     filename = "edited_data_view.csv",
     content = function(file){
-      write_csv(get(vars$frame), file) 
+      write_csv(changed_platform_sub, file) 
     }
   )
   
@@ -138,6 +143,17 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  output$download_image <- downloadHandler(
+    filename = "plot_image.jpg",
+    content = function(file){
+      ggsave(
+      filename = file,
+      plot = mainplot(),
+      width = input$save_plot_width,
+      height = input$save_plot_height,
+      units = "in")
+    }
+  )
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
     if(input$current_tab == "Edit Data"){  
@@ -146,6 +162,10 @@ shinyServer(function(input, output, session) {
     } else {
       clear_edit_ui(input)
       populate_ui_var_lists(current_platform_sub)
+      changed_platform_sub <<- current_platform_sub
+      changed_platform_only <<- current_platform_only
+      changed_top_level <<- current_top_level
+      changed_sub_only <<- current_sub_only
     }
   })
   
@@ -161,7 +181,7 @@ shinyServer(function(input, output, session) {
     # delete previous values edit box
     removeUI(selector = "#edit_value_select")
     # make a new values edit box
-    create_edit_values_list(current_platform_sub, input)
+    create_edit_values_list(changed_platform_sub, input)
   })
   
   
@@ -229,6 +249,7 @@ shinyServer(function(input, output, session) {
       )
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
+    update_title(vars$frame, input, vars$user_title)
   })
   
   # discard data changes when user says so
@@ -253,17 +274,89 @@ shinyServer(function(input, output, session) {
     current_top_level <<- top_level
     removeUI(selector = "#edit_value_select")
     create_edit_values_list(current_platform_sub, input)
+    update_title(vars$frame, input, vars$user_title)
+    removeUI(selector = "#edit_var_select")
+    populate_edit_var(changed_platform_sub, input)
+
+    
   })
   
   # choose the active data frame depending on user selections
   observeEvent(input$color_var, {
     vars$frame <- 
-      choose_data_frame(current_platform_sub, input, vars$double_counted) 
+      choose_data_frame(current_platform_sub, input, vars$double_counted)
+    update_title(vars$frame, input, vars$user_title)
   })
     
   observeEvent(input$facet_var, {
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
+    update_title(vars$frame, input, vars$user_title)
   })
+  
+  observeEvent(input$lock_title, {
+    if(input$lock_title) vars$user_title <- input$title_text
+    if(!input$lock_title){
+      vars$user_title <- "None"
+      update_title(vars$frame, input, vars$user_title)
+    }
+  })
+  
+  observeEvent(input$rename_var_btn, {
+    if(input$rename_var_txt != "") {
+      names(changed_sub_only)[names(changed_sub_only) == input$edit_var] <<-
+        input$rename_var_txt
+      names(changed_platform_only)[names(changed_platform_only) == input$edit_var] <<-
+        input$rename_var_txt
+      names(changed_platform_sub)[names(changed_platform_sub) == input$edit_var] <<-
+        input$rename_var_txt
+      names(changed_top_level)[names(changed_top_level) == input$edit_var] <<-
+        input$rename_var_txt
+      
+      if(input$edit_var == vars$double_counted["SubCustomer"]) {
+        vars$double_counted["SubCustomer"] <- input$rename_var_txt
+      }
+      
+      if(input$edit_var == vars$double_counted["PlatformPortfolio"]) {
+        vars$double_counted["PlatformPortfolio"] <- input$rename_var_txt
+      }
+      
+      if(input$edit_var == vars$fiscal_year) {
+        vars$fiscal_year <- input$rename_var_txt
+      }
+     
+      removeUI(selector = "#edit_var_select")
+      populate_edit_var(changed_platform_sub, input)
+      removeUI(selector = "#edit_value_select")
+      create_edit_values_list(changed_platform_sub, input) 
+    }
+  })
+  
+  
+  # to add
+  # observeEvent(input$rename_value_btn, {
+  #   if(input$rename_value_txt != "") {
+  #     changed_top_level[[input$edit_var]] <- 
+  #     
+  #     if(input$edit_var == vars$double_counted["SubCustomer"]) {
+  #       vars$double_counted["SubCustomer"] <- input$rename_var_txt
+  #     }
+  #     
+  #     if(input$edit_var == vars$double_counted["PlatformPortfolio"]) {
+  #       vars$double_counted["PlatformPortfolio"] <- input$rename_var_txt
+  #     }
+  #     
+  #     if(input$edit_var == vars$fiscal_year) {
+  #       vars$fiscal_year <- input$rename_var_txt
+  #     }
+  #    
+  #     removeUI(selector = "#edit_var_select")
+  #     populate_edit_var(changed_platform_sub, input)
+  #     removeUI(selector = "#edit_value_select")
+  #     create_edit_values_list(changed_platform_sub, input) 
+  #   }
+  # })
+  # 
+  
     
 })
