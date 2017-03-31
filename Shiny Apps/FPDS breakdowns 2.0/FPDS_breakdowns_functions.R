@@ -3,8 +3,10 @@
 #
 ################################################################################
 
+library(magrittr)
 library(tidyverse)
 library(lazyeval)
+library(forcats)
 
 populate_ui_var_lists <- function(
   # Fills the ui menus with appropriate variables from the tibble passed to it
@@ -34,6 +36,7 @@ format_data_for_plot <- function(
   #
   # Args:
   incoming_data,   # data to format for the plot, as a tibble
+  fy_var,          # name of fiscal year variable, as string
   input,           # shiny input object
   session = getDefaultReactiveDomain()  # shiny app session
   #
@@ -43,23 +46,34 @@ format_data_for_plot <- function(
 
   shown_data <- incoming_data
   
-  # filter by year
+  breakouts <- c(input$color_var, input$facet_var)
+  breakouts <- breakouts[breakouts != "None"]
+  
+  # account for potential spaces in breakouts and fy_var
+  if(grepl(" ", fy_var)) fy_var <- paste0("`", fy_var, "`")
+  if(length(breakouts) >= 1){
+    if(grepl(" ", breakouts[1])) breakouts[1] <- paste0("`", breakouts[1], "`")
+  }
+  if(length(breakouts) == 2){
+    if(grepl(" ", breakouts[2])) breakouts[2] <- paste0("`", breakouts[2], "`")
+  }
+  # filter by year - see https://tinyurl.com/lm2u8xs
   shown_data %<>%
-    filter(Fiscal.Year >= input$year[1] & Fiscal.Year <= input$year[2])
+    filter_(paste0(fy_var, ">=", as.character(input$year[1]), "&", fy_var,
+                   "<=", as.character(input$year[2])))
   
   # aggregate to the level of [fiscal year x breakouts]
   # the evaluation for dplyr::summarize_ was a pain in the ass to figure out;
   # see stack overflow at https://tinyurl.com/z82ywf3
-  breakouts <- c(input$color_var, input$facet_var)
-  breakouts <- breakouts[breakouts != "None"]
+  
   if(length(breakouts) == 0){
     shown_data %<>%
-      group_by_(names(shown_data)[1]) %>%
+      group_by_(fy_var) %>%
       summarize_(
         sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
   } else {
     shown_data %<>%
-      group_by_(.dots = c("Fiscal.Year", breakouts)) %>%
+      group_by_(.dots = c(fy_var, breakouts)) %>%
       summarize_(
         sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
   }
@@ -180,7 +194,7 @@ build_plot_from_input <- function(
   # add faceting if requested
   if(input$facet_var != "None"){
     mainplot <- mainplot +
-      facet_wrap(as.formula(paste("~",input$facet_var))) 
+      facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) 
   }
 
   mainplot <- mainplot +
@@ -331,3 +345,87 @@ clear_edit_ui <- function(
   )
   
 }  
+
+drop_from_frame <- function(
+  # filters out and drops factor levels from a factor in a data frame
+  #
+  # Args:
+  passed_frame,    # the data frame, as an object
+  passed_var,   # the name of the variable, as a string
+  passed_levels,    # the name of the levels to drop, as a string
+  session = getDefaultReactiveDomain()    # shiny session object
+  #
+  # Returns:
+  #   The data frame with the factor level removed
+){
+  # stack overflow: https://tinyurl.com/mtys7xo
+  passed_frame %<>%
+    filter_(interp(~!val %in% passed_levels, val = as.name(passed_var)))
+    
+  passed_frame[[passed_var]] <- fct_drop(passed_frame[[passed_var]])
+  
+  return(passed_frame)
+}
+
+
+  
+
+update_title <- function(
+  # populates the title field with a dynamic title, if appropriate
+  # 
+  # Args:
+  passed_data,   # the data used in the plot
+  input,    # shiny input object
+  user_title,   # "None" unless the user has manually entered a title
+  session = getDefaultReactiveDomain()   # shiny session object
+  #
+
+){
+  if(user_title != "None") {
+    updateTextInput(session, "title_text", value = user_title)
+    return()
+    }
+  
+  title <- input$y_var
+  if(input$color_var != "None"){
+    if(input$facet_var != "None"){
+      title <- paste(
+        title, "by", input$color_var, "and", input$facet_var)
+    } else {
+      title <- paste(title, "by", input$color_var)
+    }
+  } else if(input$facet_var != "None"){
+    title <- paste(title, "by", input$facet_var)
+  }
+  
+  # check for a single-level filter
+  cats <- names(passed_data)[sapply(passed_data, class) == "factor"]
+  for(i in seq_along(cats)){
+    if(length(unique(passed_data[[i]])) == 1){
+      title <- paste(unlist(unique(passed_data[[i]])), title)
+    }
+  }
+  
+  if(input$y_total_or_share == "As Total") title <- paste("Total", title)
+  if(input$y_total_or_share == "As Share") title <- paste("Share of", title)
+      
+  updateTextInput(session, "title_text", value = title)
+  
+}
+
+
+rename_value <- function(
+  # Renames a factor level to user-specified name, in the passed data frame
+  #
+  # Args:
+  passed_data,    # the data frame in which to rename the value
+  input,     # shiny input object
+  session = getDefaultReactiveDomain()    # shiny session object
+  #
+  # Returns: a data frame with the factor level renamed
+){
+  levels(passed_data[[input$edit_var]])[levels(passed_data[[
+        input$edit_var]]) == input$edit_value] <- input$rename_value_txt
+  
+  return(passed_data)
+}

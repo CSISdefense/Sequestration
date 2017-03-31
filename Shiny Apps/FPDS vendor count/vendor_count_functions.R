@@ -1,5 +1,5 @@
 ################################################################################
-# Functions for FPDS breakdowns 2.0 Shiny App - March 2017
+# Functions for vendor count Shiny App - March 2017
 #
 ################################################################################
 
@@ -441,4 +441,21 @@ update_title <- function(
       
   updateTextInput(session, "title_text", value = title)
   
+}
+
+
+rename_value <- function(
+  # Renames a factor level to user-specified name, in the passed data frame
+  #
+  # Args:
+  passed_data,    # the data frame in which to rename the value
+  input,     # shiny input object
+  session = getDefaultReactiveDomain()    # shiny session object
+  #
+  # Returns: a data frame with the factor level renamed
+){
+  levels(passed_data[[input$edit_var]])[levels(passed_data[[
+        input$edit_var]]) == input$edit_value] <- input$rename_value_txt
+  
+  return(passed_data)
 }
