@@ -119,10 +119,12 @@ shinyServer(function(input, output, session) {
     return(mainplot)
   })
   
+  # calls mainplot(), defined above, to create a plot for the plot output area
   output$plot <- renderPlot({
     mainplot()
   })
   
+  # runs the download data button on the edit page
   output$download_current <- downloadHandler(
     filename = "edited_data_view.csv",
     content = function(file){
@@ -130,6 +132,7 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  # runs the download plot data button
   output$download_plot <- downloadHandler(
     filename = "plot_data.csv",
     content = function(file){
@@ -137,6 +140,7 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  # runs the download JPG button
   output$download_image <- downloadHandler(
     filename = "plot_image.jpg",
     content = function(file){
@@ -148,6 +152,7 @@ shinyServer(function(input, output, session) {
       units = "in")
     }
   )
+  
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
     if(input$current_tab == "Edit Data"){  
@@ -161,7 +166,7 @@ shinyServer(function(input, output, session) {
   })
   
   
-  # change ui elements when the user changes variable in the edit tab
+  # change ui elements when the user selects a different variable in the edit tab
   observeEvent(input$edit_var, {
     # change the variable rename text box
     updateTextInput(
@@ -187,6 +192,9 @@ shinyServer(function(input, output, session) {
     create_edit_values_list(changed_data, input)
   })
   
+  
+  # discard all factor levels except the selected level, when the user clicks
+  # the "keep" button
   observeEvent(input$keep_value_btn, {
     
     dropped <- unique(changed_data[[input$edit_var]])
@@ -200,7 +208,7 @@ shinyServer(function(input, output, session) {
     create_edit_values_list(changed_data, input)
   })
   
-  # apply data edits when user says so
+  # apply data changes on click of "apply changes" button
   observeEvent(input$apply_changes_btn, {
     current_data <<- changed_data
     updateTabsetPanel(
@@ -211,14 +219,14 @@ shinyServer(function(input, output, session) {
     update_title(current_data, input, vars$user_title)
   })
   
-  # discard data changes when user says so
+  # discard data changes on click of "discard changes" button
   observeEvent(input$discard_btn, {
     changed_data <<- current_data
     removeUI(selector = "#edit_value_select")
     create_edit_values_list(current_data, input)
   })
   
-  # restore orginal data on request
+  # restore orginal data on click of "restore original data" button
   observeEvent(input$restore_btn, {
     changed_data <<- original_data
     current_data <<- original_data
@@ -235,11 +243,14 @@ shinyServer(function(input, output, session) {
   observeEvent(input$color_var, {
     update_title(current_data, input, vars$user_title)
   })
-    
+  
   observeEvent(input$facet_var, {
     update_title(current_data, input, vars$user_title)
   })
   
+  
+  # tells the app to stop dynamically changing the title, when the lock title
+  # button is activated
   observeEvent(input$lock_title, {
     if(input$lock_title) vars$user_title <- input$title_text
     if(!input$lock_title){
@@ -248,6 +259,8 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  # renames the selected variable to whatever is in the text box, when the user
+  # clicks the variable rename button
   observeEvent(input$rename_var_btn, {
     if(input$rename_var_txt != "") {
       names(changed_data)[names(changed_data) == input$edit_var] <<-
@@ -264,7 +277,8 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  
+   # renames the selected factor level to whatever is in the text box, when
+   # the user clicks the factor level rename button
   observeEvent(input$rename_value_btn, {
     if(input$rename_value_txt != "" &
     input$edit_value != "*Not a Category Variable*") {
@@ -280,6 +294,7 @@ shinyServer(function(input, output, session) {
     }
   })
 
+  # propagates the selected factor level's name to the rename textbox
   observeEvent(input$edit_value, {
     updateTextInput(
       session,
