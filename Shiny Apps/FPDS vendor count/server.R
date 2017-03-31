@@ -249,7 +249,7 @@ shinyServer(function(input, output, session) {
       )
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
-    update_title(vars$frame, input, vars$user_title)
+    update_title(get(vars$frame), input, vars$user_title)
   })
   
   # discard data changes when user says so
@@ -274,7 +274,7 @@ shinyServer(function(input, output, session) {
     current_top_level <<- top_level
     removeUI(selector = "#edit_value_select")
     create_edit_values_list(current_platform_sub, input)
-    update_title(vars$frame, input, vars$user_title)
+    update_title(get(vars$frame), input, vars$user_title)
     removeUI(selector = "#edit_var_select")
     populate_edit_var(changed_platform_sub, input)
 
@@ -285,20 +285,20 @@ shinyServer(function(input, output, session) {
   observeEvent(input$color_var, {
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
-    update_title(vars$frame, input, vars$user_title)
+    update_title(get(vars$frame), input, vars$user_title)
   })
     
   observeEvent(input$facet_var, {
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
-    update_title(vars$frame, input, vars$user_title)
+    update_title(get(vars$frame), input, vars$user_title)
   })
   
   observeEvent(input$lock_title, {
     if(input$lock_title) vars$user_title <- input$title_text
     if(!input$lock_title){
       vars$user_title <- "None"
-      update_title(vars$frame, input, vars$user_title)
+      update_title(get(vars$frame), input, vars$user_title)
     }
   })
   
@@ -333,30 +333,33 @@ shinyServer(function(input, output, session) {
   })
   
   
-  # to add
-  # observeEvent(input$rename_value_btn, {
-  #   if(input$rename_value_txt != "") {
-  #     changed_top_level[[input$edit_var]] <- 
-  #     
-  #     if(input$edit_var == vars$double_counted["SubCustomer"]) {
-  #       vars$double_counted["SubCustomer"] <- input$rename_var_txt
-  #     }
-  #     
-  #     if(input$edit_var == vars$double_counted["PlatformPortfolio"]) {
-  #       vars$double_counted["PlatformPortfolio"] <- input$rename_var_txt
-  #     }
-  #     
-  #     if(input$edit_var == vars$fiscal_year) {
-  #       vars$fiscal_year <- input$rename_var_txt
-  #     }
-  #    
-  #     removeUI(selector = "#edit_var_select")
-  #     populate_edit_var(changed_platform_sub, input)
-  #     removeUI(selector = "#edit_value_select")
-  #     create_edit_values_list(changed_platform_sub, input) 
-  #   }
-  # })
-  # 
+  observeEvent(input$rename_value_btn, {
+    if(input$rename_value_txt != "" &
+    input$edit_value != "*Not a Category Variable*") {
+      
+      changed_top_level <<- rename_value(changed_top_level, input)
+      changed_platform_sub <<- rename_value(changed_platform_sub, input)
+      changed_platform_only <<- rename_value(changed_platform_only, input)
+      changed_sub_only <<- rename_value(changed_sub_only, input)
+      
+
+      if(input$edit_var == vars$double_counted["SubCustomer"]) {
+        vars$double_counted["SubCustomer"] <- input$rename_var_txt
+      }
+
+      if(input$edit_var == vars$double_counted["PlatformPortfolio"]) {
+        vars$double_counted["PlatformPortfolio"] <- input$rename_var_txt
+      }
+
+      if(input$edit_var == vars$fiscal_year) {
+        vars$fiscal_year <- input$rename_var_txt
+      }
+
+      removeUI(selector = "#edit_value_select")
+      create_edit_values_list(changed_platform_sub, input)
+    }
+  })
+
   
     
 })
