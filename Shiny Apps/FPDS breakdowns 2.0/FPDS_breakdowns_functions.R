@@ -124,7 +124,7 @@ format_data_for_plot <- function(
   }
   
   # For the case where the user displays shares not broken out by any variable.
-  # This is going to make a very boring chart of 100% shares, 
+  # This is going to make a very boring chart of 100% shares,b  
   # but it's handled here to avoid displaying an error.
   if(input$y_total_or_share == "As Share" & input$color_var == "None"){
     shown_data %<>%

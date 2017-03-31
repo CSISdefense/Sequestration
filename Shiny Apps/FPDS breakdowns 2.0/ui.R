@@ -86,12 +86,12 @@ shinyUI(fluidPage(
                 fluidRow(
                   column(
                     width = 6,
-                    p("Width (inches):")
+                    p("Height (inches):")
                   ),
                   column(
                     width = 6,
                     numericInput(
-                      inputId = "save_plot_width",
+                      inputId = "save_plot_height",
                       label = NULL,
                       value = 6,
                       min = 0.5,
@@ -103,12 +103,12 @@ shinyUI(fluidPage(
                 fluidRow(
                   column(
                     width = 6,
-                    p("Height (inches):")
+                    p("Width (inches):")
                   ),
                   column(
                     width = 6,
                     numericInput(
-                      inputId = "save_plot_height",
+                      inputId = "save_plot_width",
                       label = NULL,
                       value = 6,
                       min = 0.5,

@@ -75,38 +75,32 @@ shinyServer(function(input, output, session) {
     theme(plot.title = element_text(
       family = "Open Sans",
       color = "#554449",
-      size = 21, face="bold",
+      face="bold",
       margin=margin(20,0,20,0),
       hjust = 0.5)) +
     theme(axis.text.x = element_text(
-      size = 15,
       family = "Open Sans",
       vjust = 7,
       margin = margin(-10,0,0,0))) +
     theme(axis.text.y = element_text(
-      size = 15,
       family = "Open Sans",
       color ="#554449",
       margin = margin(0,5,0,0))) +
     theme(axis.title.x = element_text(
-      size = 16,
       face = "bold",
       color = "#554449",
       family = "Open Sans",
       margin = margin(15,0,0,60))) +
     theme(axis.title.y = element_text(
-      size = 16,
       face = "bold",
       color = "#554449",
       family = "Open Sans",
       margin = margin(0,15,0,0))
     ) +
     theme(legend.text = element_text(
-      size = 15,
       family = "Open Sans",
       color ="#554449")) +
     theme(legend.title = element_text(
-      size = 15,
       family = "Open Sans",
       color ="#554449")) +
     theme(legend.position = 'bottom') +
@@ -139,7 +133,8 @@ shinyServer(function(input, output, session) {
   output$download_plot <- downloadHandler(
     filename = "plot_data.csv",
     content = function(file){
-      write_csv(format_data_for_plot(get(vars$frame), input), file)
+      write_csv(
+        format_data_for_plot(get(vars$frame), vars$fiscal_year, input), file)
     }
   )
   
