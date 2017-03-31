@@ -14,7 +14,7 @@ library(tidyverse)
 
 shinyServer(function(input, output, session) {
   options(scipen = 99)
-  windowsFonts(`Open Sans` = windowsFont("Open Sans"))
+  #windowsFonts(`Open Sans` = windowsFont("Open Sans"))
   source("vendor_count_functions.R")
   
   # read data  
@@ -360,6 +360,13 @@ shinyServer(function(input, output, session) {
     }
   })
 
+  observeEvent(input$edit_value, {
+    updateTextInput(
+      session,
+      inputId = "rename_value_txt",
+      value = input$edit_value
+    )
+  })
   
     
 })
