@@ -31,6 +31,11 @@ shinyServer(function(input, output, session) {
     mutate(ClassifyNumberOfOffers = factor(ClassifyNumberOfOffers)) %>%
     mutate(Simple = factor(Simple))
   
+  # in case user renames the data-frame choosing variables
+  vars <- reactiveValues(
+    fiscal_year = "Fiscal.Year",
+    user_title = "None")
+  
   # create working copies of the data for user modification, while retaining
   # the original data in case the user wants to reset to it
   current_data <- original_data
@@ -48,13 +53,11 @@ shinyServer(function(input, output, session) {
     # Returns:
     #   a fully built ggplot object
     
-    # get appropriately formatted data to use in the plot 
-    plot_data <- format_data_for_plot(current_data, input)
-    
+    # get appropriately formatted data to use in the plot
+    plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
     # build plot with user-specified geoms
     mainplot <- build_plot_from_input(plot_data, input)
     
-    # add overall visual settings to the plot
     # add overall visual settings to the plot
     mainplot <- mainplot + 
       #diigtheme1:::diiggraph()
@@ -130,17 +133,30 @@ shinyServer(function(input, output, session) {
   output$download_plot <- downloadHandler(
     filename = "plot_data.csv",
     content = function(file){
-      write_csv(format_data_for_plot(current_data, input), file) 
+      write_csv(format_data_for_plot(current_data, input), file)
     }
   )
   
+  output$download_image <- downloadHandler(
+    filename = "plot_image.jpg",
+    content = function(file){
+      ggsave(
+      filename = file,
+      plot = mainplot(),
+      width = input$save_plot_width,
+      height = input$save_plot_height,
+      units = "in")
+    }
+  )
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
     if(input$current_tab == "Edit Data"){  
-      populate_edit_var(changed_data, input)
+      populate_edit_var(current_data, input)
       create_edit_values_list(current_data, input)
     } else {
       clear_edit_ui(input)
+      populate_ui_var_lists(current_data)
+      changed_data <<- current_data
     }
   })
   
@@ -160,11 +176,11 @@ shinyServer(function(input, output, session) {
   })
   
   
-  # drop values from changed_data at user request
+  # drop values from all frames at user request
   observeEvent(input$drop_value_btn, {
-    changed_data <<- changed_data[changed_data[[input$edit_var]] !=
-        input$edit_value, ]
-    changed_data[[input$edit_var]] <<- fct_drop(changed_data[[input$edit_var]])
+    
+    changed_data <<- changed_data %>%
+      drop_from_frame(input$edit_var, input$edit_value)
     
     # update edit_value list to reflect dropped value
     removeUI(selector = "#edit_value_select")
@@ -172,9 +188,12 @@ shinyServer(function(input, output, session) {
   })
   
   observeEvent(input$keep_value_btn, {
-    changed_data <<- changed_data[changed_data[[input$edit_var]] ==
-        input$edit_value, ]
-    changed_data[[input$edit_var]] <<- fct_drop(changed_data[[input$edit_var]])
+    
+    dropped <- unique(changed_data[[input$edit_var]])
+    dropped <- dropped[dropped != input$edit_value]
+    
+    changed_data <<- changed_data %>%
+      drop_from_frame(input$edit_var, dropped)
     
     # update edit_value list to reflect dropped value
     removeUI(selector = "#edit_value_select")
@@ -189,13 +208,14 @@ shinyServer(function(input, output, session) {
       inputId = "current_tab",
       selected = "Charts"
       )
+    update_title(current_data, input, vars$user_title)
   })
   
   # discard data changes when user says so
   observeEvent(input$discard_btn, {
     changed_data <<- current_data
     removeUI(selector = "#edit_value_select")
-    create_edit_values_list(changed_data, input)
+    create_edit_values_list(current_data, input)
   })
   
   # restore orginal data on request
@@ -203,8 +223,70 @@ shinyServer(function(input, output, session) {
     changed_data <<- original_data
     current_data <<- original_data
     removeUI(selector = "#edit_value_select")
-    create_edit_values_list(changed_data, input)
+    create_edit_values_list(current_data, input)
+    update_title(current_data, input, vars$user_title)
+    removeUI(selector = "#edit_var_select")
+    populate_edit_var(changed_data, input)
+
+    
+  })
+  
+  # update title depending on variable selection
+  observeEvent(input$color_var, {
+    update_title(current_data, input, vars$user_title)
+  })
+    
+  observeEvent(input$facet_var, {
+    update_title(current_data, input, vars$user_title)
+  })
+  
+  observeEvent(input$lock_title, {
+    if(input$lock_title) vars$user_title <- input$title_text
+    if(!input$lock_title){
+      vars$user_title <- "None"
+      update_title(current_data, input, vars$user_title)
+    }
+  })
+  
+  observeEvent(input$rename_var_btn, {
+    if(input$rename_var_txt != "") {
+      names(changed_data)[names(changed_data) == input$edit_var] <<-
+        input$rename_var_txt
+      
+      if(input$edit_var == vars$fiscal_year) {
+        vars$fiscal_year <- input$rename_var_txt
+      }
+     
+      removeUI(selector = "#edit_var_select")
+      populate_edit_var(changed_data, input)
+      removeUI(selector = "#edit_value_select")
+      create_edit_values_list(changed_data, input) 
+    }
   })
   
   
+  observeEvent(input$rename_value_btn, {
+    if(input$rename_value_txt != "" &
+    input$edit_value != "*Not a Category Variable*") {
+      
+      changed_data <<- rename_value(changed_data, input)
+
+      if(input$edit_var == vars$fiscal_year) {
+        vars$fiscal_year <- input$rename_var_txt
+      }
+
+      removeUI(selector = "#edit_value_select")
+      create_edit_values_list(changed_data, input)
+    }
+  })
+
+  observeEvent(input$edit_value, {
+    updateTextInput(
+      session,
+      inputId = "rename_value_txt",
+      value = input$edit_value
+    )
+  })
+  
+    
 })
