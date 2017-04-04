@@ -44,6 +44,30 @@ shinyServer(function(input, output, session) {
   # fill the variable lists in the ui with variables from current_data
   populate_ui_var_lists(current_data)
   
+  BarPalette <- scale_fill_manual(values = c("#004165",
+                                             "#0065a4",
+                                             "#0095AB",
+                                             "#66c6cb",
+                                             "#75c596",
+                                             "#0faa91",
+                                             "#51746d",
+                                             "#607a81",
+                                             "#252d3a",
+                                             "#353535",
+                                             "#797979"))
+  
+  LinePalette <- scale_color_manual(values = c("#004165",
+                                               "#75c596",
+                                               "#b24f94",
+                                               "#0095ab",
+                                               "#0a8672",
+                                               "#e22129",
+                                               "#66c6cb",
+                                               "#51746d",
+                                               "#797979",
+                                               "#788ca8",
+                                               "#353535"))
+  
   
   mainplot <- reactive({
     # Builds a ggplot based on user settings, for display on the main panel.
@@ -79,7 +103,7 @@ shinyServer(function(input, output, session) {
     theme(axis.text.x = element_text(
       family = "Open Sans",
       vjust = 7,
-      margin = margin(-10,0,0,0))) +
+      margin = margin(0,0,0,0))) +
     theme(axis.text.y = element_text(
       family = "Open Sans",
       color ="#554449",
@@ -103,7 +127,9 @@ shinyServer(function(input, output, session) {
       color ="#554449")) +
     theme(legend.position = 'bottom') +
     theme(legend.background = element_rect(fill = "white")
-    ) 
+    ) +
+    BarPalette +
+    LinePalette
     
     if(input$show_title == TRUE){
       mainplot <- mainplot + ggtitle(input$title_text) 

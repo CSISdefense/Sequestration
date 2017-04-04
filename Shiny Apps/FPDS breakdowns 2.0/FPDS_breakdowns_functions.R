@@ -137,6 +137,8 @@ format_data_for_plot <- function(
   return(shown_data)
 }
 
+
+
 build_plot_from_input <- function(
   # Adds a geom layer to a ggplot object based on user input.  
   # Intended to handle ggplot settings that depend on user input.
@@ -194,9 +196,13 @@ build_plot_from_input <- function(
   # add faceting if requested
   if(input$facet_var != "None"){
     mainplot <- mainplot +
-      facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) 
+      facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) +
+      theme(strip.background = element_rect(fill = "white"))
   }
 
+  
+  
+  
   mainplot <- mainplot +
     scale_x_continuous(labels = function(x){str_sub(as.character(x), -2, -1)}) +
     scale_y_continuous(
