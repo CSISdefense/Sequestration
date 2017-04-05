@@ -4,7 +4,7 @@
 ################################################################################
 
 library(magrittr)
-library(tidyverse)
+library(dplyr)
 library(lazyeval)
 library(forcats)
 

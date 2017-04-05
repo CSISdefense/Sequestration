@@ -6,7 +6,8 @@
 
 library(shiny)
 library(shinyBS)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
 shinyUI(fluidPage(
   
