@@ -11,7 +11,10 @@ library(Cairo)
 library(shinyBS)
 #library(diigtheme1)
 library(stringr)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(tidyr)
 
 shinyServer(function(input, output, session) {
   options(scipen = 99)
