@@ -169,7 +169,9 @@ build_plot_from_input <- function(
           x = as.name(names(plot_data)[1]),
           y = as.name(input$y_var),
           color = as.name(input$color_var)
-        ))
+        )) +
+        guides(color = guide_legend(override.aes = list(size = 1)))+
+        theme(legend.key = element_rect(fill = "white"))
     }
   }
   
@@ -193,38 +195,53 @@ build_plot_from_input <- function(
     }
   }
   
-  # add faceting if requested
+  # add faceting if requested, and x-axis labeling
   if(input$facet_var != "None"){
     mainplot <- mainplot +
       facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) +
-      theme(strip.background = element_rect(fill = "white"))
+      theme(strip.background = element_rect(fill = "white")) +
+      scale_x_continuous(
+        breaks = function(x) {seq(input$year[1], input$year[2], by = 2)},
+        labels = function(x){str_sub(as.character(x), -2, -1)}
+      ) 
+  } else {
+    mainplot <- mainplot +
+      scale_x_continuous(
+      breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
+      labels = function(x){str_sub(as.character(x), -2, -1)}
+    ) 
   }
-
   
-  
-  
-  mainplot <- mainplot +
-    scale_x_continuous(labels = function(x){str_sub(as.character(x), -2, -1)}) +
-    scale_y_continuous(
+  # add y-axis labeling
+  if(input$y_total_or_share == "As Share"){
+    mainplot <- mainplot + scale_y_continuous(labels = scales::percent) +
+      ylab(label = paste("Share of", input$y_var))
+  } else {
+    mainplot <- mainplot + scale_y_continuous(
       labels = function(x){
         sapply(x, function(y){
           if(is.na(y)) return("NA")
           y_lab <- "yuge"
           if(abs(y) < 1e15) y_lab <- paste0(round(y/1e12), "T")
-          if(abs(y) < 1e13) y_lab <- paste0(round(y/1e12, 1), "T")
+          if(abs(y) < 1e14) y_lab <- paste0(round(y/1e12, 1), "T")
+          if(abs(y) < 1e13) y_lab <- paste0(round(y/1e12, 2), "T")
           if(abs(y) < 1e12) y_lab <- paste0(round(y/1e9), "B")
-          if(abs(y) < 1e10) y_lab <- paste0(round(y/1e9,1), "B")
+          if(abs(y) < 1e11) y_lab <- paste0(round(y/1e9, 1), "B")
+          if(abs(y) < 1e10) y_lab <- paste0(round(y/1e9, 2), "B")
           if(abs(y) < 1e9) y_lab <- paste0(round(y/1e6), "M")
-          if(abs(y) < 1e7) y_lab <- paste0(round(y/1e6,1), "M")
+          if(abs(y) < 1e9) y_lab <- paste0(round(y/1e6, 1), "M")
+          if(abs(y) < 1e7) y_lab <- paste0(round(y/1e6, 2), "M")
           if(abs(y) < 1e6) y_lab <- paste0(round(y/1000), "k")
-          if(abs(y) < 1e4) y_lab <- paste0(round(y/1000, 1), "k")
+          if(abs(y) < 1e5) y_lab <- paste0(round(y/1000, 1), "k")
+          if(abs(y) < 1e4) y_lab <- paste0(round(y/1000, 2), "k")
           if(abs(y) < 1000) ylab <- as.character(round(y))
           if(abs(y) < 100) y_lab <- as.character(round(y,1))
           if(abs(y) < 10) y_lab <- as.character(round(y,2))
           return(y_lab)
         })
-        
-      })
+      }
+    )
+  }  
   
   # return the plot to server.R
   return(mainplot)
