@@ -174,6 +174,13 @@ shinyUI(fluidPage(
                 style = "primary",
                 block = TRUE
               ),
+              bsButton(
+                inputId = "restore_btn",
+                label = "Restore Original Data",
+                style = "primary",
+                size = "default",
+                block = TRUE
+              ),
               br(),
               tags$div(id = "edit_var_placeholder"),
               textInput(
@@ -195,16 +202,20 @@ shinyUI(fluidPage(
             column(
               width = 6,
               bsButton(
-                inputId = "restore_btn",
-                label = "Restore Original Data",
+                inputId = "csv_btn",
+                label = "Switch to Uploaded Data",
                 style = "success",
-                size = "default",
+                size = "large",
                 block = TRUE
               ),
-              br(),
-              br(),
-              br(),
-              br(),
+              fileInput(
+                "file_upload",
+                "Upload CSV File",
+                accept = c(
+                "text/csv",
+                "text/comma-separated-values,text/plain",
+                ".csv")
+              ),
               tags$div(id = "edit_value_placeholder"),
               textInput(
                 inputId = "rename_value_txt",

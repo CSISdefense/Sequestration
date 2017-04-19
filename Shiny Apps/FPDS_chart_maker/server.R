@@ -15,9 +15,11 @@ library(dplyr)
 library(ggplot2)
 library(readr)
 library(tidyr)
+library(data.table)
 
 shinyServer(function(input, output, session) {
   options(scipen = 99)
+  options(shiny.maxRequestSize=1000*1024^2)
   source("FPDS_breakdowns_functions.R")
   
   # read data  
@@ -327,6 +329,38 @@ shinyServer(function(input, output, session) {
       value = input$edit_value
     )
   })
+  
+  # accepts file upload
+  observeEvent(input$csv_btn, {
+    if(is.null(input$file_upload)) return(NULL)
+    
+    original_data <<- fread(
+      input$file_upload$datapath,
+      stringsAsFactors = TRUE,
+      data.table = FALSE)
+    
+    vars$fiscal_year <- names(original_data)[1]
+    
+    if("sumofobligatedamount" %in% tolower(colnames(original_data))){
+      sum_index <- 
+        which(tolower(colnames(original_data)) == "sumofobligatedamount")
+      
+      original_data <- deflate_variable(
+        colnames(original_data)[sum_index],
+        vars$fiscal_year,
+        original_data)
+    }
+
+    
+    current_data <<- original_data
+    changed_data <<- original_data
+    
+    clear_edit_ui(input)
+    populate_edit_var(current_data, input)
+    create_edit_values_list(current_data, input)
+    
+  })
+  
   
     
 })
