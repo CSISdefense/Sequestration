@@ -23,6 +23,7 @@ populate_ui_var_lists <- function(
   numerics <- names(data_source[-1])[
     var_class == "numeric" | var_class == "integer"]
   updateSelectInput(session, "y_var", choices = numerics)
+  updateSelectInput(session, "y_var_2", choices = c("None", numerics))
   
   # put categorical variables in the color_var and facet_var lists
   categories <- names(data_source[-1])[var_class == "factor"]
@@ -67,75 +68,187 @@ format_data_for_plot <- function(
   # see stack overflow at https://tinyurl.com/z82ywf3
   
   if(length(breakouts) == 0){
-    shown_data %<>%
-      group_by_(fy_var) %>%
-      summarize_(
-        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
+    if(input$y_var_2 != "None"){
+      shown_data_1 <- shown_data %>%
+        group_by_(fy_var) %>%
+        summarize_(
+          sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
+      shown_data_2 <- shown_data %>%
+        group_by_(fy_var) %>%
+        summarize_(
+          sum_val_2 = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var_2)))
+      
+    } else{
+      shown_data_1 <- shown_data %>%
+        group_by_(fy_var) %>%
+        summarize_(
+          sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
+    }
   } else {
-    shown_data %<>%
-      group_by_(.dots = c(fy_var, breakouts)) %>%
-      summarize_(
-        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
+    if(input$y_var_2 != "None"){
+      shown_data_1 <- shown_data %>%
+        group_by_(.dots = c(fy_var, breakouts)) %>%
+        summarize_(
+          sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
+      shown_data_2 <- shown_data %>%
+        group_by_(.dots = c(fy_var, breakouts)) %>%
+        summarize_(
+          sum_val_2 = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var_2)))
+    } else {
+      shown_data_1 <- shown_data
+        group_by_(.dots = c(fy_var, breakouts)) %>%
+        summarize_(
+          sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
+    }
+  }  
+
+  #
+  # NOTE: NAs replaced with 0 here; potential data quality issue
+  #
+  names(shown_data_1)[which(names(shown_data_1) == "sum_val")] <- input$y_var
+  shown_data_1[is.na(shown_data_1)] <- 0
+  if(input$y_var_2 != "None"){
+    names(shown_data_2)[which(names(shown_data_1) == "sum_val_2")] <- input$y_var_2
+    shown_data_2[is.na(shown_data_2)] <- 0
+  }
+
+  # calculate shares if share checkbox is checked
+  if(input$y_total_or_share == "As Share"){
+    shown_data <- calculate_share(breakouts, shown_data_1, input)
+    if(input$y_var_2 != "None"){
+      shown_data %<>% left_join(
+        calculate_share(breakouts, shown_data_2, input))
+    }
   }
   
-  names(shown_data)[which(names(shown_data) == "sum_val")] <- input$y_var
+  # calculate change from baseline if change from baseline checkbox is checked
+  if(input$y_total_or_share == "As Change From Base"){
+    shown_data <- calculate_cfb(breakouts, shown_data_1, input)
+    if(input$y_var_2 != "None"){
+      shown_data %<>% left_join(
+        calculate_cfb(breakouts, shown_data_2, input, two = TRUE))
+    }
+  }
+  
+  if(input$y_total_or_share == "As Total") return(shown_data_1)
+  
+  
+  # For the case where the user displays shares not broken out by any variable.
+  # This is going to make a very boring chart of 100% shares, 
+  # but it's handled here to avoid displaying an error.
+  # if(input$y_total_or_share == "As Share" & input$color_var == "None"){
+  #   shown_data %<>%
+  #     mutate(total = 1)
+  #   shown_data <- shown_data[which(names(shown_data) != input$y_var)]
+  #   names(shown_data)[which(names(shown_data) == "total")] <- input$y_var
+  # }
+  
+  # return the ggplot-ready data
+  return(shown_data)
+}
+
+calculate_share <- function(
+  # returns the share of a variable to the format_data_for_plot function
+  
+  breakouts,
+  shown_data,
+  input,
+  two = TRUE
+){
+  
+  # share_vars indicates which columns are being used to calculate the shares.
+  # If there's only one breakout, it's set to -1:
+  # "everything except fiscal year." 
+  # With two breakouts, it's set to c(-1, -2):
+  # "everything except fiscal year and the facet variable."
+  share_vars <- c(-1, -length(breakouts))
+  
+  # spread the shares breakout variable across multiple columns
+  if(input$color_var != "None") {
+    if(two){
+      shown_data %<>%
+        spread_(input$color_var, input$y_var_2)
+    } else {
+      shown_data %<>%
+        spread_(input$color_var, input$y_var)
+    }
+  }
   
   #
   # NOTE: NAs replaced with 0 here; potential data quality issue
   #
   shown_data[is.na(shown_data)] <- 0
   
-  # calculate shares if share checkbox is checked
-  if(input$y_total_or_share == "As Share" & input$color_var != "None"){
-    
-    # share_vars indicates which columns are being used to calculate the shares.
-    # If there's only one breakout, it's set to -1:
-    # "everything except fiscal year." 
-    # With two breakouts, it's set to c(-1, -2):
-    # "everything except fiscal year and the facet variable."
-    share_vars <- c(-1, -length(breakouts))
-    
-    # spread the shares breakout variable across multiple columns
-    shown_data %<>%
-      spread_(input$color_var, input$y_var)
-    
-    #
-    # NOTE: NAs replaced with 0 here; potential data quality issue
-    #
-    shown_data[is.na(shown_data)] <- 0
-    
-    # calculate a total for each row - i.e. the total for the shares breakout
-    # variable for each fiscal year,
-    # or for each [fiscal year x facet variable] combo
-    shown_data$total <- rowSums(shown_data[share_vars])
-    
-    # divide each column by the total column, to get each column as shares
-    shown_data[share_vars] <-
-      sapply(shown_data[share_vars], function(x){x / shown_data$total})
-    shown_data %<>% select(-total)
-    
-    # gather the data back to long form
-    shown_data <- gather_(
-      data = shown_data,
-      key_col = input$color_var,
-      value_col = input$y_var,
-      gather_cols = names(shown_data[share_vars])
-    )
-  }
+  # calculate a total for each row - i.e. the total for the shares breakout
+  # variable for each fiscal year,
+  # or for each [fiscal year x facet variable] combo
+  shown_data$total <- rowSums(shown_data[share_vars])
   
-  # For the case where the user displays shares not broken out by any variable.
-  # This is going to make a very boring chart of 100% shares, 
-  # but it's handled here to avoid displaying an error.
-  if(input$y_total_or_share == "As Share" & input$color_var == "None"){
-    shown_data %<>%
-      mutate(total = 1)
-    shown_data <- shown_data[which(names(shown_data) != input$y_var)]
-    names(shown_data)[which(names(shown_data) == "total")] <- input$y_var
-  }
+  # divide each column by the total column, to get each column as shares
+  shown_data[share_vars] <-
+    sapply(shown_data[share_vars], function(x){x / shown_data$total})
+  shown_data %<>% select(-total)
   
-  # return the ggplot-ready data
+  # gather the data back to long form  
+  shown_data <- gather_(
+    data = shown_data,
+    key_col = input$color_var,
+    value_col = ifelse(two, input$y_var_2, input$y_var),
+    gather_cols = names(shown_data[share_vars])
+  )
+
   return(shown_data)
 }
+
+
+calculate_cfb <- function(
+  # returns the change from baseline for the format_data_for_plot function
+  
+  breakouts,
+  shown_data,
+  input,
+  two = FALSE
+){
+  
+  # cfb_vars indicates which columns are being used to calculate the shares.
+  # If there's only one breakout, it's set to -1:
+  # "everything except fiscal year." 
+  # With two breakouts, it's set to c(-1, -2):
+  # "everything except fiscal year and the facet variable."
+  cfb_vars <- c(-1, -length(breakouts))
+  
+  # spread the shares breakout variable across multiple columns
+  if(input$color_var != "None"){
+    if(two){
+      shown_data %<>%
+        spread_(input$color_var, input$y_var_2)
+    } else {
+      shown_data %<>%
+        spread_(input$color_var, input$y_var)
+    }
+  }
+  
+  #
+  # NOTE: NAs replaced with 0 here; potential data quality issue
+  #
+  shown_data[is.na(shown_data)] <- 0
+  
+  # divide each column by its own first year, to get each column as change
+  # from base
+  shown_data[cfb_vars] <-
+    sapply(shown_data[cfb_vars], function(x){x / x[1]})
+  
+  # gather the data back to long form
+  shown_data <- gather_(
+    data = shown_data,
+    key_col = input$color_var,
+    value_col = ifelse(two, input$y_var_2, input$y_var),
+    gather_cols = names(shown_data[cfb_vars])
+  )
+
+  return(shown_data)
+}
+
 
 build_plot_from_input <- function(
   # Adds a geom layer to a ggplot object based on user input.  
@@ -190,6 +303,48 @@ build_plot_from_input <- function(
         stat = "identity")
     }
   }
+  
+  # add a second geom if requested
+  if(input$chart_geom == "Line Chart" & input$y_var_2 != "None"){
+    if(input$color_var == "None"){
+      mainplot <- mainplot +
+        geom_line(aes_q(
+          x = as.name(names(plot_data)[1]),
+          y = as.name(input$y_var_2)),
+        color = "green"
+        )
+    } else {
+      mainplot <- mainplot +
+        geom_line(aes_q(
+          x = as.name(names(plot_data)[1]),
+          y = as.name(input$y_var_2),
+          color = as.name(input$color_var)
+        ))
+    }
+  }
+  
+  # second geom bar layer
+  if(input$chart_geom == "Bar Chart" & input$y_var_2 != "None"){
+    if(input$color_var == "None"){
+      mainplot <- mainplot +
+        geom_bar(aes_q(
+          x = as.name(names(plot_data)[1]),
+          y = as.name(input$y_var_2)
+        ),
+        stat = "identity")
+    } else {
+      mainplot <- mainplot +
+        geom_bar(aes_q(
+          x = as.name(names(plot_data)[1]),
+          y = as.name(input$y_var_2),
+          fill = as.name(input$color_var)
+        ),
+        stat = "identity")
+    }
+  }
+  
+  
+  
   
   # add faceting if requested
   if(input$facet_var != "None"){

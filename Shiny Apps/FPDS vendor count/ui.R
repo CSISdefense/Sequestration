@@ -55,10 +55,21 @@ shinyUI(fluidPage(
           width = "100%",
           selectize = TRUE
         ),
+        conditionalPanel(
+          condition = "input.y_total_or_share != 'As Total'",
+          selectInput(
+            inputId = "y_var_2",
+            label = "Second Y Variable",
+            choices = "None",
+            selected = "None",
+            width = "100%",
+            selectize = TRUE
+          )
+        ),
         radioButtons(
           inputId = "y_total_or_share",
           label = NULL,
-          choices = c("As Total", "As Share"),
+          choices = c("As Total", "As Share", "As Change From Base"),
           selected = "As Total"
         ),
         br(),
