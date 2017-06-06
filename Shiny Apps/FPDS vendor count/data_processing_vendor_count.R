@@ -4,6 +4,7 @@
 
 library(magrittr)
 library(tidyverse)
+library(forcats)
 
   platform_sub <- read.csv(
     "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv")
@@ -25,6 +26,15 @@ library(tidyverse)
         ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
       SumOfObligatedAmount = as.numeric(
         ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+    mutate(
+      EntitySizeText = fct_recode(
+        EntitySizeText,
+        Small = "Always Small Vendor",
+        Small = "Sometimes Small Vendor",
+        Medium = "Medium Vendor",
+        Large = "Big Five",
+        Large = "Large Vendor",
+        Large = "Large: Big 5 JV")) %>%
     group_by(
       fiscal_year, SubCustomer, PlatformPortfolio, EntitySizeText,
       AnyEntityUSplaceOfPerformance,
@@ -50,6 +60,15 @@ library(tidyverse)
         ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
       SumOfObligatedAmount = as.numeric(
         ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+    mutate(
+      EntitySizeText = fct_recode(
+        EntitySizeText,
+        Small = "Always Small Vendor",
+        Small = "Sometimes Small Vendor",
+        Medium = "Medium Vendor",
+        Large = "Big Five",
+        Large = "Large Vendor",
+        Large = "Large: Big 5 JV")) %>%
     group_by(
       fiscal_year, PlatformPortfolio, EntitySizeText,
       AnyEntityUSplaceOfPerformance,
@@ -75,6 +94,15 @@ library(tidyverse)
         ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
       SumOfObligatedAmount = as.numeric(
         ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+    mutate(
+      EntitySizeText = fct_recode(
+        EntitySizeText,
+        Small = "Always Small Vendor",
+        Small = "Sometimes Small Vendor",
+        Medium = "Medium Vendor",
+        Large = "Big Five",
+        Large = "Large Vendor",
+        Large = "Large: Big 5 JV")) %>%
     group_by(
       fiscal_year, SubCustomer, EntitySizeText,
       AnyEntityUSplaceOfPerformance,
@@ -101,6 +129,15 @@ library(tidyverse)
         ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
       SumOfObligatedAmount = as.numeric(
         ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+    mutate(
+      EntitySizeText = fct_recode(
+        EntitySizeText,
+        Small = "Always Small Vendor",
+        Small = "Sometimes Small Vendor",
+        Medium = "Medium Vendor",
+        Large = "Big Five",
+        Large = "Large Vendor",
+        Large = "Large: Big 5 JV")) %>%
     group_by(
       fiscal_year, EntitySizeText,
       AnyEntityUSplaceOfPerformance,
