@@ -19,6 +19,7 @@ shinyUI(fluidPage(
           label = "Years",
           min = 2000,
           max = 2016,
+          sep = "",
           value = c(2000,2016)
         )
       ),
