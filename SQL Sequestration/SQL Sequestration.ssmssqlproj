@@ -19,6 +19,18 @@
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
+        <FileNode Name="Contract.ContractFSRSprime.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Contract.ContractFSRSprime.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Contract.ContractFSRSprimeHistory.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Contract.ContractFSRSprimeHistory.View.sql</FullPath>
+        </FileNode>
         <FileNode Name="Contract.ContractMergerFPDSandFSRS.View.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
@@ -54,6 +66,12 @@
           <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Vendor.FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.View.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.StoredProcedure.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>
