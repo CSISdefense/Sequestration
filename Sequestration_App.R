@@ -139,7 +139,7 @@ server <- function(input, output, session){
   ################################################################################      
   
   # read in data            
-  FullData <- read.csv("Sequestration_Duplicates.csv",header = TRUE, sep = ",")
+  FullData <- read.csv("Data\\Sequestration_Duplicates.csv",header = TRUE, sep = ",")
   
   # rename MilitaryHealth to have a space
   #levels(FullData$Customer)[5] <- "Military Health"
@@ -163,7 +163,7 @@ server <- function(input, output, session){
     # input$Yr[2] is the user-selected maximum year
     # as.numeric(levels(FY))[FY] is just FY, converted from a factor to
     # a numeric variable
-    shown <- filter(FullData, fiscal_year >= input$Yr[1] & fiscal_year <= input$Yr[2])
+    shown <- filter(FullData, Fiscal_Year >= input$Yr[1] & Fiscal_Year <= input$Yr[2])
     
     
     ## subset data based on which categories the user selected ##
@@ -179,7 +179,7 @@ server <- function(input, output, session){
     )
     
 #    shown <- shown %>%
-#      group_by(fiscal_year, Faceting) %>%
+#      group_by(Fiscal_Year, Faceting) %>%
 #      summarise(Amount = sum(PrimeOrSubTotalAmount))
     
     #shown <- shown %>%
@@ -289,21 +289,21 @@ server <- function(input, output, session){
     # ggplot call
     
     p <- ggplot(data = dataset(),
-                aes(x=fiscal_year, 
+                aes(x=Fiscal_Year, 
                     y=PrimeOrSubTotalAmount,
-                    fill = FacetingFill)) +
+                    fill = Pricing.Mechanism.sum)) +
       geom_bar(width=.7,stat="identity") +
       ggtitle("Contract Obligations by whether in FSRS or is Subcontract") +
       
       facet_wrap(~ Faceting, ncol = 2, scales="free_y", 
                  drop = TRUE) + 
       
-      scale_fill_manual(
-        values = c(
-          # "AllPrimes" = "#33FF66",
-          "PrimeNotReportInFSRS" =  "#33FF66",
-          "PrimeReportInFSRS" =  "#0066FF",
-          "SubReportInFSRS" = "#FF6699")) +
+      # scale_fill_manual(
+      #   values = c(
+      #     # "AllPrimes" = "#33FF66",
+      #     "PrimeNotReportInFSRS" =  "#33FF66",
+      #     "PrimeReportInFSRS" =  "#0066FF",
+      #     "SubReportInFSRS" = "#FF6699")) +
 
 
       theme(strip.text.x = element_text(family = "Arial", size = 12, color = "#554449")) +
