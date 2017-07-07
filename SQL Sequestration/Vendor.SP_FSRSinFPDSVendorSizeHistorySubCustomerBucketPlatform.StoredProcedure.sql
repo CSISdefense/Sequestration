@@ -18,8 +18,9 @@ SELECT [fiscal_year]
       ,[ProductOrServiceArea]
       ,[Simple]
       ,[PlatformPortfolio]
-      ,[IsSubContract]
+	  ,typeofcontractpricingtext
       ,[VendorSize]
+	   ,[IsSubContract]
 	   ,sum([PrimeObligatedAmount]) as [PrimeObligatedAmount]
 	   ,sum([PrimeNumberOfActions]) as PrimeNumberOfActions
       ,sum([SubawardAmount]) as SubawardAmount
@@ -33,8 +34,9 @@ SELECT [fiscal_year]
       ,[ProductOrServiceArea]
       ,[Simple]
       ,[PlatformPortfolio]
+	  ,typeofcontractpricingtext
+	  ,[VendorSize]
 	  ,[IsSubContract]
-      ,[VendorSize]
 	  ,[IsInFSRS]
 
 GO
