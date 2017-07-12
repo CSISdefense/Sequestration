@@ -16,17 +16,18 @@ library(forcats)
 ################################################################################
 
 
-Portfolio <- c("Aircraft and Drones", 
-               "Electronics and Communications",
-               "Facilities and Construction", 
-               "Land Vehicles",
-               "Missile and Space Systems",
+Portfolio <- c("Aircraft", 
                "Ships & Submarines", 
-               "Weapons and Ammunition", 
+               "Land Vehicles",
+               "Electronics, Comms, & Sensors",
+               "Ordnance and Missiles",
+               "Missile Defense",
+               "Space Systems",
+               "Facilities and Construction", 
                "Other Products",
                "Other R&D and Knowledge Based", 
                "Other Services",
-               "NULL")
+               "Unlabeled")
 
 IsSubContract <- c("Prime Contract",
                  "SubContract")
@@ -335,7 +336,7 @@ server <- function(input, output, session){
       
       
       
-      theme(legend.position="none") +
+      theme(legend.position="bottom") +
       theme(strip.background = element_rect(color = "gray95", fill=c("#fcfcfc"))) +
       theme(strip.text.x = element_text(family = "Open Sans",
                                         size = rel(1.7),
