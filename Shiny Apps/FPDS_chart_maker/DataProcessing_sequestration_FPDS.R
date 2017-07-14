@@ -15,8 +15,8 @@
 
 library(tidyverse)
 library(magrittr)
-# path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
-Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
+Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
+# Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
 
 source(paste(path,"lookups.R",sep=""))
 source(paste(path,"helper.R",sep=""))
@@ -46,11 +46,17 @@ FullData <- read_csv(
 FullData<-standardize_variable_names(path,
                            FullData)
 
+
 PrepareLabelsAndColors(Coloration,FullData,"Customer")
+
+FullData<-replace_nas_with_unlabeled(FullData,"SubCustomer")
 PrepareLabelsAndColors(Coloration,FullData,"SubCustomer")
-PrepareLabelsAndColors(Coloration,FullData,"ServicesCategory")
+PrepareLabelsAndColors(Coloration,FullData,"ProductOrServiceArea")
+
+FullData<-replace_nas_with_unlabeled(FullData,"PlatformPortfolio")
 PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio")
-PrepareLabelsAndColors(Coloration,FullData,"VendorSize")
+
+PrepareLabelsAndColors(Coloration,FullData,"Vendor.Size")
 PrepareLabelsAndColors(Coloration,FullData,"CompetitionClassification")
 PrepareLabelsAndColors(Coloration,FullData,"ClassifyNumberOfOffers")
 
