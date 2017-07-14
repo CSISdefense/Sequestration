@@ -15,24 +15,49 @@
 
 library(tidyverse)
 library(magrittr)
-source("K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\lookups.R")
-source("K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\helper.R")
+# path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
+Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
+
+source(paste(path,"lookups.R",sep=""))
+source(paste(path,"helper.R",sep=""))
+
+Coloration<-read.csv(
+  paste(path,"Lookups\\","lookup_coloration.csv",sep=""),
+  header=TRUE, sep=",", na.strings="", dec=".", strip.white=TRUE, 
+  stringsAsFactors=FALSE
+)
+
+Coloration<-ddply(Coloration
+                  , c(.(R), .(G), .(B))
+                  , transform
+                  , ColorRGB=as.character(
+                    if(min(is.na(c(R,G,B)))) {NA} 
+                    else {rgb(max(R),max(G),max(B),max=255)}
+                  )
+)
+
 
 # read in data            
 FullData <- read_csv(
   "2016_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.csv",
-  col_names = FALSE, col_types = "cccccccccc")
+  col_names = TRUE, col_types = "cccccccccc",na=c("NA","NULL"))
 
-# header names didn't read well, enter manually
-names(FullData) <- c("Fiscal.Year","Customer", "SubCustomer",
-  "ServicesCategory", "PlatformPortfolio", "VendorSize",
-  "CompetitionClassification", "ClassifyNumberOfOffers",
-  "SumOfobligatedAmount","SumOfnumberOfActions")
 
-FullData$Fiscal.Year[1] <- 1988
+FullData<-standardize_variable_names(path,
+                           FullData)
+
+PrepareLabelsAndColors(Coloration,FullData,"Customer")
+PrepareLabelsAndColors(Coloration,FullData,"SubCustomer")
+PrepareLabelsAndColors(Coloration,FullData,"ServicesCategory")
+PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio")
+PrepareLabelsAndColors(Coloration,FullData,"VendorSize")
+PrepareLabelsAndColors(Coloration,FullData,"CompetitionClassification")
+PrepareLabelsAndColors(Coloration,FullData,"ClassifyNumberOfOffers")
+
+  
 
 FullData <- standardize_variable_names(
-  "K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\",
+  path,
   FullData)
 
 # coerce Amount to be a numeric variable
