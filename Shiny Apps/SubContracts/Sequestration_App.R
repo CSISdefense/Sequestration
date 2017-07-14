@@ -12,36 +12,33 @@ require(Cairo)
 library(forcats)
 
 ################################################################################
+# Read in and clean up data
+################################################################################      
+
+# read in data            
+FullData <- read.csv("Data\\Sequestration_Duplicates.csv",header = TRUE, sep = ",")
+
+# rename MilitaryHealth to have a space
+#levels(FullData$SubCustomer.sum)[5] <- "Military Health"
+# FullData$SubCustomer[FullData$Customer == "MilitaryHealth"] <- "Other DoD"  
+
+# make Big Five the first category (so it displays at the top of the legend)
+# FullData$VendorSize <- relevel(FullData$VendorSize, "Big Five")
+
+# save FY as 2 digits instead of 4, for better visual scale
+#FullData$FY <- factor(substring(as.character(FullData$FY), 3, 4))
+
+
+################################################################################
 # Visual settings for user interface
 ################################################################################
 
+load(file="data//labels.RData")
 
-Portfolio <- c("Aircraft", 
-               "Ships & Submarines", 
-               "Land Vehicles",
-               "Electronics, Comms, & Sensors",
-               "Ordnance and Missiles",
-               "Missile Defense",
-               "Space Systems",
-               "Facilities and Construction", 
-               "Other Products",
-               "Other R&D and Knowledge Based", 
-               "Other Services",
-               "Unlabeled")
 
-IsSubContract <- c("Prime Contract",
-                 "SubContract")
-
-Customer <- c("Army",
-               "Navy", 
-               "Air Force", 
-               "MDA", 
-               "DLA",
-               "Other DoD")
-  
-Faceting <- c("AllPrimes",
-              "PrimeReportInFSRS",
-              "SubReportInFSRS")
+# c("AllPrimes",
+#               "PrimeReportInFSRS",
+#               "SubReportInFSRS")
 
 # here's the ui section - visual settings for the plot + widgets
 
@@ -97,11 +94,11 @@ ui <- fluidPage(
                        ticks = FALSE,
                        step = 1, width = '100%', sep = ""),
            
-           selectInput("Portfolio","Platform Portfolio",
-                       Portfolio,
+           selectInput("PlatformPortfolio","Platform Portfolio",
+                       PlatformPortfolio$variable,
                        multiple = TRUE,
                        selectize = FALSE,
-                       selected = Portfolio,
+                       selected = PlatformPortfolio$variable,
                        width = '100%'),
 #           selectInput("IsSubContract","Sub or Prime Contract",
 #                       IsSubContract,
@@ -109,11 +106,11 @@ ui <- fluidPage(
 #                       selectize = FALSE,
 #                       selected = IsSubContract,
 #                       width = '100%'),
-          selectInput("Customer", "Customer", 
-                       Customer, 
+          selectInput("SubCustomer.sum", "Customer", 
+                       SubCustomer.sum$variable, 
                        multiple = TRUE,
                        selectize = FALSE,
-                       selected = Customer,
+                       selected = SubCustomer.sum$variable,
                        width = '100%')),
 
     # left column - column sizes should add up to 12, this one is 9 so
@@ -135,23 +132,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session){
   
-  ################################################################################
-  # Read in and clean up data
-  ################################################################################      
-  
-  # read in data            
-  FullData <- read.csv("Data\\Sequestration_Duplicates.csv",header = TRUE, sep = ",")
-  
-  # rename MilitaryHealth to have a space
-  #levels(FullData$Customer)[5] <- "Military Health"
-  FullData$SubCustomer[FullData$Customer == "MilitaryHealth"] <- "Other DoD"  
-  
-  # make Big Five the first category (so it displays at the top of the legend)
-  # FullData$VendorSize <- relevel(FullData$VendorSize, "Big Five")
-  
-  # save FY as 2 digits instead of 4, for better visual scale
-  #FullData$FY <- factor(substring(as.character(FullData$FY), 3, 4))
-  
+
   ################################################################################
   # Subset data based on user input
   ################################################################################
@@ -174,9 +155,9 @@ server <- function(input, output, session){
     # selected categories, and discards it if isn't in all three.  The %in%
     # operator is a nice way to avoid typing lots of conditional tests all
     # strung together 
-    shown <- filter(shown, Portfolio %in% input$Portfolio &
+    shown <- filter(shown, PlatformPortfolio %in% input$PlatformPortfolio &
 #                      IsSubContract %in% input$IsSubContract &
-                      Customer %in% input$Customer
+                      SubCustomer.sum %in% input$SubCustomer.sum
     )
     
 #    shown <- shown %>%
@@ -289,6 +270,8 @@ server <- function(input, output, session){
     
     # ggplot call
     
+    
+    
     p <- ggplot(data = dataset(),
                 aes(x=Fiscal_Year, 
                     y=PrimeOrSubTotalAmount,
@@ -299,8 +282,10 @@ server <- function(input, output, session){
       facet_wrap(~ Faceting, ncol = 2, scales="free_y", 
                  drop = TRUE) + 
       
-      # scale_fill_manual(
-      #   values = c(
+      
+      scale_fill_manual(
+        values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
+        # c(
       #     # "AllPrimes" = "#33FF66",
       #     "PrimeNotReportInFSRS" =  "#33FF66",
       #     "PrimeReportInFSRS" =  "#0066FF",
@@ -388,7 +373,7 @@ server <- function(input, output, session){
 #    content = function(file) {
 #      writedata <- FullData
 #      writedata <- select(writedata, FY, VendorSize, Customer, Category,
-#                          Portfolio, Amount)
+#                          PlatformPortfolio, Amount)
 #      write.csv(writedata, file)
 #    }
 #  )

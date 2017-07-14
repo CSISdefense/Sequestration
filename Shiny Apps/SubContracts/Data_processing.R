@@ -4,8 +4,10 @@
 rm(list = ls())
 library(tidyverse)
 
+
 Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
 source(paste(Path,"lookups.r",sep=""))
+source(paste(Path,"helper.r",sep=""))
 
 
 sequestration_original <- read_csv("Data\\Vendor_SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.csv",
@@ -57,20 +59,21 @@ sequestration$PrimeOrSubObligatedAmount<-sequestration$PrimeOrSubObligatedAmount
 
 # Aggregating sequestration by Fiscal.Year, Platform Portfolio and IsSubContract
 
-sequestration_Facet <- sequestration %>% group_by(Fiscal_Year,
+  #This suddenly stopped working after R / package updates. ??
+sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal_Year,
                                                   PlatformPortfolio,
                                                 #  IsSubContract,
-                                                  SubCustomer,
+                                                  SubCustomer.sum,
                                                 Pricing.Mechanism.sum,
-                                                  Faceting) %>% 
-                       summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubObligatedAmount)/1e+9)
+                                                  Faceting) %>%
+    dplyr::summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubObligatedAmount)/1e+9)
 
 # Rename 'IsSubContract' column
 #sequestration_Facet$IsSubContract <- ifelse(sequestration_Facet$IsSubContract == 1,
 #                                            "SubContract", 
 #                                            "Prime Contract")
-# colnames(sequestration_Facet)[3] <- "Customer"
-colnames(sequestration_Facet)[colnames(sequestration_Facet)=="SubCustomer"] <- "Customer"
+# colnames(sequestration_Facet)[3] <- "SubCustomer.sum"
+
 
 sequestration_Facet$FacetingFill<-sequestration_Facet$Faceting
 
@@ -88,6 +91,43 @@ write.csv(x = sequestration_Duplicates,
 
 
 
+Coloration<-read.csv(
+  paste(Path,"Lookups\\","Lookup_coloration.csv",sep=""),
+  header=TRUE, sep=",", na.strings="NA", dec=".", strip.white=TRUE, 
+  stringsAsFactors=FALSE
+)
+Coloration<-ddply(Coloration
+                  , c(.(R), .(G), .(B))
+                  , transform
+                  , ColorRGB=as.character(
+                    if(min(is.na(c(R,G,B)))) {NA} 
+                    else {rgb(max(R),max(G),max(B),max=255)}
+                  )
+)
+#Clear out lines from the coloration CSV where no variable is listed.
+Coloration<-subset(Coloration, variable!="")
+
+PlatformPortfolio<-PrepareLabelsAndColors(Coloration,
+                                          sequestration_Duplicates,
+                                          "PlatformPortfolio")
+SubCustomer.sum<-PrepareLabelsAndColors(Coloration,sequestration_Duplicates,"SubCustomer.sum")
+Pricing.Mechanism.sum<-PrepareLabelsAndColors(Coloration,sequestration_Duplicates,"Pricing.Mechanism.sum")
+
+
+
+
+names(Pricing.Mechanism.sum$ColorRGB)<-c(Pricing.Mechanism.sum$variable)
+
+
+
+color.list<-c(as.character(Pricing.Mechanism.sum$ColorRGB))
+names(color.list)<-c(Pricing.Mechanism.sum$variable)
+
+color.list<-structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label))
+
+     #Thanks Stack Overflower https://stackoverflow.com/questions/19265172/converting-two-columns-of-a-data-frame-to-a-named-vector
+
+save(color.list,PlatformPortfolio,SubCustomer.sum,Pricing.Mechanism.sum,file="data//labels.RData")
 
 
 

@@ -33,6 +33,15 @@ Coloration<-read.csv(
   stringsAsFactors=FALSE
 )
 
+Coloration<-ddply(Coloration
+                  , c(.(R), .(G), .(B))
+                  , transform
+                  , ColorRGB=as.character(
+                      if(min(is.na(c(R,G,B)))) {NA} 
+                      else {rgb(max(R),max(G),max(B),max=255)}
+                      )
+                  )
+
 #Clear out lines from the coloration CSV where no variable is listed.
 Coloration<-subset(Coloration, variable!="")
 ```
