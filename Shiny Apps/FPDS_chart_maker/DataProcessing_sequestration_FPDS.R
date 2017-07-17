@@ -51,12 +51,14 @@ PrepareLabelsAndColors(Coloration,FullData,"Customer")
 
 FullData<-replace_nas_with_unlabeled(FullData,"SubCustomer")
 PrepareLabelsAndColors(Coloration,FullData,"SubCustomer")
+
+FullData<-replace_nas_with_unlabeled(FullData,"ProductOrServiceArea")
 PrepareLabelsAndColors(Coloration,FullData,"ProductOrServiceArea")
 
 FullData<-replace_nas_with_unlabeled(FullData,"PlatformPortfolio")
 PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio")
 
-PrepareLabelsAndColors(Coloration,FullData,"Vendor.Size")
+
 PrepareLabelsAndColors(Coloration,FullData,"CompetitionClassification")
 PrepareLabelsAndColors(Coloration,FullData,"ClassifyNumberOfOffers")
 
@@ -71,24 +73,18 @@ FullData$Action.Obligation %<>% as.numeric()
 FullData$SumOfnumberOfActions %<>% as.numeric()
 
 
-# create lookup table for VendorSize, used in next command
-vendorClassification <- c("Large" = "Large",
-                          "Large(Small Subsidiary)" = "Large",
-                          "Large: Big 6" = "Big Five",
-                          "Large: Big 6 (Small Subsidiary)" = "Big Five",
-                          "Large: Big 6 JV" = "Big Five",
-                          "Large: Big 6 JV (Small Subsidiary)" = "Big Five",
-                          "Large: Pre-Big 6" = "Large",
-                          "Medium <1B" = "Medium",
-                          "Medium >1B" = "Medium",
-                          "Medium >1B (Small Subsidiary)" = "Medium",
-                          "Small" = "Small",
-                          "Unlabeled" = "Small")
+#Consolidate categories for Vendor Size
+FullData<-read_and_join(Path,
+                      "LOOKUP_Contractor_Size.csv",
+                      FullData,
+                      by="Vendor.Size",
+                      NA.check.columns="Shiny.VendorSize")
 
-# reduce VendorSize variable to four categories, as guided by lookup table
-FullData$Vendor.Size <- as.factor(
-    vendorClassification[as.character(FullData$Vendor.Size)])
-
+#Shiny.VendorSize is the new Vendor.Size
+FullData<-FullData[,!colnames(FullData) %in% c("Vendor.Size",
+                                     "Vendor.Size.detail",
+                                     "Vendor.Size.sum")]
+PrepareLabelsAndColors(Coloration,FullData,"Shiny.VendorSize")
 
 # discard pre-2000
 FullData %<>% filter(Fiscal.Year >= 2000)
@@ -173,18 +169,22 @@ offers <- c(
 
 FullData$ClassifyNumberOfOffers <- offers[FullData$ClassifyNumberOfOffers]
 
-PSC <- c(
-  "Products" = "Products",
-  "R&D" = "R&D",
-  "NULL" = "NULL",
-  "ERS" = "Services",
-  "FRS&C" = "Services",
-  "ICT" = "Services",
-  "MED" = "Services",
-  "PAMS" = "Services"
+debug(read_and_join)
+FullData<-read_and_join(Path,
+                        "LOOKUP_Buckets.csv",
+                        FullData,
+                        by="ProductOrServiceArea",
+                        NA.check.columns="ProductServiceOrRnDarea.sum"
 )
 
-FullData$Simple <- PSC[FullData$ProductOrServiceArea]
+FullData<-FullData[,!colnames(FullData) %in% c("ProductOrServiceArea",
+                                               "ServicesCategory.detail",
+                                               "ServicesCategory.sum",
+                                               "ProductsCategory.detail",
+                                               "ProductOrServiceArea.DLA",
+                                               "ProductOrServicesCategory.Graph",
+                                               "SupplyServiceFRC",
+                                               "SupplyServiceERS")]
 
 
 # write output to CleanedVendorSize.csv
