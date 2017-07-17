@@ -15,14 +15,14 @@
 
 library(tidyverse)
 library(magrittr)
-Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
-# Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
+# Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
+Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
 
-source(paste(path,"lookups.R",sep=""))
-source(paste(path,"helper.R",sep=""))
+source(paste(Path,"lookups.R",sep=""))
+source(paste(Path,"helper.R",sep=""))
 
 Coloration<-read.csv(
-  paste(path,"Lookups\\","lookup_coloration.csv",sep=""),
+  paste(Path,"Lookups\\","lookup_coloration.csv",sep=""),
   header=TRUE, sep=",", na.strings="", dec=".", strip.white=TRUE, 
   stringsAsFactors=FALSE
 )
@@ -43,8 +43,15 @@ FullData <- read_csv(
   col_names = TRUE, col_types = "cccccccccc",na=c("NA","NULL"))
 
 
-FullData<-standardize_variable_names(path,
+FullData<-standardize_variable_names(Path,
                            FullData)
+
+
+NA.check(FullData,
+         "Customer",
+         "SumOfnumberOfActions",
+         "test.csv")
+
 
 
 PrepareLabelsAndColors(Coloration,FullData,"Customer")
@@ -57,14 +64,12 @@ FullData<-replace_nas_with_unlabeled(FullData,"PlatformPortfolio")
 PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio")
 
 PrepareLabelsAndColors(Coloration,FullData,"Vendor.Size")
-PrepareLabelsAndColors(Coloration,FullData,"CompetitionClassification")
-PrepareLabelsAndColors(Coloration,FullData,"ClassifyNumberOfOffers")
+
+
+FullData<-competition_vehicle_lookups(Path,FullData)
+PrepareLabelsAndColors(Coloration,FullData,"Competition.sum")
 
   
-
-FullData <- standardize_variable_names(
-  path,
-  FullData)
 
 # coerce Amount to be a numeric variable
 FullData$Action.Obligation %<>% as.numeric()
@@ -120,58 +125,6 @@ FullData$Action.Obligation <- round(FullData$Action.Obligation /
 
 # classify competition
 
-comp <- c(
-  "Full Competition (Multiple Offers)" = "2+ Offers",
-  "Limited Competition with multiple offers" = "2+ Offers",
-  "Limited Competition with multiple offers (Overrode blank Fair Opportunity)" =
-    "2+ Offers",
-  "Competition with single offer" = "1 Offer",
-  "No Competition (Follow on to competed action)" = "No Competition",
-  "No Competition (Only One Source Exception)" = "No Competition",
-  "No Competition (Other Exception)" = "No Competition",
-  "No Competition (Unlabeled Exception)" = "No Competition",
-  "Unlabeled: Competition; Zero Offers" = "Unlabeled",
-  "Unlabeled: Blank Extent Competed" = "Unlabeled",
-  "Unlabeled: No competition; multiple offers" = "Unlabeled",
-  "No Competition (Unlabeled Exception; Overrode blank Fair Opportunity)" =
-    "No Competition",
-  "Unlabeled: No competition; multiple offers; Overrode blank Fair Opportunity)" =
-    "Unlabeled",
-  "Competition with single offer (Overrode blank Fair Opportunity)" =
-    "1 Offer",
-  "No Competition (Only One Source Exception; Overrode blank Fair Opportunity)" =
-    "No Competition",
-  "No Competition (Follow on to competed action)" = "No Competition",
-  "Unlabeled: Blank Fair Opportunity" = "Unlabeled",
-  "Unlabeled: Competition; Unlabeled Offers" = "Unlabeled"
-)
-
-FullData$CompetitionClassification <- comp[FullData$CompetitionClassification]
-
-
-
-# number of offers
-offers <- c(
-  "Unlabeled: Blank Extent Competed" = "Unlabeled",
-  "5-9 Offers" = "5-9 Offers",
-  "Two Offers" = "Two Offers",
-  "No competition" = "No Competition",
-  "3-4 Offers" = "3-4 Offers",
-  "10-24 Offers" = "10-24 Offers",
-  "One Offer" = "One Offer",
-  "Unlabeled: Competition; Zero Offers" = "Unlabeled",
-  "Unlabeled: No competition; multiple offers" = "Unlabeled",
-  "100+ Offers" = "100+ Offers",
-  "25-99 Offers" = "25-99 Offers",        
-  "No competition; Overrode blank Fair Opportunity)" = "No Competition",
-  "Unlabeled: No competition; multiple offers; Overrode blank Fair Opportunity)" =
-    "Unlabeled",
-  "Unlabeled: Blank Fair Opportunity" = "Unlabeled",
-  "NULL" = "NULL"    
-)
-
-
-FullData$ClassifyNumberOfOffers <- offers[FullData$ClassifyNumberOfOffers]
 
 PSC <- c(
   "Products" = "Products",
