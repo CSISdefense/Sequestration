@@ -47,55 +47,14 @@ FullData<-standardize_variable_names(Path,
                            FullData)
 
 
-NA.check(FullData,
-         "Customer",
-         "SumOfnumberOfActions",
-         "test.csv")
 
 
-
-PrepareLabelsAndColors(Coloration,FullData,"Customer")
-
-FullData<-replace_nas_with_unlabeled(FullData,"SubCustomer")
-PrepareLabelsAndColors(Coloration,FullData,"SubCustomer")
-
-FullData<-replace_nas_with_unlabeled(FullData,"ProductOrServiceArea")
-PrepareLabelsAndColors(Coloration,FullData,"ProductOrServiceArea")
-
-FullData<-replace_nas_with_unlabeled(FullData,"PlatformPortfolio")
-PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio")
-
-<<<<<<< HEAD
-PrepareLabelsAndColors(Coloration,FullData,"Vendor.Size")
-=======
-
-PrepareLabelsAndColors(Coloration,FullData,"CompetitionClassification")
-PrepareLabelsAndColors(Coloration,FullData,"ClassifyNumberOfOffers")
->>>>>>> 0f8d1f28312aa328f607084683205e186d9dc014
-
-
-FullData<-competition_vehicle_lookups(Path,FullData)
-PrepareLabelsAndColors(Coloration,FullData,"Competition.sum")
 
   
 
 # coerce Amount to be a numeric variable
 FullData$Action.Obligation %<>% as.numeric()
 FullData$SumOfnumberOfActions %<>% as.numeric()
-
-
-#Consolidate categories for Vendor Size
-FullData<-read_and_join(Path,
-                      "LOOKUP_Contractor_Size.csv",
-                      FullData,
-                      by="Vendor.Size",
-                      NA.check.columns="Shiny.VendorSize")
-
-#Shiny.VendorSize is the new Vendor.Size
-FullData<-FullData[,!colnames(FullData) %in% c("Vendor.Size",
-                                     "Vendor.Size.detail",
-                                     "Vendor.Size.sum")]
-PrepareLabelsAndColors(Coloration,FullData,"Shiny.VendorSize")
 
 # discard pre-2000
 FullData %<>% filter(Fiscal.Year >= 2000)
@@ -121,31 +80,65 @@ deflate <- c(
   "2016"=	1
 )
 
-FullData$Action.Obligation <- round(FullData$Action.Obligation /
-                           deflate[FullData$Fiscal.Year])
+FullData$Action.Obligation <- FullData$Action.Obligation /
+                           deflate[FullData$Fiscal.Year]
+
+
+
+#Apply looks and remove NAs where needed
+
+FullData<-replace_nas_with_unlabeled(FullData,"SubCustomer")
+
+FullData<-replace_nas_with_unlabeled(FullData,"PlatformPortfolio")
+
+
+#Consolidate categories for Vendor Size
+FullData<-read_and_join(Path,
+                        "LOOKUP_Contractor_Size.csv",
+                        FullData,
+                        by="Vendor.Size",
+                        NA.check.columns="Shiny.VendorSize",
+                        OnlyKeepCheckedColumns=TRUE
+)
+
 
 
 # classify competition
+FullData<-read_and_join(Path,
+                        "Lookup_SQL_CompetitionClassification.csv",
+                        FullData,
+                        by=c("CompetitionClassification","ClassifyNumberOfOffers"),
+                        ReplaceNAsColumns="ClassifyNumberOfOffers",
+                        NA.check.columns=c("Competition.sum",
+                                           "Competition.multisum",
+                                           "Competition.effective.only",
+                                           "No.Competition.sum"),
+                        OnlyKeepCheckedColumns=TRUE
+)
 
 
-debug(read_and_join)
+#Classify Product or Service Codes
 FullData<-read_and_join(Path,
                         "LOOKUP_Buckets.csv",
                         FullData,
                         by="ProductOrServiceArea",
-                        NA.check.columns="ProductServiceOrRnDarea.sum"
+                        NA.check.columns="ProductServiceOrRnDarea.sum",
+                        OnlyKeepCheckedColumns=TRUE,
+                        ReplaceNAsColumns="ProductOrServiceArea"
 )
-
-FullData<-FullData[,!colnames(FullData) %in% c("ProductOrServiceArea",
-                                               "ServicesCategory.detail",
-                                               "ServicesCategory.sum",
-                                               "ProductsCategory.detail",
-                                               "ProductOrServiceArea.DLA",
-                                               "ProductOrServicesCategory.Graph",
-                                               "SupplyServiceFRC",
-                                               "SupplyServiceERS")]
-
 
 # write output to CleanedVendorSize.csv
 write_csv(FullData, "2016_unaggregated_FPDS.csv")
 
+
+#Shiny.VendorSize is the new Vendor.Size
+PrepareLabelsAndColors(Coloration,FullData,"SubCustomer")
+PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio")
+PrepareLabelsAndColors(Coloration,FullData,"Shiny.VendorSize")
+PrepareLabelsAndColors(Coloration,FullData,"Competition.sum")
+PrepareLabelsAndColors(Coloration,FullData,"Competition.multisum")
+PrepareLabelsAndColors(Coloration,FullData,"Competition.effective.only")
+PrepareLabelsAndColors(Coloration,FullData,"No.Competition.sum")
+PrepareLabelsAndColors(Coloration,FullData,"Customer")
+PrepareLabelsAndColors(Coloration,FullData,"ProductOrServiceArea")
+PrepareLabelsAndColors(Coloration,FullData,"ProductServiceOrRnDarea.sum")
