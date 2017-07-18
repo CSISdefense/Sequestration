@@ -15,11 +15,12 @@
 
 library(tidyverse)
 library(magrittr)
-# Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
-Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
+Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
+# Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
 
-source(paste(Path,"lookups.R",sep=""))
-source(paste(Path,"helper.R",sep=""))
+source("package.r")
+# source(paste(Path,"lookups.R",sep=""))
+# source(paste(Path,"helper.R",sep=""))
 
 Coloration<-read.csv(
   paste(Path,"Lookups\\","lookup_coloration.csv",sep=""),
@@ -107,8 +108,17 @@ write_csv(FullData, "2016_unaggregated_FPDS.csv")
 
 
 
-PrepareLabelsAndColors(Coloration,FullData,"SubCustomer",ReplaceNAs=TRUE)
-PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio",ReplaceNAs=TRUE)
+
+
+FullData<-replace_nas_with_unlabeled(FullData,"SubCustomer")
+
+
+LabelsAndColors<-PrepareLabelsAndColors(Coloration,FullData,"SubCustomer")
+LabelsAndColors$Column<-"SubCustomer"
+
+FullData<-replace_nas_with_unlabeled(FullData,"PlatformPortfolio")
+LabelsAndColors<-rbind(LabelsAndColors,
+                       cbind(PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio"),"PlatformPortfolio"))
 #Shiny.VendorSize is the new Vendor.Size
 PrepareLabelsAndColors(Coloration,FullData,"Shiny.VendorSize")
 PrepareLabelsAndColors(Coloration,FullData,"Competition.sum")

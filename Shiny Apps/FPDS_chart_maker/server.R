@@ -31,10 +31,12 @@ shinyServer(function(input, output, session) {
     mutate(SubCustomer = factor(SubCustomer)) %>%
     mutate(ProductOrServiceArea = factor(ProductOrServiceArea)) %>%
     mutate(PlatformPortfolio = factor(PlatformPortfolio)) %>%
-    mutate(Vendor.Size = factor(Vendor.Size)) %>%
-    mutate(CompetitionClassification = factor(CompetitionClassification)) %>%
-    mutate(ClassifyNumberOfOffers = factor(ClassifyNumberOfOffers)) %>%
-    mutate(Simple = factor(Simple))
+    mutate(Shiny.VendorSize = factor(Shiny.VendorSize)) %>%
+    mutate(ProductServiceOrRnDarea.sum = factor(ProductServiceOrRnDarea.sum)) %>%
+    mutate(Competition.sum = factor(Competition.sum)) %>%
+    mutate(Competition.effective.only = factor(Competition.effective.only)) %>%
+    mutate(Competition.multisum = factor(Competition.multisum))  %>%
+    mutate(No.Competition.sum = factor(No.Competition.sum))
   
   # in case user renames the data-frame choosing variables
   vars <- reactiveValues(
