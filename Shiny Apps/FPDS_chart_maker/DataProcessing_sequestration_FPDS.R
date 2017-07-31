@@ -104,13 +104,20 @@ FullData<-read_and_join(Path,
 )
 
 # write output to CleanedVendorSize.csv
-write_csv(FullData, "2016_unaggregated_FPDS.csv")
+write_csv(FullData, "2016_unaggregated_FPDS.Rda")
 
 
 
 
 
 FullData<-replace_nas_with_unlabeled(FullData,"SubCustomer")
+FullData<-read_and_join(Path,
+                        "Lookup_SubCustomer.csv",
+                        FullData,
+                        by=c("Customer","SubCustomer"),
+                        NA.check.columns="SubCustomer.platform",
+                        OnlyKeepCheckedColumns=TRUE
+)
 
 
 LabelsAndColors<-PrepareLabelsAndColors(Coloration,FullData,"SubCustomer")
