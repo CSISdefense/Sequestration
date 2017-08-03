@@ -15,13 +15,27 @@
 
 library(tidyverse)
 library(magrittr)
-library(csis360)
 Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
 # Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
 
+source("package.r")
 # source(paste(Path,"lookups.R",sep=""))
 # source(paste(Path,"helper.R",sep=""))
 
+Coloration<-read.csv(
+  paste(Path,"Lookups\\","lookup_coloration.csv",sep=""),
+  header=TRUE, sep=",", na.strings="", dec=".", strip.white=TRUE, 
+  stringsAsFactors=FALSE
+)
+
+Coloration<-ddply(Coloration
+                  , c(.(R), .(G), .(B))
+                  , transform
+                  , ColorRGB=as.character(
+                    if(min(is.na(c(R,G,B)))) {NA} 
+                    else {rgb(max(R),max(G),max(B),max=255)}
+                  )
+)
 
 
 # read in data            
@@ -90,27 +104,34 @@ FullData<-read_and_join(Path,
 )
 
 # write output to CleanedVendorSize.csv
-write_csv(FullData, "2016_unaggregated_FPDS.csv")
+write_csv(FullData, "2016_unaggregated_FPDS.Rda")
 
 
 
 
 
 FullData<-replace_nas_with_unlabeled(FullData,"SubCustomer")
+FullData<-read_and_join(Path,
+                        "Lookup_SubCustomer.csv",
+                        FullData,
+                        by=c("Customer","SubCustomer"),
+                        NA.check.columns="SubCustomer.platform",
+                        OnlyKeepCheckedColumns=TRUE
+)
 
-debug(PrepareLabelsAndColors)
-LabelsAndColors<-PrepareLabelsAndColors(Path,FullData,"SubCustomer")
+
+LabelsAndColors<-PrepareLabelsAndColors(Coloration,FullData,"SubCustomer")
 LabelsAndColors$Column<-"SubCustomer"
 
 FullData<-replace_nas_with_unlabeled(FullData,"PlatformPortfolio")
 LabelsAndColors<-rbind(LabelsAndColors,
-                       cbind(PrepareLabelsAndColors(Path,FullData,"PlatformPortfolio"),"PlatformPortfolio"))
+                       cbind(PrepareLabelsAndColors(Coloration,FullData,"PlatformPortfolio"),"PlatformPortfolio"))
 #Shiny.VendorSize is the new Vendor.Size
-PrepareLabelsAndColors(Path,FullData,"Shiny.VendorSize")
-PrepareLabelsAndColors(Path,FullData,"Competition.sum")
-PrepareLabelsAndColors(Path,FullData,"Competition.multisum")
-PrepareLabelsAndColors(Path,FullData,"Competition.effective.only")
-PrepareLabelsAndColors(Path,FullData,"No.Competition.sum")
-PrepareLabelsAndColors(Path,FullData,"Customer")
-PrepareLabelsAndColors(Path,FullData,"ProductOrServiceArea")
-PrepareLabelsAndColors(Path,FullData,"ProductServiceOrRnDarea.sum")
+PrepareLabelsAndColors(Coloration,FullData,"Shiny.VendorSize")
+PrepareLabelsAndColors(Coloration,FullData,"Competition.sum")
+PrepareLabelsAndColors(Coloration,FullData,"Competition.multisum")
+PrepareLabelsAndColors(Coloration,FullData,"Competition.effective.only")
+PrepareLabelsAndColors(Coloration,FullData,"No.Competition.sum")
+PrepareLabelsAndColors(Coloration,FullData,"Customer")
+PrepareLabelsAndColors(Coloration,FullData,"ProductOrServiceArea")
+PrepareLabelsAndColors(Coloration,FullData,"ProductServiceOrRnDarea.sum")
