@@ -7,14 +7,14 @@ library(tidyverse)
 library(forcats)
 
   platform_sub <- read.csv(
-    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv")
+    "Vendor.sp_EntityCountHistoryPlatformSubCustomer.csv")
   sub_only <- read.csv(
-    "Defense_Vendor_sp_EntityCountHistorySubCustomer.csv")
+    "Vendor.sp_EntityCountHistorySubCustomer.csv")
   platform_only <- read.csv(
-    "Defense_Vendor_sp_EntityCountHistoryPlatformCustomer.csv")
+    "Vendor.sp_EntityCountHistoryPlatformCustomer.csv")
   top_level <- read.csv(
-    "Vendor_sp_EntityCountHistoryCustomer.csv")
-  
+    "Vendor.sp_EntityCountHistoryCustomer.csv")
+
   # remove unused variables
   platform_sub %<>%
     select(-Customer, -EntityCategory, -EntitySizeCode) %>%
@@ -32,9 +32,9 @@ library(forcats)
         Small = "Always Small Vendor",
         Small = "Sometimes Small Vendor",
         Medium = "Medium Vendor",
-        Large = "Big Five",
-        Large = "Large Vendor",
-        Large = "Large: Big 5 JV")) %>%
+        "Large+" = "Big Five",
+        "Large+" = "Large Vendor",
+        "Large+" = "Large: Big 5 JV")) %>%
     group_by(
       fiscal_year, SubCustomer, PlatformPortfolio, EntitySizeText,
       AnyEntityUSplaceOfPerformance,
@@ -51,7 +51,7 @@ library(forcats)
   
   platform_only %<>%
     select(-Customer, -EntityCategory, -EntitySizeCode) %>%
-    rename(EntityCount = EntityCounty) %>%
+    rename(EntityCount = EntityCount) %>%
     mutate(
       SumOfNumberOfActions = as.character(SumOfNumberOfActions),
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
@@ -66,9 +66,9 @@ library(forcats)
         Small = "Always Small Vendor",
         Small = "Sometimes Small Vendor",
         Medium = "Medium Vendor",
-        Large = "Big Five",
-        Large = "Large Vendor",
-        Large = "Large: Big 5 JV")) %>%
+        "Large+" = "Big Five",
+        "Large+" = "Large Vendor",
+        "Large+" = "Large: Big 5 JV")) %>%
     group_by(
       fiscal_year, PlatformPortfolio, EntitySizeText,
       AnyEntityUSplaceOfPerformance,
@@ -100,9 +100,9 @@ library(forcats)
         Small = "Always Small Vendor",
         Small = "Sometimes Small Vendor",
         Medium = "Medium Vendor",
-        Large = "Big Five",
-        Large = "Large Vendor",
-        Large = "Large: Big 5 JV")) %>%
+        "Large+" = "Big Five",
+        "Large+" = "Large Vendor",
+        "Large+" = "Large: Big 5 JV")) %>%
     group_by(
       fiscal_year, SubCustomer, EntitySizeText,
       AnyEntityUSplaceOfPerformance,
@@ -119,10 +119,10 @@ library(forcats)
   
   top_level %<>%
     filter(Customer == "Defense") %>%
-    rename(EntityCount = EntityCounty) %>%
+    rename(EntityCount = EntityCount) %>%
     select(-Customer, -EntityCategory, -EntitySizeCode) %>%
     mutate(
-      SumOfNumberOfActions = as.character(SumOfNumberOfActions),
+      SumOfNumberOfActions = as.character(SumOfNumberOfActions), 
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
     mutate(
       SumOfNumberOfActions = as.integer(
@@ -135,9 +135,9 @@ library(forcats)
         Small = "Always Small Vendor",
         Small = "Sometimes Small Vendor",
         Medium = "Medium Vendor",
-        Large = "Big Five",
-        Large = "Large Vendor",
-        Large = "Large: Big 5 JV")) %>%
+        "Large+" = "Big Five",
+        "Large+" = "Large Vendor",
+        "Large+" =  "Large: Big 5 JV")) %>%
     group_by(
       fiscal_year, EntitySizeText,
       AnyEntityUSplaceOfPerformance,
@@ -152,35 +152,38 @@ library(forcats)
   
   
   
-  
-  
-  
   deflate <- c(
-  "2000"= 0.707312744,
-  "2001"= 0.726215832,
-  "2002"= 0.73828541,
-  "2003"=	0.75914093,
-  "2004"=	0.779020234,
-  "2005"=	0.805910543,
-  "2006"=	0.833777068,
-  "2007"=	0.855786297,
-  "2008"=	0.885694001,
-  "2009"=	0.887468939,
-  "2010"=	0.901402201,
-  "2011"=	0.922523962,
-  "2012"=	0.940983316,
-  "2013"=	0.953319134,
-  "2014"=	0.967518637,
-  "2015"=	0.981185659,
-  "2016"=	1
-)
-
-sub_only$fiscal_year <- factor(sub_only$fiscal_year)
-platform_only$fiscal_year <- factor(platform_only$fiscal_year)
-platform_sub$fiscal_year <- factor(platform_sub$fiscal_year)
-top_level$fiscal_year <- factor(top_level$fiscal_year)
+    "2000" = 0.7057,
+    "2001" = 0.7226,
+    "2002" = 0.7343,
+    "2003" = 0.7483,
+    "2004" = 0.7668,
+    "2005" = 0.7909,
+    "2006" = 0.8166,
+    "2007" = 0.8388,
+    "2008" = 0.8562,
+    "2009" = 0.8662,
+    "2010" = 0.8738,
+    "2011" = 0.8916,
+    "2012" = 0.9078,
+    "2013" = 0.9232,
+    "2014" = 0.9401,
+    "2015" = 0.9511,
+    "2016" = 0.9625,
+    "2017" = 0.9802,
+    "2018" = 1.0000,
+    "2019" = 1.0199,
+    "2020" = 1.0404,
+    "2021" = 1.0612,
+    "2022" = 1.0824)
+ 
   
-sub_only$SumOfObligatedAmount <- round(sub_only$SumOfObligatedAmount /
+  sub_only$fiscal_year <- as.character(sub_only$fiscal_year)
+  platform_only$fiscal_year <- as.character(platform_only$fiscal_year)
+  top_level$fiscal_year <- as.character(top_level$fiscal_year)
+  platform_sub$fiscal_year <- as.character(platform_sub$fiscal_year)
+  
+sub_only$SumOfObligatedAmount <- as.numeric(sub_only$SumOfObligatedAmount /
                            deflate[sub_only$fiscal_year])
 platform_only$SumOfObligatedAmount <- round(platform_only$SumOfObligatedAmount /
                            deflate[platform_only$fiscal_year])
@@ -189,7 +192,10 @@ platform_sub$SumOfObligatedAmount <- round(platform_sub$SumOfObligatedAmount /
 top_level$SumOfObligatedAmount <- round(top_level$SumOfObligatedAmount /
                            deflate[top_level$fiscal_year])
 
-
+sub_only$fiscal_year <- as.numeric(sub_only$fiscal_year)
+platform_only$fiscal_year <- as.numeric(platform_only$fiscal_year)
+top_level$fiscal_year <- as.numeric(top_level$fiscal_year)
+platform_sub$fiscal_year <- as.numeric(platform_sub$fiscal_year)
   
   
   write_csv(platform_only, "platform_only.csv")

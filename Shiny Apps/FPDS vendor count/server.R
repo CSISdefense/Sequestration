@@ -59,9 +59,9 @@ shinyServer(function(input, output, session) {
     plot_data <- format_data_for_plot(get(vars$frame), vars$fiscal_year, input)
     # build plot with user-specified geoms
     mainplot <- build_plot_from_input(plot_data, input)
-    
+ 
     # add overall visual settings to the plot
-    mainplot <- mainplot + 
+    mainplot <- mainplot + labs(x = "Fiscal Year", y = "Vendor Count") + 
       #diigtheme1:::diiggraph()
       theme(panel.border = element_blank(),
         panel.background = element_rect(fill = "white"),
@@ -75,42 +75,56 @@ shinyServer(function(input, output, session) {
     theme(plot.title = element_text(
       family = "Open Sans",
       color = "#554449",
-      face="bold",
+      size = 21, face="bold",
       margin=margin(20,0,20,0),
-      hjust = 0.5)) +
-    theme(axis.text.x = element_text(
-      family = "Open Sans",
-      vjust = 7,
-      margin = margin(-10,0,0,0))) +
+      hjust = 0.5))  +
     theme(axis.text.y = element_text(
+      size = 15,
       family = "Open Sans",
       color ="#554449",
       margin = margin(0,5,0,0))) +
     theme(axis.title.x = element_text(
+      size = 16,
       face = "bold",
       color = "#554449",
       family = "Open Sans",
       margin = margin(15,0,0,60))) +
     theme(axis.title.y = element_text(
+      size = 16,
       face = "bold",
       color = "#554449",
       family = "Open Sans",
       margin = margin(0,15,0,0))
     ) +
     theme(legend.text = element_text(
+      size = 15,
       family = "Open Sans",
       color ="#554449")) +
     theme(legend.title = element_text(
+      size = 15,
       family = "Open Sans",
       color ="#554449")) +
     theme(legend.position = 'bottom') +
     theme(legend.background = element_rect(fill = "white")
-    ) 
+    )
     
     if(input$show_title == TRUE){
       mainplot <- mainplot + ggtitle(input$title_text) 
     }
-        
+    
+     if(length(input$facet_var) == 0){
+    mainplot <- mainplot +  theme(axis.text.x = element_text(
+      size = 15,
+      family = "Open Sans",
+      vjust = 7,
+      margin = margin(-10,0,0,0)))}
+    else if(length(input$facet_var) > 0){
+      mainplot <- mainplot +  theme(axis.text.x = element_text(
+        size = 15,
+        family = "Open Sans",
+        vjust = 7))}
+      
+       
     # return the built plot
     return(mainplot)
   })
@@ -118,7 +132,8 @@ shinyServer(function(input, output, session) {
   output$plot <- renderPlot({
     mainplot()
   })
-  
+
+    
   output$current_frame <- renderText({
     paste("displayed data: \n", vars$frame)
   })
@@ -133,8 +148,7 @@ shinyServer(function(input, output, session) {
   output$download_plot <- downloadHandler(
     filename = "plot_data.csv",
     content = function(file){
-      write_csv(
-        format_data_for_plot(get(vars$frame), vars$fiscal_year, input), file)
+      write_csv(format_data_for_plot(get(vars$frame), input), file)
     }
   )
   
