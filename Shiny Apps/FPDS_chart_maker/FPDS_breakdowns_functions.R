@@ -17,15 +17,15 @@ populate_ui_var_lists <- function(
   ){
   
   # get the class for each variable (except fiscal year)
-  var_class <- sapply(data_source[-1], class)
+  var_class <- sapply(data_source, class) 
   
   # put numeric variables in the y_var list
-  numerics <- names(data_source[-1])[
-    var_class == "numeric" | var_class == "integer"]
+  numerics <- names(data_source)[
+    (var_class == "numeric" | var_class == "integer") & colnames(data_source)!="Fiscal.Year"]
   updateSelectInput(session, "y_var", choices = numerics)
   
   # put categorical variables in the color_var and facet_var lists
-  categories <- names(data_source[-1])[var_class == "factor"]
+  categories <- names(data_source)[var_class == "factor"]
   categories <- c("None", categories)
   updateSelectInput(session, "color_var", choices = categories)
   updateSelectInput(session, "facet_var", choices = categories)

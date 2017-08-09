@@ -151,7 +151,7 @@ LabelsAndColors<-rbind(LabelsAndColors,
 # set correct data types
 FullData %<>%
   select(-Customer) %>%
-  select(-ClassifyNumberOfOffers) %>%
+  # select(-ClassifyNumberOfOffers) %>%
   mutate(SubCustomer = factor(SubCustomer)) %>%
   mutate(ProductOrServiceArea = factor(ProductOrServiceArea)) %>%
   mutate(PlatformPortfolio = factor(PlatformPortfolio)) %>%
