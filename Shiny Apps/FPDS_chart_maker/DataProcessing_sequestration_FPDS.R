@@ -16,8 +16,8 @@
 library(tidyverse)
 library(magrittr)
 library(csis360)
-# Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
-Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
+Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
+# Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
 
 # source(paste(Path,"lookups.R",sep=""))
 # source(paste(Path,"helper.R",sep=""))
@@ -30,11 +30,11 @@ FullData <- read_csv(
   col_names = TRUE, col_types = "cccccccccc",na=c("NA","NULL"))
 
 
-FullData<-standardize_variable_names(Path,
-                           FullData)
+FullData<-standardize_variable_names(FullData)
 # coerce Amount to be a numeric variable
 FullData$Action.Obligation %<>% as.numeric()
 FullData$SumOfnumberOfActions %<>% as.numeric()
+FullData$Fiscal.Year <- as.numeric(FullData$Fiscal.Year)
 
 # discard pre-2000
 FullData %<>% filter(Fiscal.Year >= 2000)
@@ -99,24 +99,69 @@ FullData<-read_and_join(Path,
                         OnlyKeepCheckedColumns=TRUE
 )
 
-# write output to CleanedVendorSize.csv
-save(FullData, file="2016_unaggregated_FPDS.Rda")
 
-# LabelsAndColors<-PrepareLabelsAndColors(FullData,"SubCustomer")
-# LabelsAndColors$Column<-"SubCustomer"
+LabelsAndColors<-PrepareLabelsAndColors(FullData,"SubCustomer")
 
 FullData<-replace_nas_with_unlabeled(FullData,"PlatformPortfolio")
-# LabelsAndColors<-rbind(LabelsAndColors,
-                       # cbind(
-                         PrepareLabelsAndColors(Path,FullData,"PlatformPortfolio")
-                         # ,"PlatformPortfolio")
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"PlatformPortfolio")
+)
+# ,"PlatformPortfolio")
 # )
 #Shiny.VendorSize is the new Vendor.Size
-PrepareLabelsAndColors(FullData,"Shiny.VendorSize")
-PrepareLabelsAndColors(Path,FullData,"Competition.sum")
-PrepareLabelsAndColors(Path,FullData,"Competition.multisum")
-PrepareLabelsAndColors(Path,FullData,"Competition.effective.only")
-PrepareLabelsAndColors(Path,FullData,"No.Competition.sum")
-PrepareLabelsAndColors(Path,FullData,"Customer")
-PrepareLabelsAndColors(Path,FullData,"ProductOrServiceArea")
-PrepareLabelsAndColors(Path,FullData,"ProductServiceOrRnDarea.sum")
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"Shiny.VendorSize")
+)
+
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"Competition.sum")
+)
+
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"Competition.multisum")
+)
+
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"Competition.effective.only")
+)
+
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"No.Competition.sum")
+)
+
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"Customer")
+)
+
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"ProductOrServiceArea")
+)
+
+LabelsAndColors<-rbind(LabelsAndColors,
+  PrepareLabelsAndColors(FullData,"ProductServiceOrRnDarea.sum")
+)
+
+# LabelsAndColors<-rbind(LabelsAndColors,
+#   PrepareLabelsAndColors(FullData,"ClassifyNumberOfOffers")
+# )
+#We haven't done a key for this one. 
+
+
+
+# set correct data types
+FullData %<>%
+  select(-Customer) %>%
+  select(-ClassifyNumberOfOffers) %>%
+  mutate(SubCustomer = factor(SubCustomer)) %>%
+  mutate(ProductOrServiceArea = factor(ProductOrServiceArea)) %>%
+  mutate(PlatformPortfolio = factor(PlatformPortfolio)) %>%
+  mutate(Shiny.VendorSize = factor(Shiny.VendorSize)) %>%
+  mutate(ProductServiceOrRnDarea.sum = factor(ProductServiceOrRnDarea.sum)) %>%
+  mutate(Competition.sum = factor(Competition.sum)) %>%
+  mutate(Competition.effective.only = factor(Competition.effective.only)) %>%
+  mutate(Competition.multisum = factor(Competition.multisum))  %>%
+  mutate(No.Competition.sum = factor(No.Competition.sum))
+
+
+# write output to CleanedVendorSize.csv
+save(FullData,LabelsAndColors, file="2016_unaggregated_FPDS.Rda")

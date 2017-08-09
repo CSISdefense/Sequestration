@@ -16,6 +16,8 @@ library(ggplot2)
 library(readr)
 library(tidyr)
 library(data.table)
+library(csis360)
+
 
 shinyServer(function(input, output, session) {
   options(scipen = 99)
@@ -23,21 +25,10 @@ shinyServer(function(input, output, session) {
   source("FPDS_breakdowns_functions.R")
   
   # read data  
-  original_data <- read_csv("2016_unaggregated_FPDS.csv")
-  
-  # set correct data types
-  original_data %<>%
-    select(-Customer) %>%
-    mutate(SubCustomer = factor(SubCustomer)) %>%
-    mutate(ProductOrServiceArea = factor(ProductOrServiceArea)) %>%
-    mutate(PlatformPortfolio = factor(PlatformPortfolio)) %>%
-    mutate(Shiny.VendorSize = factor(Shiny.VendorSize)) %>%
-    mutate(ProductServiceOrRnDarea.sum = factor(ProductServiceOrRnDarea.sum)) %>%
-    mutate(Competition.sum = factor(Competition.sum)) %>%
-    mutate(Competition.effective.only = factor(Competition.effective.only)) %>%
-    mutate(Competition.multisum = factor(Competition.multisum))  %>%
-    mutate(No.Competition.sum = factor(No.Competition.sum))
-  
+  load("2016_unaggregated_FPDS.Rda")
+  original_data<-FullData
+  # original_data <- read_csv("2016_unaggregated_FPDS.csv")
+
   # in case user renames the data-frame choosing variables
   vars <- reactiveValues(
     fiscal_year = "Fiscal.Year",
@@ -51,33 +42,33 @@ shinyServer(function(input, output, session) {
   # fill the variable lists in the ui with variables from current_data
   populate_ui_var_lists(current_data)
   
-  BarPalette <- scale_fill_manual(
-    values = c(
-      "#004165",
-      "#0065a4",
-      "#0095AB",
-      "#66c6cb",
-      "#75c596",
-      "#0faa91",
-      "#51746d",
-      "#607a81",
-      "#252d3a",
-      "#353535",
-      "#797979"))
-  
-  LinePalette <- scale_color_manual(
-    values = c(
-      "#004165",
-      "#75c596",
-      "#b24f94",
-      "#0095ab",
-      "#0a8672",
-      "#e22129",
-      "#66c6cb",
-      "#51746d",
-      "#797979",
-      "#788ca8",
-      "#353535"))
+  # BarPalette <- scale_fill_manual(
+  #   values = c(
+  #     "#004165",
+  #     "#0065a4",
+  #     "#0095AB",
+  #     "#66c6cb",
+  #     "#75c596",
+  #     "#0faa91",
+  #     "#51746d",
+  #     "#607a81",
+  #     "#252d3a",
+  #     "#353535",
+  #     "#797979"))
+  # 
+  # LinePalette <- scale_color_manual(
+  #   values = c(
+  #     "#004165",
+  #     "#75c596",
+  #     "#b24f94",
+  #     "#0095ab",
+  #     "#0a8672",
+  #     "#e22129",
+  #     "#66c6cb",
+  #     "#51746d",
+  #     "#797979",
+  #     "#788ca8",
+  #     "#353535"))
   
   
   mainplot <- reactive({
@@ -91,7 +82,18 @@ shinyServer(function(input, output, session) {
     # get appropriately formatted data to use in the plot
     plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
     # build plot with user-specified geoms
-    mainplot <- build_plot_from_input(plot_data, input)
+    mainplot <- build_plot_from_input(plot_data, input)+
+      scale_color_manual(
+        values = subset(LabelsAndColors,column==input$color_var)$RGB,
+        limits=c(subset(LabelsAndColors,column==input$color_var)$variable),
+        labels=c(subset(LabelsAndColors,column==input$color_var)$Label)
+      )+
+      scale_fill_manual(
+        values = subset(LabelsAndColors,column==input$color_var)$RGB,
+        limits=c(subset(LabelsAndColors,column==input$color_var)$variable),
+        labels=c(subset(LabelsAndColors,column==input$color_var)$Label)
+      )
+    
     
     # add overall visual settings to the plot
     mainplot <- mainplot + 
@@ -136,10 +138,7 @@ shinyServer(function(input, output, session) {
     theme(legend.title = element_blank()) +
     theme(legend.position = 'bottom') +
     theme(legend.background = element_rect(fill = "white")
-    ) +
-    BarPalette +
-    LinePalette
-    
+    ) 
     if(input$show_title == TRUE){
       mainplot <- mainplot + ggtitle(input$title_text) 
     }
