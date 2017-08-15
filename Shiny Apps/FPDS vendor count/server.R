@@ -12,6 +12,7 @@ library(shinyBS)
 library(stringr)
 library(tidyverse)
 
+
 shinyServer(function(input, output, session) {
   options(scipen = 99)
   #windowsFonts(`Open Sans` = windowsFont("Open Sans"))
@@ -148,7 +149,8 @@ shinyServer(function(input, output, session) {
   output$download_plot <- downloadHandler(
     filename = "plot_data.csv",
     content = function(file){
-      write_csv(format_data_for_plot(get(vars$frame), input), file)
+      write.csv(format_data_for_plot(get(vars$frame),vars$fiscal_year, input), 
+                file, row.names = FALSE)
     }
   )
   
