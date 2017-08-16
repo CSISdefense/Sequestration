@@ -46,7 +46,7 @@ format_data_for_plot <- function(
   ){  
 
   shown_data <- incoming_data
-  
+  browser()
   breakouts <- c(input$color_var, input$facet_var)
   breakouts <- breakouts[breakouts != "None"]
   
@@ -536,7 +536,7 @@ choose_data_frame <- function(
   # Returns:
   #   The name of the data frame with the correct level of aggregation
 ){
-  
+  browser()
   # define which variables are used
   use_sub <- (
     input$color_var == double_count_vars["SubCustomer"] |
@@ -553,6 +553,8 @@ choose_data_frame <- function(
   if(use_platform) return("current_platform_only")
   return("current_top_level")
 }
+
+
   
 
 update_title <- function(

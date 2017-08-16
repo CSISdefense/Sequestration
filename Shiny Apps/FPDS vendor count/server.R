@@ -22,7 +22,6 @@ shinyServer(function(input, output, session) {
   sub_only <- read.csv("sub_only.csv")
   platform_only <- read.csv("platform_only.csv")
   top_level <- read.csv("top_level.csv")
-  
   # in case user renames the data-frame choosing variables
   vars <- reactiveValues(
     double_counted = c(
