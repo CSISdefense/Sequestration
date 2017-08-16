@@ -7,13 +7,13 @@ library(tidyverse)
 library(forcats)
 
   platform_sub <- read.csv(
-    "Vendor.sp_EntityCountHistoryPlatformSubCustomer.csv")
+    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv")
   sub_only <- read.csv(
-    "Vendor.sp_EntityCountHistorySubCustomer.csv")
+    "Defense_Vendor_sp_EntityCountHistorySubCustomer.csv")
   platform_only <- read.csv(
-    "Vendor.sp_EntityCountHistoryPlatformCustomer.csv")
+    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv")
   top_level <- read.csv(
-    "Vendor.sp_EntityCountHistoryCustomer.csv")
+    "Vendor_sp_EntityCountHistoryCustomer.csv")
 
   # remove unused variables
   platform_sub %<>%

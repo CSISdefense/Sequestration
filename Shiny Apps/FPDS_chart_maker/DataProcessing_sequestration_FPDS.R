@@ -16,6 +16,8 @@
 library(tidyverse)
 library(magrittr)
 library(csis360)
+
+install.packages("../csis360_0.0.0.9005.zip")
 Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
 # Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
 
