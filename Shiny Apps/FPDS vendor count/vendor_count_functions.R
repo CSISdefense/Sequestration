@@ -69,6 +69,8 @@ format_data_for_plot <- function(
   
   if(length(breakouts) == 0){
     if(input$y_var_2 != "None"){
+      if(!fy_var %in% colnames(shown_data)) 
+        stop(paste("shown_data is missing variable from the group by list:", fy_var) )
       shown_data_1 <- shown_data %>%
         group_by_(fy_var) %>%
         summarize_(
@@ -79,6 +81,8 @@ format_data_for_plot <- function(
           sum_val_2 = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var_2)))
       
     } else{
+      if(!fy_var %in% colnames(shown_data)) 
+        stop(paste("shown_data is missing variable from the group by list:", fy_var) )
       shown_data_1 <- shown_data %>%
         group_by_(fy_var) %>%
         summarize_(
@@ -86,6 +90,9 @@ format_data_for_plot <- function(
     }
   } else {
     if(input$y_var_2 != "None"){
+      if(!fy_var %in% colnames(shown_data) | any(!breakouts %in% colnames(shown_data))) 
+        stop(paste("shown_data is missing variable from the group by list:", fy_var,breakouts) )
+      
       shown_data_1 <- shown_data %>%
         group_by_(.dots = c(fy_var, breakouts)) %>%
         summarize_(
@@ -95,6 +102,8 @@ format_data_for_plot <- function(
         summarize_(
           sum_val_2 = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var_2)))
     } else {
+      if(!fy_var %in% colnames(shown_data) | any(!breakouts %in% colnames(shown_data))) 
+        stop(paste("shown_data is missing variable from the group by list:", fy_var,breakouts) )
       shown_data_1 <- shown_data
         group_by_(.dots = c(fy_var, breakouts)) %>%
         summarize_(
@@ -536,7 +545,7 @@ choose_data_frame <- function(
   # Returns:
   #   The name of the data frame with the correct level of aggregation
 ){
-  
+  browser()
   # define which variables are used
   use_sub <- (
     input$color_var == double_count_vars["SubCustomer"] |
