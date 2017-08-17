@@ -7,6 +7,7 @@ library(magrittr)
 library(tidyverse)
 library(lazyeval)
 library(forcats)
+library(dplyr)
 
 populate_ui_var_lists <- function(
   # Fills the ui menus with appropriate variables from the tibble passed to it
@@ -46,7 +47,6 @@ format_data_for_plot <- function(
   ){  
 
   shown_data <- incoming_data
-  browser()
   breakouts <- c(input$color_var, input$facet_var)
   breakouts <- breakouts[breakouts != "None"]
   
@@ -104,7 +104,7 @@ format_data_for_plot <- function(
     } else {
       if(!fy_var %in% colnames(shown_data) | any(!breakouts %in% colnames(shown_data))) 
         stop(paste("shown_data is missing variable from the group by list:", fy_var,breakouts) )
-      shown_data_1 <- shown_data
+      shown_data_1 <- shown_data %>%
         group_by_(.dots = c(fy_var, breakouts)) %>%
         summarize_(
           sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
@@ -545,7 +545,6 @@ choose_data_frame <- function(
   # Returns:
   #   The name of the data frame with the correct level of aggregation
 ){
-  browser()
   # define which variables are used
   use_sub <- (
     input$color_var == double_count_vars["SubCustomer"] |

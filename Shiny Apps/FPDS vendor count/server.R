@@ -54,8 +54,9 @@ shinyServer(function(input, output, session) {
     #  
     # Returns:
     #   a fully built ggplot object
-    
     # get appropriately formatted data to use in the plot
+    vars$frame <- 
+      choose_data_frame(current_platform_sub, input, vars$double_counted)
     plot_data <- format_data_for_plot(get(vars$frame), vars$fiscal_year, input)
     # build plot with user-specified geoms
     mainplot <- build_plot_from_input(plot_data, input)
