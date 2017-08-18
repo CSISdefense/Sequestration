@@ -348,12 +348,12 @@ shinyServer(function(input, output, session) {
       sum_index <- 
         which(tolower(colnames(original_data)) == "sumofobligatedamount")
       
-      original_data <- deflate_variable(
-        colnames(original_data)[sum_index],
-        vars$fiscal_year,
-        original_data)
+      original_data <- deflate(original_data,
+                               fy_var = vars$fiscal_year, 
+                               money_var = colnames(original_data)[sum_index]
+      )
+        
     }
-
     
     current_data <<- original_data
     changed_data <<- original_data

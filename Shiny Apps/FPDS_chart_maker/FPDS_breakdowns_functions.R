@@ -452,37 +452,3 @@ rename_value <- function(
   
   return(passed_data)
 }
-
-
-deflate_variable <- function(
-  variable_name,    # as character
-  fiscal_year_name,    # as character, name of fiscal year variable
-  data_frame,   # data frame in which to deflate
-  session = getDefaultReactiveDomain()
-){
- deflate <- c(
-  "2000"= 0.707312744,
-  "2001"= 0.726215832,
-  "2002"= 0.73828541,
-  "2003"=	0.75914093,
-  "2004"=	0.779020234,
-  "2005"=	0.805910543,
-  "2006"=	0.833777068,
-  "2007"=	0.855786297,
-  "2008"=	0.885694001,
-  "2009"=	0.887468939,
-  "2010"=	0.901402201,
-  "2011"=	0.922523962,
-  "2012"=	0.940983316,
-  "2013"=	0.953319134,
-  "2014"=	0.967518637,
-  "2015"=	0.981185659,
-  "2016"=	1
-)
- 
- data_frame[[variable_name]] <- round(data_frame[[variable_name]] /
-                           deflate[as.character(data_frame[[fiscal_year_name]])])
- 
- return(data_frame) 
-  
-}

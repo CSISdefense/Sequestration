@@ -35,17 +35,11 @@ FullData$Fiscal.Year <- as.numeric(FullData$Fiscal.Year)
 FullData %<>% filter(Fiscal.Year >= 2000)
 
 
-FullData<-read_and_join(FullData,
-  "LOOKUP_Deflators.csv",
-  by="Fiscal.Year",
-  add_var="Deflator.2016"
+FullData<-deflate(FullData,
+                  money_var = "Action.Obligation",
+                  deflator_var="Deflator.2016"
 )
-
-
-FullData$Obligation.2016 <- FullData$Action.Obligation /
-  FullData$Deflator.2016
-FullData<-FullData[,colnames(FullData)!="Deflator.2016"]
-
+  
 
 #Consolidate categories for Vendor Size
 FullData<-read_and_join(FullData,
