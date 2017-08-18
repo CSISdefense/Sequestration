@@ -1,9 +1,0 @@
-name: flex
-account: csis
-server: shinyapps.io
-appId: 111084
-bundleId: 491453
-url: https://csis.shinyapps.io/flex/
-when: 1467120508.25866
-asMultiple: FALSE
-asStatic: FALSE
