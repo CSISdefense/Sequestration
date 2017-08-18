@@ -28,7 +28,7 @@ shinyServer(function(input, output, session) {
   
   # read data  
   load("2016_unaggregated_FPDS.Rda")
-  original_data<-FullData
+  original_data<-full_data
   # original_data <- read_csv("2016_unaggregated_FPDS.csv")
 
   # in case user renames the data-frame choosing variables
@@ -86,16 +86,22 @@ shinyServer(function(input, output, session) {
     # build plot with user-specified geoms
     mainplot <- build_plot_from_input(plot_data, input)+
       scale_color_manual(
-        values = subset(LabelsAndColors,column==input$color_var)$RGB,
-        limits=c(subset(LabelsAndColors,column==input$color_var)$variable),
-        labels=c(subset(LabelsAndColors,column==input$color_var)$Label)
+        values = subset(labels_and_colors,column==input$color_var)$RGB,
+        limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+        labels=c(subset(labels_and_colors,column==input$color_var)$Label)
       )+
       scale_fill_manual(
-        values = subset(LabelsAndColors,column==input$color_var)$RGB,
-        limits=c(subset(LabelsAndColors,column==input$color_var)$variable),
-        labels=c(subset(LabelsAndColors,column==input$color_var)$Label)
+        values = subset(labels_and_colors,column==input$color_var)$RGB,
+        limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+        labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+      )+labs(
+        x=ifelse( is.na(subset(column_key,column==vars$fiscal_year)$title),
+          vars$fiscal_year,
+          subset(column_key,column==vars$fiscal_year)$title),
+        y=ifelse( is.na(subset(column_key,column==input$y_var)$title),
+           input$y_var,
+          subset(column_key,column==input$y_var)$title)
       )
-    
     
     # add overall visual settings to the plot
     mainplot <- mainplot + 
@@ -132,8 +138,7 @@ shinyServer(function(input, output, session) {
       face = "bold",
       color = "#554449",
       family = "Open Sans",
-      margin = margin(0,15,0,0))
-    ) +
+      margin = margin(0,15,0,0))) +
     theme(legend.text = element_text(
       family = "Open Sans",
       color ="#554449")) +

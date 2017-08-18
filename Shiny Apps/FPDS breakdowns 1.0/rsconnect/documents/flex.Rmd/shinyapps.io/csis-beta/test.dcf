@@ -1,9 +1,0 @@
-name: test
-account: csis-beta
-server: shinyapps.io
-appId: 135327
-bundleId: 667882
-url: https://csis-beta.shinyapps.io/test/
-when: 1483458930.66794
-asMultiple: FALSE
-asStatic: FALSE
