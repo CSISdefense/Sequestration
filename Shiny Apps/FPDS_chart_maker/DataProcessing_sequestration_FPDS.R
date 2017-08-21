@@ -35,25 +35,11 @@ full_data$Fiscal.Year <- as.numeric(full_data$Fiscal.Year)
 full_data %<>% filter(Fiscal.Year >= 2000)
 
 
-<<<<<<< HEAD
-FullData<-deflate(FullData,
+full_data<-deflate(full_data,
                   money_var = "Action.Obligation",
                   deflator_var="Deflator.2016"
 )
   
-=======
-full_data<-read_and_join(full_data,
-  "LOOKUP_Deflators.csv",
-  by="Fiscal.Year",
-  add_var="Deflator.2016"
-)
-
-
-full_data$Obligation.2016 <- full_data$Action.Obligation /
-  full_data$Deflator.2016
-full_data<-full_data[,colnames(full_data)!="Deflator.2016"]
-
->>>>>>> 04ceebc228023cf92266eff483a2c4677344fe9d
 
 #Consolidate categories for Vendor Size
 full_data<-read_and_join(full_data,
@@ -92,10 +78,12 @@ full_data<-read_and_join(full_data,
                         add_var="SubCustomer.platform"
 )
 
+full_data<-replace_nas_with_unlabeled(full_data,"PlatformPortfolio")
+
 
 labels_and_colors<-prepare_labels_and_colors(full_data,"SubCustomer")
 
-full_data<-replace_nas_with_unlabeled(full_data,"PlatformPortfolio")
+
 labels_and_colors<-rbind(labels_and_colors,
   prepare_labels_and_colors(full_data,"PlatformPortfolio")
 )
@@ -142,7 +130,6 @@ labels_and_colors<-rbind(labels_and_colors,
 #   prepare_labels_and_colors(full_data,"ClassifyNumberOfOffers")
 # )
 #We haven't done a key for this one. 
-debug(get_column_key)
 column_key<-csis360::get_column_key(full_data)
 
 # set correct data types
