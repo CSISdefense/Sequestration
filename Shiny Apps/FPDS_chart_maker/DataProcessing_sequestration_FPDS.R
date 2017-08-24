@@ -81,55 +81,9 @@ full_data<-read_and_join(full_data,
 full_data<-replace_nas_with_unlabeled(full_data,"PlatformPortfolio")
 
 
-labels_and_colors<-prepare_labels_and_colors(full_data,"SubCustomer")
+labels_and_colors<-prepare_labels_and_colors(full_data)
 
 
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"PlatformPortfolio")
-)
-# ,"PlatformPortfolio")
-# )
-#Shiny.VendorSize is the new Vendor.Size
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"Shiny.VendorSize")
-)
-
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"Competition.sum")
-)
-
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"Competition.multisum")
-)
-
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"Competition.effective.only")
-)
-
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"No.Competition.sum")
-)
-
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"Customer")
-)
-
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"ProductOrServiceArea")
-)
-
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"ProductServiceOrRnDarea.sum")
-)
-
-labels_and_colors<-rbind(labels_and_colors,
-  prepare_labels_and_colors(full_data,"SubCustomer.platform")
-)
-
-# labels_and_colors<-rbind(labels_and_colors,
-#   prepare_labels_and_colors(full_data,"ClassifyNumberOfOffers")
-# )
-#We haven't done a key for this one. 
 column_key<-csis360::get_column_key(full_data)
 
 # set correct data types

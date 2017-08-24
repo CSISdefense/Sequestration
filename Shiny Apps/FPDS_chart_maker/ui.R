@@ -52,8 +52,8 @@ shinyUI(fluidPage(
         selectInput(
           inputId = "y_var",
           label = "Y Variable",
-          choices = "Action.Obligation",
-          selected = "Action.Obligation",
+          choices = "Action.Obligation.2016",
+          selected = "Action.Obligation.2016",
           width = "100%",
           selectize = TRUE
         ),
