@@ -15,7 +15,6 @@ sequestration_original <- read_csv("Data\\Vendor_SP_FSRSinFPDSVendorSizeHistoryS
                           na = c("","NA","NULL"))
 
 
-
 sequestration_original<-apply_lookups(Path,sequestration_original)
 sequestration_original$Fiscal_Year<-format(sequestration_original$Fiscal.Year, format="%Y")
 
@@ -75,17 +74,8 @@ sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal_Year,
 # colnames(sequestration_Facet)[3] <- "SubCustomer.sum"
 
 
-sequestration_Facet$FacetingFill<-sequestration_Facet$Faceting
 
-sequestration_Facet$Faceting[sequestration_Facet$Faceting=="PrimeNotReportInFSRS"]<-"AllPrimes"
-
-PrimeReport<-subset(sequestration_Facet,Faceting == "PrimeReportInFSRS")
-PrimeReport$Faceting<-"AllPrimes"
-
-# Really confused why rbind two dataframes create list if I don't explicitly coerce them to dataframes  
-sequestration_Duplicates <- rbind(as.data.frame(sequestration_Facet),as.data.frame(PrimeReport))
-
-write.csv(x = sequestration_Duplicates, 
+write.csv(x = sequestration_Facet, 
           file = "Data\\Sequestration_Duplicates.csv",
           row.names = FALSE)
 
@@ -108,10 +98,10 @@ Coloration<-ddply(Coloration
 Coloration<-subset(Coloration, variable!="")
 
 PlatformPortfolio<-PrepareLabelsAndColors(Coloration,
-                                          sequestration_Duplicates,
+                                          sequestration_Facet,
                                           "PlatformPortfolio")
-SubCustomer.sum<-PrepareLabelsAndColors(Coloration,sequestration_Duplicates,"SubCustomer.sum")
-Pricing.Mechanism.sum<-PrepareLabelsAndColors(Coloration,sequestration_Duplicates,"Pricing.Mechanism.sum")
+SubCustomer.sum<-PrepareLabelsAndColors(Coloration,sequestration_Facet,"SubCustomer.sum")
+Pricing.Mechanism.sum<-PrepareLabelsAndColors(Coloration,sequestration_Facet,"Pricing.Mechanism.sum")
 
 
 

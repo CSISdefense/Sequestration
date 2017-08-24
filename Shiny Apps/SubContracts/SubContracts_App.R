@@ -2,13 +2,13 @@
 # Sequestration App
 ################################################################################
 rm(list = ls())
-require(shiny)
-require(ggplot2)
-require(dplyr)
-require(scales)
-require(gridExtra)
-require(grid)
-require(Cairo)
+library(shiny)
+library(ggplot2)
+library(dplyr)
+library(scales)
+library(gridExtra)
+library(grid)
+library(Cairo)
 library(forcats)
 
 ################################################################################
@@ -16,7 +16,7 @@ library(forcats)
 ################################################################################      
 
 # read in data            
-FullData <- read.csv("Data\\Sequestration_Duplicates.csv",header = TRUE, sep = ",")
+FullData <- read.csv("../../Data/Sequestration_Duplicates.csv",header = TRUE, sep = ",")
 
 # rename MilitaryHealth to have a space
 #levels(FullData$SubCustomer.sum)[5] <- "Military Health"
@@ -33,8 +33,8 @@ FullData <- read.csv("Data\\Sequestration_Duplicates.csv",header = TRUE, sep = "
 # Visual settings for user interface
 ################################################################################
 
-load(file="data//labels.RData")
-
+load(file="../../Data/labels.RData")
+grid.newpage()
 
 # c("AllPrimes",
 #               "PrimeReportInFSRS",
@@ -270,18 +270,14 @@ server <- function(input, output, session){
     
     # ggplot call
     
+
     
-    
-    p <- ggplot(data = dataset(),
+    pupper <- ggplot(data = subset(dataset(),Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )),
                 aes(x=Fiscal_Year, 
                     y=PrimeOrSubTotalAmount,
                     fill = Pricing.Mechanism.sum)) +
       geom_bar(width=.7,stat="identity") +
       ggtitle("Contract Obligations by whether in FSRS or is Subcontract") +
-      
-      facet_wrap(~ Faceting, ncol = 2, scales="free_y", 
-                 drop = TRUE) + 
-      
       
       scale_fill_manual(
         values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
@@ -290,51 +286,33 @@ server <- function(input, output, session){
       #     "PrimeNotReportInFSRS" =  "#33FF66",
       #     "PrimeReportInFSRS" =  "#0066FF",
       #     "SubReportInFSRS" = "#FF6699")) +
-
-
-      theme(strip.text.x = element_text(family = "Arial", size = 12, color = "#554449")) +
-      theme(strip.background = element_rect(color = "gray95", fill=c("white"
-      ))) +
-      
-      theme(panel.spacing.y = unit(1, "lines")) +
-      
-      #coll: Added title 
-      ##############################################################################facet below 
-      theme(plot.title = element_text(
-        family = "Arial", color = "#554449", size = 26, face="bold",
-        margin=margin(20,0,30,0), hjust = 0.5)) +
-      
-      theme(panel.border = element_blank(),
-            panel.background = element_rect(fill = "#FCFCFC"),
-            plot.background = element_rect(fill = "#FCFCFC", color="#FCFCFC"),
-            #plot.background = element_rect(fill="#F9FBFF"), second choice
-            #plot.background = element_rect(fill="#EFF1F5"),
-            #plot.background = element_rect(fill="#ECF2F5"),
-            panel.grid.major.x = element_blank(),
-            panel.grid.minor.x = element_blank(),
-            panel.grid.major.y = element_line(size=.1, color="lightgray"),
-            panel.grid.minor.y = element_line(size=.1, color="lightgray")) +
-      
-      #scale_x_continuous() +
+      csis360::get_plot_theme() +
       scale_x_continuous(breaks = seq(input$Yr[1], input$Yr[2], by = 1),
-                         labels = function(x) {substring(as.character(x), 3, 4)}) +
-      
-      
-      
-      theme(legend.position="bottom") +
-      theme(strip.background = element_rect(color = "gray95", fill=c("#fcfcfc"))) +
-      theme(strip.text.x = element_text(family = "Open Sans",
-                                        size = rel(1.7),
-                                        color = "#554449")) +
-      theme(legend.text = element_text(size = 18, color="#554449")) +
-      theme(legend.title = element_text(size = 18, face = "bold", color="#554449")) +
-      theme(legend.key = element_rect(fill="#fcfcfc")) +
-      theme(legend.key.width = unit(3,"line")) + 
-      theme(axis.text.x = element_text(size = 14, color="#554449", margin=margin(-5,0,0,0))) +
-      theme(axis.ticks.length = unit(.00, "cm")) +
-      theme(axis.text.y = element_text(size = 14, color="#554449", margin=margin(0,5,0,0))) +
-      theme(axis.title.x = element_text(size = 16, face = "bold", color="#554449", margin=margin(15,0,0,0))) +
-      theme(axis.title.y = element_text(size = 16, face = "bold", color="#554449", margin=margin(0,15,0,0))) +
+        labels = function(x) {substring(as.character(x), 3, 4)})+
+  
+      theme(legend.position = "none")+
+      xlab("Fiscal Year") +
+      ylab("DoD Contract Obligated Amount in billion $") 
+    ##############################################################################facet above
+
+    
+    plower <- ggplot(data = subset(dataset(),Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
+      aes(x=Fiscal_Year, 
+        y=PrimeOrSubTotalAmount,
+        fill = Pricing.Mechanism.sum)) +
+      geom_bar(width=.7,stat="identity") +
+      facet_wrap(~ Faceting, ncol = 2,  
+        drop = TRUE) + 
+      scale_x_continuous(breaks = seq(input$Yr[1], input$Yr[2], by = 1),
+        labels = function(x) {substring(as.character(x), 3, 4)})+
+      scale_fill_manual(
+        values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
+      # c(
+      #     # "AllPrimes" = "#33FF66",
+      #     "PrimeNotReportInFSRS" =  "#33FF66",
+      #     "PrimeReportInFSRS" =  "#0066FF",
+      #     "SubReportInFSRS" = "#FF6699")) +
+      csis360::get_plot_theme() +
       
       xlab("Fiscal Year") +
       ylab("DoD Contract Obligated Amount in billion $") +
@@ -344,7 +322,8 @@ server <- function(input, output, session){
       labs(caption = "Source: FPDS; CSIS analysis", size = 30, family= "Open Sans") 
     ##############################################################################facet above
     
-    p     
+        
+    grid.arrange(pupper,plower)
   })
   
   
