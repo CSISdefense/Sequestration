@@ -28,7 +28,7 @@ full_data <- read_csv(
 full_data<-standardize_variable_names(full_data)
 # coerce Amount to be a numeric variable
 full_data$Action.Obligation %<>% as.numeric()
-full_data$SumOfnumberOfActions %<>% as.numeric()
+full_data$Number.Of.Actions %<>% as.numeric()
 full_data$Fiscal.Year <- as.numeric(full_data$Fiscal.Year)
 
 # discard pre-2000

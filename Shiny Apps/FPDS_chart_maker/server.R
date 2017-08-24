@@ -349,9 +349,9 @@ shinyServer(function(input, output, session) {
     
     vars$fiscal_year <- names(original_data)[1]
     
-    if("sumofobligatedamount" %in% tolower(colnames(original_data))){
+    if("Action.Obligation" %in% tolower(colnames(original_data))){
       sum_index <- 
-        which(tolower(colnames(original_data)) == "sumofobligatedamount")
+        which(tolower(colnames(original_data)) == "Action.Obligation")
       
       original_data <- deflate(original_data,
                                fy_var = vars$fiscal_year, 
