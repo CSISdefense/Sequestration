@@ -16,17 +16,19 @@ library(forcats)
 ################################################################################      
 
 # read in data            
-FullData <- read.csv("../../Data/Sequestration_Duplicates.csv",header = TRUE, sep = ",")
+full_data <- read.csv("../../Data/Sequestration_Duplicates.csv",header = TRUE, sep = ",")
+
+
 
 # rename MilitaryHealth to have a space
-#levels(FullData$SubCustomer.sum)[5] <- "Military Health"
-# FullData$SubCustomer[FullData$Customer == "MilitaryHealth"] <- "Other DoD"  
+#levels(full_data$SubCustomer.sum)[5] <- "Military Health"
+# full_data$SubCustomer[full_data$Customer == "MilitaryHealth"] <- "Other DoD"  
 
 # make Big Five the first category (so it displays at the top of the legend)
-# FullData$VendorSize <- relevel(FullData$VendorSize, "Big Five")
+# full_data$VendorSize <- relevel(full_data$VendorSize, "Big Five")
 
 # save FY as 2 digits instead of 4, for better visual scale
-#FullData$FY <- factor(substring(as.character(FullData$FY), 3, 4))
+#full_data$FY <- factor(substring(as.character(full_data$FY), 3, 4))
 
 
 ################################################################################
@@ -88,7 +90,7 @@ ui <- fluidPage(
            br(),
            
            # year slider
-           sliderInput('Yr', "Year Range:",
+           sliderInput('year', "Year Range:",
                        min = 2008, max = 2016,
                        value = c(2008,2016),
                        ticks = FALSE,
@@ -141,11 +143,11 @@ server <- function(input, output, session){
     
     ## subset by year, based on year slider ##
     
-    # input$Yr[1] is the user-selected minimum year
-    # input$Yr[2] is the user-selected maximum year
+    # input$year[1] is the user-selected minimum year
+    # input$year[2] is the user-selected maximum year
     # as.numeric(levels(FY))[FY] is just FY, converted from a factor to
     # a numeric variable
-    shown <- filter(FullData, Fiscal_Year >= input$Yr[1] & Fiscal_Year <= input$Yr[2])
+    shown <- filter(full_data, Fiscal_Year >= input$year[1] & Fiscal_Year <= input$year[2])
     
     
     ## subset data based on which categories the user selected ##
@@ -174,7 +176,7 @@ server <- function(input, output, session){
     
     #shown$VendorSize <- fct_reorder(
     #  shown$VendorSize,
-    #  (shown$Percent * (shown$FY == input$Yr[2])) ,
+    #  (shown$Percent * (shown$FY == input$year[2])) ,
     #  mean,
     #  na.rm = TRUE,
     #  .desc = TRUE)
@@ -185,7 +187,7 @@ server <- function(input, output, session){
     # end of dataset() function      
   })
   
-  
+
   ################################################################################
   # Build the plot for output
   ################################################################################
@@ -225,7 +227,7 @@ server <- function(input, output, session){
 #            panel.grid.minor.y = element_line(size=.1, color="lightgray")) +
       
 #      scale_y_continuous(labels=percent) +
-#      scale_x_continuous(breaks = seq(input$Yr[1], input$Yr[2], by = 1),
+#      scale_x_continuous(breaks = seq(input$year[1], input$year[2], by = 1),
 #                         labels = function(x) {substring(as.character(x), 3, 4)}) +
       
       
@@ -261,18 +263,35 @@ server <- function(input, output, session){
     
     # # calculate breaks for x axis
     # xbreaks <- rev(seq(
-    #   from = input$Yr[2],
-    #    to = input$Yr[1],
-    #    by = -1 * ceiling((input$Yr[2] - input$Yr[1]) / 7)))
+    #   from = input$year[2],
+    #    to = input$year[1],
+    #    by = -1 * ceiling((input$year[2] - input$year[1]) / 7)))
     # 
     # xlabels <- as.character(xbreaks)
+
+    shown<-dataset()
     
+    shown_top <- subset(dataset(),Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )) %>%
+      group_by(Fiscal_Year, Faceting) %>%
+      summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubTotalAmount))
+    
+    
+    shown_prime <- subset(shown,Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )) %>%
+      group_by(Fiscal_Year) %>%
+      summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubTotalAmount))
+    
+    shown_prime$AllPrime<-"AllPrime"
     
     # ggplot call
+    overview_plot <- ggplot(data = shown_top,
+                aes(x = Fiscal_Year, y = PrimeOrSubTotalAmount, color = Faceting)) +
+      geom_line(size = 1) +
+      ylab("Contract Obligations by whether in FSRS or is Subcontract") +
+      # scale_y_log10()
+    csis360::get_plot_theme()+
+      geom_line(data = shown_prime,aes(color=AllPrime))
     
-
-    
-    pupper <- ggplot(data = subset(dataset(),Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )),
+    prime_plot<- ggplot(data = subset(dataset(),Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )),
                 aes(x=Fiscal_Year, 
                     y=PrimeOrSubTotalAmount,
                     fill = Pricing.Mechanism.sum)) +
@@ -287,7 +306,7 @@ server <- function(input, output, session){
       #     "PrimeReportInFSRS" =  "#0066FF",
       #     "SubReportInFSRS" = "#FF6699")) +
       csis360::get_plot_theme() +
-      scale_x_continuous(breaks = seq(input$Yr[1], input$Yr[2], by = 1),
+      scale_x_continuous(breaks = seq(input$year[1], input$year[2], by = 1),
         labels = function(x) {substring(as.character(x), 3, 4)})+
   
       theme(legend.position = "none")+
@@ -296,14 +315,14 @@ server <- function(input, output, session){
     ##############################################################################facet above
 
     
-    plower <- ggplot(data = subset(dataset(),Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
+    in_fsrs_plot <- ggplot(data = subset(dataset(),Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
       aes(x=Fiscal_Year, 
         y=PrimeOrSubTotalAmount,
         fill = Pricing.Mechanism.sum)) +
       geom_bar(width=.7,stat="identity") +
       facet_wrap(~ Faceting, ncol = 2,  
         drop = TRUE) + 
-      scale_x_continuous(breaks = seq(input$Yr[1], input$Yr[2], by = 1),
+      scale_x_continuous(breaks = seq(input$year[1], input$year[2], by = 1),
         labels = function(x) {substring(as.character(x), 3, 4)})+
       scale_fill_manual(
         values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
@@ -323,7 +342,7 @@ server <- function(input, output, session){
     ##############################################################################facet above
     
         
-    grid.arrange(pupper,plower)
+    grid.arrange(overview_plot,prime_plot,in_fsrs_plot)
   })
   
   
@@ -350,7 +369,7 @@ server <- function(input, output, session){
 #  output$FullDownloadBtn <- downloadHandler(
 #    filename = paste('CSIS.Contract Obligations by Vendor Size.', Sys.Date(),'.csv', sep=''),
 #    content = function(file) {
-#      writedata <- FullData
+#      writedata <- top_data
 #      writedata <- select(writedata, FY, VendorSize, Customer, Category,
 #                          PlatformPortfolio, Amount)
 #      write.csv(writedata, file)
@@ -384,7 +403,7 @@ server <- function(input, output, session){
 #      input$Chart,
 #      "Line" = {
 #        point <- nearPoints(dataset(), hover, xvar = "FY", yvar = "Percent",
-#                            threshold = (150 / (input$Yr[2] - input$Yr[1])) + 10,
+#                            threshold = (150 / (input$year[2] - input$year[1])) + 10,
 #                            maxpoints = 1, addDist = TRUE)
 #      },
 #      "Bar" = {
@@ -398,7 +417,7 @@ server <- function(input, output, session){
     
 #    if(input$Chart == "Bar"){
 #      year <- round(hover$x)
-#      if(year < input$Yr[1] | year > input$Yr[2]) return(NULL)
+#      if(year < input$year[1] | year > input$year[2]) return(NULL)
 #      if(hover$y < 0) return(NULL)
       
 #      hov_amount <- dataset() %>%

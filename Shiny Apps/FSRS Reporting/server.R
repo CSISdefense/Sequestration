@@ -84,7 +84,7 @@ shinyServer(function(input, output) {
         p <- ggplot(data = shown,
           aes(x = fiscal_year, y = Amount, color = Presence)) +
           geom_line(size = 1) +
-          ylab("Amount ($M) deflation?")
+          ylab("Amount ($M) deflation?")+csis360::get_plot_theme()
       },
       "Actions" = {
         # shown <- filter(shown, Presence != "Sub in FSRS")
@@ -92,7 +92,7 @@ shinyServer(function(input, output) {
           aes(x = fiscal_year, y = NumberOfActions, color = Presence)) +
           geom_line(size = 1) +
           ylab("Number of Actions (log scale)") +
-          scale_y_log10()
+          scale_y_log10()+csis360::get_plot_theme()
       },
       "Contracts" = {
         # shown <- filter(shown, Presence != "Sub in FSRS")
@@ -100,7 +100,7 @@ shinyServer(function(input, output) {
           aes(x = fiscal_year, y = NumberOfContracts, color = Presence)) +
           geom_line(size = 1) +
           ylab("Number of Contracts (log scale)") +
-          scale_y_log10()
+          scale_y_log10()+csis360::get_plot_theme()
       }
     )
     

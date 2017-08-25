@@ -4,7 +4,7 @@ library(tidyverse)
 library(magrittr)
 options(scipen = 999)
 
-comp_data <- read_csv("Contract_FSRSinFPDShistory.csv")
+comp_data <- read_csv("Data/Contract_FSRSinFPDShistory.csv")
 
 comp_data %<>% 
   filter(NumberOfContracts != "NULL" & fiscal_year >= 2010) %>%
