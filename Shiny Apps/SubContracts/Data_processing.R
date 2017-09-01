@@ -16,7 +16,7 @@ sequestration_original <- read_csv("Data\\Vendor_SP_FSRSinFPDSVendorSizeHistoryS
 
 
 sequestration_original<-apply_lookups(Path,sequestration_original)
-sequestration_original$Fiscal_Year<-format(sequestration_original$Fiscal.Year, format="%Y")
+sequestration_original$Fiscal.Year<-format(sequestration_original$Fiscal.Year, format="%Y")
 
 # For faster processing the for-loop, vectorise, pre-allocate the data structures and 
 # put the condiction outside for-loop
@@ -46,26 +46,30 @@ sequestration_original$Faceting[sequestration_original$IsSubContract==0&
 
 # Filter sequestration_original to only include fical year ranging from 2008 to 2016
 
-sequestration <- filter(sequestration_original,Fiscal.Year >= as.Date("2007/10/1") &
-                        Fiscal.Year <= as.Date("2016/9/30") &
+sequestration <- filter(sequestration_original,Fiscal.Year >= 2007 &
+                        Fiscal.Year <= 2016 &
                         Customer == "Defense")
 
 # Transform some columns of interest into factor or integer and deflating
 
-sequestration$PrimeOrSubObligatedAmount <- as.numeric(sequestration$PrimeOrSubObligatedAmount)
-sequestration$PrimeOrSubObligatedAmount<-sequestration$PrimeOrSubObligatedAmount/
-    sequestration$Deflator.2015
+
+PrimeOrSubTotalAmount<-deflate(sequestration,
+  money_var = "PrimeOrSubObligatedAmount",
+  deflator_var="Deflator.2016"
+)
+
+
 
 # Aggregating sequestration by Fiscal.Year, Platform Portfolio and IsSubContract
 
   #This suddenly stopped working after R / package updates. ??
-sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal_Year,
+sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal.Year,
                                                   PlatformPortfolio,
                                                 #  IsSubContract,
                                                   SubCustomer.sum,
                                                 Pricing.Mechanism.sum,
                                                   Faceting) %>%
-    dplyr::summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubObligatedAmount)/1e+9)
+    dplyr::summarise(PrimeOrSubTotalAmount.2016 = sum(PrimeOrSubObligatedAmount.2016)/1e+9)
 
 # Rename 'IsSubContract' column
 #sequestration_Facet$IsSubContract <- ifelse(sequestration_Facet$IsSubContract == 1,
@@ -78,6 +82,8 @@ sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal_Year,
 write.csv(x = sequestration_Facet, 
           file = "Data\\Sequestration_Duplicates.csv",
           row.names = FALSE)
+full_data<- sequestration_Facet
+
 
 
 
@@ -117,7 +123,7 @@ color.list<-structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.c
 
      #Thanks Stack Overflower https://stackoverflow.com/questions/19265172/converting-two-columns-of-a-data-frame-to-a-named-vector
 
-save(color.list,PlatformPortfolio,SubCustomer.sum,Pricing.Mechanism.sum,file="data//labels.RData")
+save(color.list,full_data,file="Shiny Apps//SubContracts//subcontract_full_data.RData")
 
 
 
