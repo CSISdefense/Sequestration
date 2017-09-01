@@ -271,19 +271,18 @@ server <- function(input, output, session){
 
     shown<-dataset()
     
-    shown_top <- subset(dataset(),Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )) %>%
+    shown_top <- shown %>%
       group_by(Fiscal_Year, Faceting) %>%
       summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubTotalAmount))
     
-    
-    shown_prime <- subset(shown,Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )) %>%
+    shown_prime <- subset(shown_top,Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )) %>%
       group_by(Fiscal_Year) %>%
       summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubTotalAmount))
     
     shown_prime$AllPrime<-"AllPrime"
     
     # ggplot call
-    overview_plot <- ggplot(data = shown_top,
+    overview_plot <- ggplot(data = subset(shown_top,Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
                 aes(x = Fiscal_Year, y = PrimeOrSubTotalAmount, color = Faceting)) +
       geom_line(size = 1) +
       ylab("Contract Obligations by whether in FSRS or is Subcontract") +
@@ -292,10 +291,8 @@ server <- function(input, output, session){
       geom_line(data = shown_prime,aes(color=AllPrime))
 
     # browser()
-    percent_top <- dataset() %>%
-      group_by(Fiscal_Year, Faceting) %>%
-      summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubTotalAmount)) %>%
-      reshape2::dcast(Fiscal_Year~Faceting )
+    percent_top <- shown_top  %>%
+      reshape2::dcast(Fiscal_Year~Faceting,value.var="PrimeOrSubTotalAmount" )
     percent_top$PrimeReportInFSRS[is.na(percent_top$PrimeReportInFSRS)]<-0
     percent_top$AllPrime<-percent_top$PrimeNotReportInFSRS+
       percent_top$PrimeReportInFSRS
@@ -311,13 +308,7 @@ server <- function(input, output, session){
                       value.name="percent"
     )
     
-    # shown_top <- ddply(shown_top,
-      
-    # )
-      # subset(dataset(),Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )) %>%
-      # group_by(Fiscal_Year, Faceting) %>%
-      # summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubTotalAmount))
-    
+
     
     # ggplot call
     percent_plot <- ggplot(data = percent_top,
@@ -326,12 +317,12 @@ server <- function(input, output, session){
       geom_line(size = 1) +
       ylab("Market Share of Contrats Reporting in FSRS") +
       # scale_y_log10()
-      csis360::get_plot_theme()
-      # geom_line(data = percent_top,aes(y=PercentSubAward, color=AllPrime))
+      csis360::get_plot_theme()+
+      scale_y_continuous(labels = scales::percent)
+      
     
     
-    
-    prime_plot<- ggplot(data = subset(dataset(),Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )),
+    prime_plot<- ggplot(data = subset(shown,Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )),
                 aes(x=Fiscal_Year, 
                     y=PrimeOrSubTotalAmount,
                     fill = Pricing.Mechanism.sum)) +
@@ -357,7 +348,7 @@ server <- function(input, output, session){
     
     
     
-    in_fsrs_plot <- ggplot(data = subset(dataset(),Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
+    in_fsrs_plot <- ggplot(data = subset(shown,Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
       aes(x=Fiscal_Year, 
         y=PrimeOrSubTotalAmount,
         fill = Pricing.Mechanism.sum)) +
