@@ -289,14 +289,15 @@ server <- function(input, output, session){
       ylab("Contract Obligations by whether in FSRS or is Subcontract") +
       # scale_y_log10()
     csis360::get_plot_theme()+
-      geom_line(data = shown_prime,aes(color=AllPrime))
+      geom_line(data = shown_prime,aes(color=AllPrime))+
+      
     
     prime_plot<- ggplot(data = subset(dataset(),Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )),
                 aes(x=Fiscal_Year, 
                     y=PrimeOrSubTotalAmount,
                     fill = Pricing.Mechanism.sum)) +
       geom_bar(width=.7,stat="identity") +
-      ggtitle("Contract Obligations by whether in FSRS or is Subcontract") +
+     
       
       scale_fill_manual(
         values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
