@@ -53,7 +53,7 @@ sequestration <- filter(sequestration_original,Fiscal.Year >= 2007 &
 # Transform some columns of interest into factor or integer and deflating
 
 
-PrimeOrSubTotalAmount<-deflate(sequestration,
+sequestration<-deflate(sequestration,
   money_var = "PrimeOrSubObligatedAmount",
   deflator_var="Deflator.2016"
 )
