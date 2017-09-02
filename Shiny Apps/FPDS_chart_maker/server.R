@@ -24,7 +24,7 @@ library(csis360)
 shinyServer(function(input, output, session) {
   options(scipen = 99)
   options(shiny.maxRequestSize=1000*1024^2)
-  source("FPDS_breakdowns_functions.R")
+  # source("FPDS_breakdowns_functions.R")
   
   # read data  
   load("2016_unaggregated_FPDS.Rda")
