@@ -16,7 +16,7 @@ sequestration_original <- read_csv("Data\\Vendor_SP_FSRSinFPDSVendorSizeHistoryS
 
 
 sequestration_original<-apply_lookups(Path,sequestration_original)
-sequestration_original$Fiscal.Year<-format(sequestration_original$Fiscal.Year, format="%Y")
+sequestration_original$Fiscal.Year<-as.numeric(format(sequestration_original$Fiscal.Year, format="%Y"))
 
 # For faster processing the for-loop, vectorise, pre-allocate the data structures and 
 # put the condiction outside for-loop
@@ -68,7 +68,8 @@ sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal.Year,
                                                 #  IsSubContract,
                                                   SubCustomer.sum,
                                                 Pricing.Mechanism.sum,
-                                                  Faceting) %>%
+                                                  Faceting,
+                                                IsFSRSreportable) %>%
     dplyr::summarise(PrimeOrSubTotalAmount.2016 = sum(PrimeOrSubObligatedAmount.2016)/1e+9)
 
 # Rename 'IsSubContract' column
@@ -77,53 +78,13 @@ sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal.Year,
 #                                            "Prime Contract")
 # colnames(sequestration_Facet)[3] <- "SubCustomer.sum"
 
-
-
-write.csv(x = sequestration_Facet, 
-          file = "Data\\Sequestration_Duplicates.csv",
-          row.names = FALSE)
 full_data<- sequestration_Facet
 
+labels_and_colors<-prepare_labels_and_colors(full_data)
 
+column_key<-csis360::get_column_key(full_data)
 
-
-Coloration<-read.csv(
-  paste(Path,"Lookups\\","Lookup_coloration.csv",sep=""),
-  header=TRUE, sep=",", na.strings="NA", dec=".", strip.white=TRUE, 
-  stringsAsFactors=FALSE
-)
-Coloration<-ddply(Coloration
-                  , c(.(R), .(G), .(B))
-                  , transform
-                  , ColorRGB=as.character(
-                    if(min(is.na(c(R,G,B)))) {NA} 
-                    else {rgb(max(R),max(G),max(B),max=255)}
-                  )
-)
-#Clear out lines from the coloration CSV where no variable is listed.
-Coloration<-subset(Coloration, variable!="")
-
-PlatformPortfolio<-PrepareLabelsAndColors(Coloration,
-                                          sequestration_Facet,
-                                          "PlatformPortfolio")
-SubCustomer.sum<-PrepareLabelsAndColors(Coloration,sequestration_Facet,"SubCustomer.sum")
-Pricing.Mechanism.sum<-PrepareLabelsAndColors(Coloration,sequestration_Facet,"Pricing.Mechanism.sum")
-
-
-
-
-names(Pricing.Mechanism.sum$ColorRGB)<-c(Pricing.Mechanism.sum$variable)
-
-
-
-color.list<-c(as.character(Pricing.Mechanism.sum$ColorRGB))
-names(color.list)<-c(Pricing.Mechanism.sum$variable)
-
-color.list<-structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label))
-
-     #Thanks Stack Overflower https://stackoverflow.com/questions/19265172/converting-two-columns-of-a-data-frame-to-a-named-vector
-
-save(color.list,full_data,file="Shiny Apps//SubContracts//subcontract_full_data.RData")
+save(labels_and_colors,column_key,full_data,file="Shiny Apps//SubContracts//subcontract_full_data.RData")
 
 
 

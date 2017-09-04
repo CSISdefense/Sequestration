@@ -16,7 +16,7 @@ library(forcats)
 ################################################################################      
 
 # read in data            
-full_data <- read.csv("../../Data/Sequestration_Duplicates.csv",header = TRUE, sep = ",")
+load("subcontract_full_data.RData")
 
 
 
@@ -140,6 +140,9 @@ server <- function(input, output, session){
   ################################################################################
   
   dataset <- reactive({
+    #Test to prevent a confusing error code if we got the input wrong
+    if(!is.data.frame(full_data))
+      stop("full_data most be a data frame or tibble")
     
     ## subset by year, based on year slider ##
     
@@ -147,7 +150,9 @@ server <- function(input, output, session){
     # input$year[2] is the user-selected maximum year
     # as.numeric(levels(FY))[FY] is just FY, converted from a factor to
     # a numeric variable
-    shown <- filter(full_data, Fiscal_Year >= input$year[1] & Fiscal_Year <= input$year[2])
+    
+    
+    shown <- filter(full_data, Fiscal.Year >= input$year[1] & Fiscal.Year <= input$year[2])
     
     
     ## subset data based on which categories the user selected ##
@@ -163,8 +168,8 @@ server <- function(input, output, session){
     )
     
 #    shown <- shown %>%
-#      group_by(Fiscal_Year, Faceting) %>%
-#      summarise(Amount = sum(PrimeOrSubTotalAmount))
+#      group_by(Fiscal.Year, Faceting) %>%
+#      dplyr::summarise(Amount = sum(PrimeOrSubTotalAmount.2016))
     
     #shown <- shown %>%
     #  group_by(FY) %>%
@@ -192,74 +197,7 @@ server <- function(input, output, session){
   # Build the plot for output
   ################################################################################
   
-#  plotsettings <- reactive({
-#    p <- ggplot(data = dataset(),
-#                aes(x=FY, y=Percent, 
-#                    color=VendorSize, group=VendorSize, fill = VendorSize)) +
-#      geom_line(size = 1.5) +
-#      
-#      #coll: Added title 
-#      ggtitle("Contract Obligations by Vendor Size") + 
-#      scale_color_manual(
-#        values = c(
-#          "Big Five" = "#C74F4F",
-#          "Large" =  "#5F597C",
-#          "Medium" = "#599a9e",
-#          "Small" = "#84B564")) +
-#      ########################################################################################share below
-#      
-#      # diigtheme1:::diiggraph()+ 
-#      theme(plot.title = element_text(
-#        family = "Open Sans", color = "#554449", size = 26, face="bold",
-#        margin=margin(20,0,30,0), hjust = 0.5)) +
-      
-#      coord_cartesian(ylim = c(0, 1.05*max(dataset()$Percent))) +  
-#      
-#      theme(panel.border = element_blank(),
-#            panel.background = element_rect(fill = "#FCFCFC", color="#FCFCFC"),
-#            plot.background = element_rect(fill = "#FCFCFC", color="#FCFCFC"),
-#            #plot.background = element_rect(fill="#F9FBFF"), second choic
-#      plot.background = element_rect(fill="#EFF1F5"),
-            #plot.background = element_rect(fill="#ECF2F5"),
-#            panel.grid.major.x = element_blank(),
-#            panel.grid.minor.x = element_blank(),
-#            panel.grid.major.y = element_line(size=.1, color="lightgray"),
-#            panel.grid.minor.y = element_line(size=.1, color="lightgray")) +
-      
-#      scale_y_continuous(labels=percent) +
-#      scale_x_continuous(breaks = seq(input$year[1], input$year[2], by = 1),
-#                         labels = function(x) {substring(as.character(x), 3, 4)}) +
-      
-      
-      
-#      theme(legend.position = "right") +
-#      theme(legend.title=element_blank()) +
-#      theme(legend.text = element_text(size = 18, color="#554449")) +
-      # theme(legend.title = element_text(size = 18, face = "bold", color="#554449")) +
-#      theme(legend.key = element_rect(fill="#FCFCFC")) +
-#      theme(legend.background = element_rect(fill="#FCFCFC")) + 
-#      theme(legend.key.width = unit(3,"line")) +
-#      theme(axis.text.x = element_text(size = 14, color="#554449", margin=margin(-10,0,0,0))) +
-#      theme(axis.ticks.length = unit(.00, "cm")) +
-#      theme(axis.text.y = element_text(size = 14, color="#554449", margin=margin(0,5,0,0))) +
-#      theme(axis.title.x = element_text(size = 16, face = "bold", color="#554449", margin=margin(15,0,0,0))) +
-#      theme(axis.title.y = element_text(size = 16, face = "bold", color="#554449", margin=margin(0,15,0,0))) +
-      
-#      xlab("Fiscal Year") +
-#      ylab("Share of Contract Obligations") +
-#      theme(plot.caption = element_text(
-#        size = 12, face = "bold", color = "#554449", family = "Open Sans"
-#      )) +
-#      labs(caption = "Source: FPDS; CSIS analysis", size = 30, family= "Open Sans")  
-    ########################################################################################share above
-    # return the built-up plot object to whatever called plotsettings() 
-    # currently the renderPlot() function below is the only thing that calls it
-    
-    
-#    p         
-#  })
-  
-  plotsettings2 <- reactive({
+  plotsettings <- reactive({
     
     # # calculate breaks for x axis
     # xbreaks <- rev(seq(
@@ -268,22 +206,22 @@ server <- function(input, output, session){
     #    by = -1 * ceiling((input$year[2] - input$year[1]) / 7)))
     # 
     # xlabels <- as.character(xbreaks)
-
-    shown<-dataset()
+    shown<-csis360::format_data_for_plot(full_data, "Fiscal.Year", input)
+      # dataset()
     
     shown_top <- shown %>%
-      group_by(Fiscal_Year, Faceting) %>%
-      summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubTotalAmount))
+      group_by(Fiscal.Year, Faceting) %>%
+      dplyr::summarise(PrimeOrSubTotalAmount.2016 = sum(PrimeOrSubTotalAmount.2016))
     
     shown_prime <- subset(shown_top,Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )) %>%
-      group_by(Fiscal_Year) %>%
-      summarise(PrimeOrSubTotalAmount = sum(PrimeOrSubTotalAmount))
+      group_by(Fiscal.Year) %>%
+      dplyr::summarise(PrimeOrSubTotalAmount.2016 = sum(PrimeOrSubTotalAmount.2016))
     
     shown_prime$AllPrime<-"AllPrime"
-    
+
     # ggplot call
     overview_plot <- ggplot(data = subset(shown_top,Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
-                aes(x = Fiscal_Year, y = PrimeOrSubTotalAmount, color = Faceting)) +
+                aes(x = Fiscal.Year, y = PrimeOrSubTotalAmount.2016, color = Faceting)) +
       geom_line(size = 1) +
       ylab("Contract Obligations by whether in FSRS or is Subcontract") +
       # scale_y_log10()
@@ -292,7 +230,7 @@ server <- function(input, output, session){
 
     # browser()
     percent_top <- shown_top  %>%
-      reshape2::dcast(Fiscal_Year~Faceting,value.var="PrimeOrSubTotalAmount" )
+      reshape2::dcast(Fiscal.Year~Faceting,value.var="PrimeOrSubTotalAmount.2016" )
     percent_top$PrimeReportInFSRS[is.na(percent_top$PrimeReportInFSRS)]<-0
     percent_top$AllPrime<-percent_top$PrimeNotReportInFSRS+
       percent_top$PrimeReportInFSRS
@@ -302,7 +240,7 @@ server <- function(input, output, session){
       percent_top$AllPrime
     # browser()
     percent_top<-reshape2::melt(percent_top,
-                                id.vars="Fiscal_Year",
+                                id.vars="Fiscal.Year",
                       measure.vars=c("PercentReported","PercentSubAward"),
                       variable.name="FSRS.series",
                       value.name="percent"
@@ -312,26 +250,23 @@ server <- function(input, output, session){
     
     # ggplot call
     percent_plot <- ggplot(data = percent_top,
-                            aes(x = Fiscal_Year, y = percent,
+                            aes(x = Fiscal.Year, y = percent,
                                 color=FSRS.series)) +
       geom_line(size = 1) +
       ylab("Market Share of Contrats Reporting in FSRS") +
       # scale_y_log10()
-      csis360::get_plot_theme()+
+      csis360::get_plot_theme()
       scale_y_continuous(labels = scales::percent)
       
     
     
     prime_plot<- ggplot(data = subset(shown,Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )),
-                aes(x=Fiscal_Year, 
-                    y=PrimeOrSubTotalAmount,
+                aes(x=Fiscal.Year, 
+                    y=PrimeOrSubTotalAmount.2016,
                     fill = Pricing.Mechanism.sum)) +
       geom_bar(width=.7,stat="identity") +
-      ggtitle("Contract Obligations by whether in FSRS or is Subcontract") +
-      
-      scale_fill_manual(
-        values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
-        # c(
+      ggtitle("Contract Obligations by whether in FSRS or is Subcontract")
+    prime_plot<-add_preassigned_scales(prime_plot,labels_and_colors,"Pricing.Mechanism.sum")+
       #     # "AllPrimes" = "#33FF66",
       #     "PrimeNotReportInFSRS" =  "#33FF66",
       #     "PrimeReportInFSRS" =  "#0066FF",
@@ -349,16 +284,19 @@ server <- function(input, output, session){
     
     
     in_fsrs_plot <- ggplot(data = subset(shown,Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
-      aes(x=Fiscal_Year, 
-        y=PrimeOrSubTotalAmount,
+      aes(x=Fiscal.Year, 
+        y=PrimeOrSubTotalAmount.2016,
         fill = Pricing.Mechanism.sum)) +
       geom_bar(width=.7,stat="identity") +
       facet_wrap(~ Faceting, ncol = 2,  
         drop = TRUE) + 
+      #Fix these!
       scale_x_continuous(breaks = seq(input$year[1], input$year[2], by = 1),
-        labels = function(x) {substring(as.character(x), 3, 4)})+
-      scale_fill_manual(
-        values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
+        labels = function(x) {substring(as.character(x), 3, 4)})
+    
+    in_fsrs_plot<-add_preassigned_scales(in_fsrs_plot,labels_and_colors,"Pricing.Mechanism.sum")+
+      # scale_fill_manual(
+        # values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
       # c(
       #     # "AllPrimes" = "#33FF66",
       #     "PrimeNotReportInFSRS" =  "#33FF66",
@@ -392,7 +330,7 @@ server <- function(input, output, session){
   
   
   output$plot <- renderPlot({
-          plotsettings2()},height = 700) 
+          plotsettings()},height = 700) 
   
 #  output$CSVDownloadBtn <- downloadHandler(
 #    filename = paste('CSIS-Contract-Obligations-by-Vendor-Size-', Sys.Date(),'.csv', sep=''),
@@ -510,32 +448,6 @@ server <- function(input, output, session){
 
 # starts the app
 shinyApp(ui= ui, server = server)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
