@@ -1,12 +1,13 @@
 USE [DIIG]
 GO
 
-/****** Object:  StoredProcedure [Vendor].[SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform]    Script Date: 6/12/2017 12:57:17 PM ******/
+/****** Object:  StoredProcedure [Vendor].[SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform]    Script Date: 9/1/2017 4:56:55 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 ALTER procedure [Vendor].[SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform]
 
@@ -18,7 +19,9 @@ SELECT [fiscal_year]
       ,[ProductOrServiceArea]
       ,[Simple]
       ,[PlatformPortfolio]
-	  ,typeofcontractpricingtext
+   ,typeofcontractpricingtext
+   ,IsSomeCompetition
+   ,NumberOfOffersReceived
       ,[VendorSize]
 	   ,[IsSubContract]
 	   ,sum([PrimeObligatedAmount]) as [PrimeObligatedAmount]
@@ -27,6 +30,7 @@ SELECT [fiscal_year]
 	   ,sum([PrimeOrSubObligatedAmount]) as [PrimeOrSubObligatedAmount]
       --,[CSIScontractID]
       ,[IsInFSRS]
+	  ,IsFSRSreportable
   FROM [DIIG].[Vendor].[FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform]
   group by   [fiscal_year]
       ,[Customer]
@@ -34,10 +38,14 @@ SELECT [fiscal_year]
       ,[ProductOrServiceArea]
       ,[Simple]
       ,[PlatformPortfolio]
-	  ,typeofcontractpricingtext
+   ,typeofcontractpricingtext
+   ,IsSomeCompetition
+   ,NumberOfOffersReceived
 	  ,[VendorSize]
 	  ,[IsSubContract]
 	  ,[IsInFSRS]
+	  ,IsFSRSreportable
+
 
 GO
 
