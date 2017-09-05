@@ -10,7 +10,7 @@ Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data
 # Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
 source(paste(Path,"lookups.r",sep=""))
 
-sequestration_original <- read_csv("Data\\Vendor_SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.csv",
+sequestration_original <- read_csv(unz("Data\\Vendor_SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.zip"),
                           col_names = TRUE,
                           na = c("","NA","NULL"))
 
