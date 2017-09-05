@@ -74,122 +74,6 @@ shinyServer(function(input, output, session) {
   
   
   mainplot <- reactive({
-    shown<-dataset()
-    
-    shown_top <- shown %>%
-      group_by(Fiscal.Year, Faceting) %>%
-      dplyr::summarise(PrimeOrSubTotalAmount.2016 = sum(PrimeOrSubTotalAmount.2016))
-    
-    shown_prime <- subset(shown_top,Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )) %>%
-      group_by(Fiscal.Year) %>%
-      dplyr::summarise(PrimeOrSubTotalAmount.2016 = sum(PrimeOrSubTotalAmount.2016))
-    
-    shown_prime$AllPrime<-"AllPrime"
-    
-    # ggplot call
-    overview_plot <- ggplot(data = subset(shown_top,Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
-                            aes(x = Fiscal.Year, y = PrimeOrSubTotalAmount.2016, color = Faceting)) +
-      geom_line(size = 1) +
-      ylab("Contract Obligations by whether in FSRS or is Subcontract") +
-      # scale_y_log10()
-      csis360::get_plot_theme()+
-      geom_line(data = shown_prime,aes(color=AllPrime))
-    
-    # browser()
-    percent_top <- shown_top  %>%
-      reshape2::dcast(Fiscal.Year~Faceting,value.var="PrimeOrSubTotalAmount.2016" )
-    percent_top$PrimeReportInFSRS[is.na(percent_top$PrimeReportInFSRS)]<-0
-    percent_top$AllPrime<-percent_top$PrimeNotReportInFSRS+
-      percent_top$PrimeReportInFSRS
-    percent_top$PercentReported<-percent_top$PrimeReportInFSRS/
-      percent_top$AllPrime
-    percent_top$PercentSubAward<-percent_top$SubReportInFSRS/
-      percent_top$AllPrime
-    # browser()
-    percent_top<-reshape2::melt(percent_top,
-                                id.vars="Fiscal.Year",
-                                measure.vars=c("PercentReported","PercentSubAward"),
-                                variable.name="FSRS.series",
-                                value.name="percent"
-    )
-    
-    
-    
-    # ggplot call
-    percent_plot <- ggplot(data = percent_top,
-                           aes(x = Fiscal.Year, y = percent,
-                               color=FSRS.series)) +
-      geom_line(size = 1) +
-      ylab("Market Share of Contrats Reporting in FSRS") +
-      # scale_y_log10()
-      csis360::get_plot_theme()
-    scale_y_continuous(labels = scales::percent)
-    
-    
-    
-    prime_plot<- ggplot(data = subset(shown,Faceting %in% c("PrimeNotReportInFSRS","PrimeReportInFSRS" )),
-                        aes(x=Fiscal.Year, 
-                            y=PrimeOrSubTotalAmount.2016,
-                            fill = Pricing.Mechanism.sum)) +
-      geom_bar(width=.7,stat="identity") +
-      ggtitle("Contract Obligations by whether in FSRS or is Subcontract")
-    prime_plot<-add_preassigned_scales(prime_plot,labels_and_colors,"Pricing.Mechanism.sum")+
-      #     # "AllPrimes" = "#33FF66",
-      #     "PrimeNotReportInFSRS" =  "#33FF66",
-      #     "PrimeReportInFSRS" =  "#0066FF",
-      #     "SubReportInFSRS" = "#FF6699")) +
-      csis360::get_plot_theme() +
-      scale_x_continuous(breaks = seq(input$year[1], input$year[2], by = 1),
-                         labels = function(x) {substring(as.character(x), 3, 4)})+
-      
-      theme(legend.position = "none")+
-      xlab("Fiscal Year") +
-      ylab("DoD Contract Obligated Amount in billion $") 
-    ##############################################################################facet above
-    
-    
-    
-    
-    in_fsrs_plot <- ggplot(data = subset(shown,Faceting %in% c("SubReportInFSRS","PrimeReportInFSRS" )),
-                           aes(x=Fiscal.Year, 
-                               y=PrimeOrSubTotalAmount.2016,
-                               fill = Pricing.Mechanism.sum)) +
-      geom_bar(width=.7,stat="identity") +
-      facet_wrap(~ Faceting, ncol = 2,  
-                 drop = TRUE) + 
-      #Fix these!
-      scale_x_continuous(breaks = seq(input$year[1], input$year[2], by = 1),
-                         labels = function(x) {substring(as.character(x), 3, 4)})
-    
-    in_fsrs_plot<-add_preassigned_scales(in_fsrs_plot,labels_and_colors,"Pricing.Mechanism.sum")+
-      # scale_fill_manual(
-      # values = structure(as.character(Pricing.Mechanism.sum$ColorRGB), names = as.character(Pricing.Mechanism.sum$Label)))+
-      # c(
-      #     # "AllPrimes" = "#33FF66",
-      #     "PrimeNotReportInFSRS" =  "#33FF66",
-      #     "PrimeReportInFSRS" =  "#0066FF",
-      #     "SubReportInFSRS" = "#FF6699")) +
-      csis360::get_plot_theme() +
-      
-      xlab("Fiscal Year") +
-      ylab("DoD Contract Obligated Amount in billion $") +
-      theme(plot.caption = element_text(
-        size = 12, face = "bold", color = "#554449", family = "Open Sans"
-      )) +
-      labs(caption = "Source: FPDS; CSIS analysis", size = 30, family= "Open Sans") 
-    ##############################################################################facet above
-    lay <- rbind(c(1,2),
-                 c(3,4),
-                 c(5,5))
-    return(grid.arrange(overview_plot,
-                 percent_plot,
-                 prime_plot,
-                 prime_plot,
-                 in_fsrs_plot, layout_matrix = lay))
-    
-  })
-  
-  
     # Builds a ggplot based on user settings, for display on the main panel.
     # Reactive binding will cause the ggplot to update when the user changes any
     # relevant setting.  
@@ -198,77 +82,77 @@ shinyServer(function(input, output, session) {
     #   a fully built ggplot object
     
     # get appropriately formatted data to use in the plot
-  #   plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
-  #   # build plot with user-specified geoms
-  #   mainplot <- build_plot_from_input(plot_data, input)+
-  #     scale_color_manual(
-  #       values = subset(labels_and_colors,column==input$color_var)$RGB,
-  #       limits=c(subset(labels_and_colors,column==input$color_var)$variable),
-  #       labels=c(subset(labels_and_colors,column==input$color_var)$Label)
-  #     )+
-  #     scale_fill_manual(
-  #       values = subset(labels_and_colors,column==input$color_var)$RGB,
-  #       limits=c(subset(labels_and_colors,column==input$color_var)$variable),
-  #       labels=c(subset(labels_and_colors,column==input$color_var)$Label)
-  #     )+labs(
-  #       x=ifelse( is.na(subset(column_key,column==vars$fiscal_year)$title),
-  #         vars$fiscal_year,
-  #         subset(column_key,column==vars$fiscal_year)$title),
-  #       y=ifelse( is.na(subset(column_key,column==input$y_var)$title),
-  #          input$y_var,
-  #         subset(column_key,column==input$y_var)$title)
-  #     )
-  #   
-  #   # add overall visual settings to the plot
-  #   mainplot <- mainplot + 
-  #     #diigtheme1:::diiggraph()
-  #     theme(panel.border = element_blank(),
-  #       panel.background = element_rect(fill = "white"),
-  #       plot.background = element_rect(fill = "white", color="white"),
-  #       panel.grid.major.x = element_blank(),
-  #       panel.grid.minor.x = element_blank(),
-  #       panel.grid.major.y = element_line(size=.1, color="lightgray"),
-  #       panel.grid.minor.y = element_line(size=.1, color="lightgray"),
-  #       axis.ticks = element_blank()
-  # ) +
-  #   theme(plot.title = element_text(
-  #     family = "Open Sans",
-  #     color = "#554449",
-  #     face="bold",
-  #     margin=margin(20,0,20,0),
-  #     hjust = 0.5)) +
-  #   theme(axis.text.x = element_text(
-  #     family = "Open Sans",
-  #     vjust = 7,
-  #     margin = margin(0,0,0,0))) +
-  #   theme(axis.text.y = element_text(
-  #     family = "Open Sans",
-  #     color ="#554449",
-  #     margin = margin(0,5,0,0))) +
-  #   theme(axis.title.x = element_text(
-  #     face = "bold",
-  #     color = "#554449",
-  #     family = "Open Sans",
-  #     margin = margin(15,0,0,60))) +
-  #   theme(axis.title.y = element_text(
-  #     face = "bold",
-  #     color = "#554449",
-  #     family = "Open Sans",
-  #     margin = margin(0,15,0,0))) +
-  #   theme(legend.text = element_text(
-  #     family = "Open Sans",
-  #     color ="#554449")) +
-  #   theme(legend.title = element_blank()) +
-  #   theme(legend.position = 'bottom') +
-  #   theme(legend.background = element_rect(fill = "white")
-  #   ) 
-  #   if(input$show_title == TRUE){
-  #     mainplot <- mainplot + ggtitle(input$title_text) 
-  #   }
-  #   
-  #   # return the built plot
-  #   return(mainplot)
-  # })
+    plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
+    # build plot with user-specified geoms
+    mainplot <- build_plot_from_input(plot_data, input)+
+      scale_color_manual(
+        values = subset(labels_and_colors,column==input$color_var)$RGB,
+        limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+        labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+      )+
+      scale_fill_manual(
+        values = subset(labels_and_colors,column==input$color_var)$RGB,
+        limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+        labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+      )+labs(
+        x=ifelse( is.na(subset(column_key,column==vars$fiscal_year)$title),
+          vars$fiscal_year,
+          subset(column_key,column==vars$fiscal_year)$title),
+        y=ifelse( is.na(subset(column_key,column==input$y_var)$title),
+           input$y_var,
+          subset(column_key,column==input$y_var)$title)
+      )
+    
+    # add overall visual settings to the plot
+    mainplot <- mainplot + 
+      #diigtheme1:::diiggraph()
+      theme(panel.border = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        plot.background = element_rect(fill = "white", color="white"),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_line(size=.1, color="lightgray"),
+        panel.grid.minor.y = element_line(size=.1, color="lightgray"),
+        axis.ticks = element_blank()
+  ) +
+    theme(plot.title = element_text(
+      family = "Open Sans",
+      color = "#554449",
+      face="bold",
+      margin=margin(20,0,20,0),
+      hjust = 0.5)) +
+    theme(axis.text.x = element_text(
+      family = "Open Sans",
+      vjust = 7,
+      margin = margin(0,0,0,0))) +
+    theme(axis.text.y = element_text(
+      family = "Open Sans",
+      color ="#554449",
+      margin = margin(0,5,0,0))) +
+    theme(axis.title.x = element_text(
+      face = "bold",
+      color = "#554449",
+      family = "Open Sans",
+      margin = margin(15,0,0,60))) +
+    theme(axis.title.y = element_text(
+      face = "bold",
+      color = "#554449",
+      family = "Open Sans",
+      margin = margin(0,15,0,0))) +
+    theme(legend.text = element_text(
+      family = "Open Sans",
+      color ="#554449")) +
+    theme(legend.title = element_blank()) +
+    theme(legend.position = 'bottom') +
+    theme(legend.background = element_rect(fill = "white")
+    ) 
+    if(input$show_title == TRUE){
+      mainplot <- mainplot + ggtitle(input$title_text) 
+    }
+    
+    # return the built plot
+    return(mainplot)
+  })
   
   # calls mainplot(), defined above, to create a plot for the plot output area
   output$plot <- renderPlot({
