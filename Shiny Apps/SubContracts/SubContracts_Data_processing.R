@@ -5,7 +5,7 @@ rm(list = ls())
 library(tidyverse)
 library(csis360)
 
-
+  
 Path<-"C:\\Users\\gsand_000.ALPHONSE\\Documents\\Development\\R-scripts-and-data\\"
 # Path<-"K:\\2007-01 PROFESSIONAL SERVICES\\R scripts and data\\"
 source(paste(Path,"lookups.r",sep=""))
@@ -68,8 +68,14 @@ sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal.Year,
                                                   PlatformPortfolio,
                                                 #  IsSubContract,
                                                   SubCustomer.sum,
+                                                SubCustomer.platform,
                                                 Pricing.Mechanism.sum,
+                                                Pricing.Mechanism.Fee,
+                                                ProductServiceOrRnDarea,
+                                                ProductServiceOrRnDarea.sum,
                                                   Faceting,
+                                                Vendor.Size.sum,
+                                                Shiny.VendorSize,
                                                 IsFSRSreportable) %>%
     dplyr::summarise(PrimeOrSubTotalAmount.2016 = sum(PrimeOrSubObligatedAmount.2016)/1e+9)
 
@@ -80,7 +86,6 @@ sequestration_Facet<- sequestration %>% dplyr::group_by(Fiscal.Year,
 # colnames(sequestration_Facet)[3] <- "SubCustomer.sum"
 
 full_data<- sequestration_Facet
-
 labels_and_colors<-prepare_labels_and_colors(full_data)
 
 column_key<-csis360::get_column_key(full_data)
