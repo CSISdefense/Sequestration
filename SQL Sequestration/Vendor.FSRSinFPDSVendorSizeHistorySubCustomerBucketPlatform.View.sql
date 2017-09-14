@@ -265,6 +265,8 @@ UNION ALL
 		Then 'Unlabeled'
 		WHEN pch.AnyIsSmall =1 
 		THEN 'Sometimes Small'
+		WHEN pch.AlwaysIsSmall is null and pch.AnyIsSmall is null
+		THEN 'No Prime Business Size Determination Available'
 		ELSE 'Medium <1B'
 	END AS VendorSize	
 ,NULL -- ,c.obligatedamount as PrimeObligatedAmount
