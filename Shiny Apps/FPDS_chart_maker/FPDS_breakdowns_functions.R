@@ -8,6 +8,8 @@ library(dplyr)
 library(lazyeval)
 library(forcats)
 
+load("2016_unaggregated_FPDS.Rda")
+
 populate_ui_var_lists <- function(
   # Fills the ui menus with appropriate variables from the tibble passed to it
   #
@@ -212,6 +214,28 @@ build_plot_from_input <- function(
       breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
       labels = function(x){str_sub(as.character(x), -2, -1)}
     ) 
+  }
+  
+  # add 4 drawdown periods
+  if (input$show_period == "Yes") {
+    # specify four drawdown periods
+    period <- c("Pre-drawdown", "Start of Drawdown", "BCA deline period", "Current")
+    startFY <- c(2009, 2011, 2013, 2016)
+    endFY <- c(2010,2012,2015,2016)
+    drawdownpd <- data.frame(period, startFY, endFY)
+    if(input$chart_geom == "Line Chart") {
+    mainplot <- mainplot +
+      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY), 
+                 linetype='dashed',size=0.2) +
+      geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
+                                            label=period), colour='#808389', size=3, angle=90, vjust=1.2, hjust=0)
+    } else {
+      mainplot <- mainplot +
+        geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5), 
+                   linetype='dashed',size=0.2) +
+        geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
+                                              label=period), colour='#808389', size=3, angle=90, vjust=1.2, hjust=0)
+    }
   }
   
   # add y-axis labeling
