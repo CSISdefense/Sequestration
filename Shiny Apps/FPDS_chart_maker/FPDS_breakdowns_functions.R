@@ -228,13 +228,13 @@ build_plot_from_input <- function(
       geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY), 
                  linetype='dashed',size=0.2) +
       geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
-                                            label=period), colour='#808389', size=3, angle=90, vjust=1.2, hjust=0)
+                                            label=period), colour='#808389', size=3, angle=90, vjust=0, hjust=0)
     } else {
       mainplot <- mainplot +
         geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5), 
                    linetype='dashed',size=0.2) +
         geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
-                                              label=period), colour='#808389', size=3, angle=90, vjust=1.2, hjust=0)
+                                              label=period), colour='#808389', size=3, angle=90, vjust=0, hjust=0)
     }
   }
   
