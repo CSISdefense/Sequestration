@@ -1,6 +1,7 @@
 ################################################################################
 # FPDS breakdowns 2.0 app - March 2017
-#
+# V3
+# add 4 drawdown periods with button - Oct 10 2017
 # server.R
 ################################################################################
 
@@ -24,7 +25,7 @@ library(csis360)
 shinyServer(function(input, output, session) {
   options(scipen = 99)
   options(shiny.maxRequestSize=1000*1024^2)
-  # source("FPDS_breakdowns_functions.R")
+  source("FPDS_breakdowns_functions.R")
 
   # read data
   load("2016_unaggregated_FPDS.Rda")
@@ -44,8 +45,6 @@ shinyServer(function(input, output, session) {
   # fill the variable lists in the ui with variables from current_data
   populate_ui_var_lists(current_data)
 
-
-
   mainplot <- reactive({
     # Builds a ggplot based on user settings, for display on the main panel.
     # Reactive binding will cause the ggplot to update when the user changes any
@@ -56,8 +55,13 @@ shinyServer(function(input, output, session) {
 
     # get appropriately formatted data to use in the plot
     plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
+
     # build plot with user-specified geoms
     mainplot <- build_plot_from_input(plot_data, input)+
+      #geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY), 
+      #           linetype='dashed',size=0.2) +
+      #geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
+      #          label=period), size=3, angle=90, vjust=1.2, hjust=0) +
       scale_color_manual(
         values = subset(labels_and_colors,column==input$color_var)$RGB,
         limits=c(subset(labels_and_colors,column==input$color_var)$variable),

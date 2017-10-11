@@ -1,6 +1,6 @@
 ################################################################################
 # FPDS breakdowns 2.0 app - March 2017
-#
+# V3 (add period button)
 # ui.R
 ################################################################################
 
@@ -62,6 +62,14 @@ shinyUI(fluidPage(
           label = NULL,
           choices = c("As Total", "As Share"),
           selected = "As Total"
+        )
+      ),
+      wellPanel(
+        radioButtons(
+          inputId = "show_period",
+          label = "Show Drawdown Periods",
+          choices = c("Yes", "No"),
+          selected = "No"
         )
       )
     ),
