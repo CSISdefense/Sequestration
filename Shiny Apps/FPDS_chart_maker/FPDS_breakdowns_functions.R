@@ -1,6 +1,6 @@
 ################################################################################
 # Functions for FPDS breakdowns 2.0 Shiny App - March 2017
-#
+# Add stacked plots and drawdown period lines - Oct 2017
 ################################################################################
 
 library(magrittr)
@@ -89,8 +89,65 @@ format_data_for_plot <- function(
   #
   shown_data[is.na(shown_data)] <- 0
   
+  # return the ggplot-ready data
+  return(shown_data)
+}
+
+format_share_data_for_plot <- function(
+  # Returns data in the appropriate format for the user-specified plot
+  #
+  # Args:
+  incoming_data,   # data to format for the plot, as a tibble
+  fy_var,          # name of fiscal year variable, as string
+  input,           # shiny input object
+  session = getDefaultReactiveDomain()  # shiny app session
+  #
+  # Returns:
+  #   a tibble of formatted data
+  ){
+  shown_data <- incoming_data
+  
+  breakouts <- c(input$color_var, input$facet_var)
+  breakouts <- breakouts[breakouts != "None"]
+  
+  # account for potential spaces in breakouts and fy_var
+  if(grepl(" ", fy_var)) fy_var <- paste0("`", fy_var, "`")
+  if(length(breakouts) >= 1){
+    if(grepl(" ", breakouts[1])) breakouts[1] <- paste0("`", breakouts[1], "`")
+  }
+  if(length(breakouts) == 2){
+    if(grepl(" ", breakouts[2])) breakouts[2] <- paste0("`", breakouts[2], "`")
+  }
+  # filter by year - see https://tinyurl.com/lm2u8xs
+  shown_data %<>%
+    filter_(paste0(fy_var, ">=", as.character(input$year[1]), "&", fy_var,
+                   "<=", as.character(input$year[2])))
+  
+  # aggregate to the level of [fiscal year x breakouts]
+  # the evaluation for dplyr::summarize_ was a pain in the ass to figure out;
+  # see stack overflow at https://tinyurl.com/z82ywf3
+  
+  if(length(breakouts) == 0){
+    shown_data %<>%
+      group_by_(fy_var) %>%
+      summarize_(
+        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
+  } else {
+    shown_data %<>%
+      group_by_(.dots = c(fy_var, breakouts)) %>%
+      summarize_(
+        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
+  }
+  
+  names(shown_data)[which(names(shown_data) == "sum_val")] <- input$y_var
+  
+  #
+  # NOTE: NAs replaced with 0 here; potential data quality issue
+  #
+  shown_data[is.na(shown_data)] <- 0
+  
   # calculate shares if share checkbox is checked
-  if(input$y_total_or_share == "As Share" & input$color_var != "None"){
+  if(input$color_var != "None"){
     
     # share_vars indicates which columns are being used to calculate the shares.
     # If there's only one breakout, it's set to -1:
@@ -128,9 +185,10 @@ format_data_for_plot <- function(
   }
   
   # For the case where the user displays shares not broken out by any variable.
-  # This is going to make a very boring chart of 100% shares,b  
+  # This is going to make a very boring chart of 100% shares,
   # but it's handled here to avoid displaying an error.
-  if(input$y_total_or_share == "As Share" & input$color_var == "None"){
+  # if(input$color_var == "None")
+  else{
     shown_data %<>%
       mutate(total = 1)
     shown_data <- shown_data[which(names(shown_data) != input$y_var)]
@@ -140,8 +198,6 @@ format_data_for_plot <- function(
   # return the ggplot-ready data
   return(shown_data)
 }
-
-
 
 build_plot_from_input <- function(
   # Adds a geom layer to a ggplot object based on user input.  
@@ -228,13 +284,13 @@ build_plot_from_input <- function(
       geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY), 
                  linetype='dashed',size=0.2) +
       geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
-                                            label=period), colour='#808389', size=3, angle=90, vjust=0, hjust=0)
+                                            label=period), colour='#808389', size=3, angle=90, vjust=1.2, hjust=0)
     } else {
       mainplot <- mainplot +
         geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5), 
                    linetype='dashed',size=0.2) +
         geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
-                                              label=period), colour='#808389', size=3, angle=90, vjust=0, hjust=0)
+                                              label=period), colour='#808389', size=3, angle=90, vjust=-0.5, hjust=0)
     }
   }
   
@@ -271,7 +327,181 @@ build_plot_from_input <- function(
   
   # return the plot to server.R
   return(mainplot)
-}
+} # End of build_plot_from_input
+
+build_bar_plot_from_input <- function(
+  # Adds a geom layer to a ggplot object based on user input.  
+  # Intended to handle ggplot settings that depend on user input.
+  # Settings that apply universally should be added in server.R
+  #
+  # Args:
+  plot_data,    # tibble of bar plot data for the ggplot
+  input,        # shiny input object
+  session = getDefaultReactiveDomain() # shiny app session
+  #
+  # Returns:
+  # a ggplot bar plot object
+){
+  barplot <- ggplot(data = plot_data)
+  if(input$color_var == "None"){
+    barplot <- barplot +
+      geom_bar(aes_q(
+        x = as.name(names(plot_data)[1]),
+        y = as.name(input$y_var)
+      ),
+      stat = "identity")
+  } else {
+    barplot <- barplot +
+      geom_bar(aes_q(
+        x = as.name(names(plot_data)[1]),
+        y = as.name(input$y_var),
+        fill = as.name(input$color_var)
+      ),
+      stat = "identity") +
+      guides(fill=FALSE)
+  }
+  # add faceting if requested, and x-axis labeling
+  if(input$facet_var != "None"){
+    barplot <- barplot +
+      facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) +
+      theme(strip.background = element_rect(fill = "white")) +
+      scale_x_continuous(
+        breaks = function(x) {seq(input$year[1], input$year[2], by = 2)},
+        labels = function(x){str_sub(as.character(x), -2, -1)}
+      ) 
+  } else {
+    barplot <- barplot +
+      scale_x_continuous(
+        breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
+        labels = function(x){str_sub(as.character(x), -2, -1)}
+      ) 
+  }
+  
+  # add 4 drawdown periods
+  if (input$show_period == "Yes") {
+    # specify four drawdown periods
+    period <- c("Pre-S", "Start-D", "BCA-D", "Current")
+    startFY <- c(2009, 2011, 2013, 2016)
+    endFY <- c(2010,2012,2015,2016)
+    drawdownpd <- data.frame(period, startFY, endFY)
+    barplot <- barplot +
+      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5), 
+                 linetype='dashed',size=0.2) +
+      geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
+                                            label=period), colour='#808389', size=2.5, angle=90, vjust=0, hjust=0)
+  }
+  
+  # add y-axis labeling
+  barplot <- barplot + scale_y_continuous(
+    labels = function(x){
+      sapply(x, function(y){
+        if(is.na(y)) return("NA")
+        y_lab <- "yuge"
+        if(abs(y) < 1e15) y_lab <- paste0(round(y/1e12), "T")
+        if(abs(y) < 1e14) y_lab <- paste0(round(y/1e12, 1), "T")
+        if(abs(y) < 1e13) y_lab <- paste0(round(y/1e12, 2), "T")
+        if(abs(y) < 1e12) y_lab <- paste0(round(y/1e9), "B")
+        if(abs(y) < 1e11) y_lab <- paste0(round(y/1e9, 1), "B")
+        if(abs(y) < 1e10) y_lab <- paste0(round(y/1e9, 2), "B")
+        if(abs(y) < 1e9) y_lab <- paste0(round(y/1e6), "M")
+        if(abs(y) < 1e9) y_lab <- paste0(round(y/1e6, 1), "M")
+        if(abs(y) < 1e7) y_lab <- paste0(round(y/1e6, 2), "M")
+        if(abs(y) < 1e6) y_lab <- paste0(round(y/1000), "k")
+        if(abs(y) < 1e5) y_lab <- paste0(round(y/1000, 1), "k")
+        if(abs(y) < 1e4) y_lab <- paste0(round(y/1000, 2), "k")
+        if(abs(y) < 1000) ylab <- as.character(round(y))
+        if(abs(y) < 100) y_lab <- as.character(round(y,1))
+        if(abs(y) < 10) y_lab <- as.character(round(y,2))
+        return(y_lab)
+      })
+    }
+  )
+  # add overall visual settings to the plot
+  barplot <- barplot +  get_plot_theme()
+  #diigtheme1:::diiggraph()
+  
+  if(input$show_title == TRUE){
+    barplot <- barplot + ggtitle(input$title_text)
+  }
+  # return the plot to server.R
+  return(barplot)
+} # End of build_bar_plot_from_input
+
+
+
+build_line_plot_from_input <- function(
+  # Adds a geom layer to a ggplot object based on user input.  
+  # Intended to handle ggplot settings that depend on user input.
+  # Settings that apply universally should be added in server.R
+  #
+  # Args:
+  plot_data,    # tibble of bar plot data for the ggplot
+  input,        # shiny input object
+  session = getDefaultReactiveDomain() # shiny app session
+  #
+  # Returns:
+  # a ggplot line plot object
+){
+  lineplot <- ggplot(data = plot_data)
+  if(input$color_var == "None"){
+    lineplot <- lineplot +
+      geom_line(aes_q(
+        x = as.name(names(plot_data)[1]),
+        y = as.name(input$y_var)
+      ))
+  } else {
+    lineplot <- lineplot +
+      geom_line(aes_q(
+        x = as.name(names(plot_data)[1]),
+        y = as.name(input$y_var),
+        color = as.name(input$color_var)
+      )) +
+      guides(color = guide_legend(override.aes = list(size = 5)))+
+      theme(legend.key = element_rect(fill = "white"))
+  }
+  
+  # add faceting if requested, and x-axis labeling
+  if(input$facet_var != "None"){
+    lineplot <- lineplot +
+      facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) +
+      theme(strip.background = element_rect(fill = "white")) +
+      scale_x_continuous(
+        breaks = function(x) {seq(input$year[1], input$year[2], by = 2)},
+        labels = function(x){str_sub(as.character(x), -2, -1)}
+      ) 
+  } else {
+    lineplot <- lineplot +
+      scale_x_continuous(
+        breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
+        labels = function(x){str_sub(as.character(x), -2, -1)}
+      ) 
+  }
+  
+  # add 4 drawdown periods
+  if (input$show_period == "Yes") {
+    # specify four drawdown periods
+    period <- c("Pre-S", "Start-D", "BCA-D", "Current")
+    startFY <- c(2009, 2011, 2013, 2016)
+    endFY <- c(2010,2012,2015,2016)
+    drawdownpd <- data.frame(period, startFY, endFY)
+    lineplot <- lineplot +
+      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY), 
+                 linetype='dashed',size=0.2) +
+      geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
+                                            label=period), colour='#808389', size=2.5, angle=90, vjust=1.2, hjust=0)
+  }
+  
+  # add y-axis labeling
+  lineplot <- lineplot + scale_y_continuous(labels = scales::percent) +
+    ylab(label = paste("Share of", input$y_var))
+  
+  # add overall visual settings to the plot
+  lineplot <- lineplot +  get_plot_theme()
+  #diigtheme1:::diiggraph()
+  
+  # return the plot to server.R
+  return(lineplot)
+} # End of build_line_plot_from_input
 
 
 populate_edit_var <- function(

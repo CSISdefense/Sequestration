@@ -1,7 +1,7 @@
 ################################################################################
 # FPDS breakdowns 2.0 app - March 2017
-# V3
-# add 4 drawdown periods with button - Oct 10 2017
+# V4
+# Add stacked plots and drawdown period lines - Oct 2017
 # server.R
 ################################################################################
 
@@ -18,7 +18,8 @@ library(readr)
 library(tidyr)
 library(data.table)
 library(csis360)
-
+library(gridExtra)
+library(grid)
 
 
 
@@ -54,42 +55,99 @@ shinyServer(function(input, output, session) {
     #   a fully built ggplot object
 
     # get appropriately formatted data to use in the plot
-    plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
+    total_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
+    share_data <- format_share_data_for_plot(current_data, vars$fiscal_year, input)
 
     # build plot with user-specified geoms
-    mainplot <- build_plot_from_input(plot_data, input)+
-      #geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY), 
-      #           linetype='dashed',size=0.2) +
-      #geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
-      #          label=period), size=3, angle=90, vjust=1.2, hjust=0) +
-      scale_color_manual(
-        values = subset(labels_and_colors,column==input$color_var)$RGB,
-        limits=c(subset(labels_and_colors,column==input$color_var)$variable),
-        labels=c(subset(labels_and_colors,column==input$color_var)$Label)
-      )+
-      scale_fill_manual(
-        values = subset(labels_and_colors,column==input$color_var)$RGB,
-        limits=c(subset(labels_and_colors,column==input$color_var)$variable),
-        labels=c(subset(labels_and_colors,column==input$color_var)$Label)
-      )+labs(
-        x=ifelse( is.na(subset(column_key,column==vars$fiscal_year)$title),
-          vars$fiscal_year,
-          subset(column_key,column==vars$fiscal_year)$title),
-        y=ifelse( is.na(subset(column_key,column==input$y_var)$title),
-           input$y_var,
-          subset(column_key,column==input$y_var)$title)
-      )
+    if(input$chart_geom == "Double Stacked"){
+      # make the stacked plot
+      # produce the single bar plot and line plot
+      bar_plot <- build_bar_plot_from_input(total_data,input) + 
+        scale_color_manual(
+          values = subset(labels_and_colors,column==input$color_var)$RGB,
+          limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+          labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+        )+
+        scale_fill_manual(
+          values = subset(labels_and_colors,column==input$color_var)$RGB,
+          limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+          labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+        )+labs(
+          x=ifelse( is.na(subset(column_key,column==vars$fiscal_year)$title),
+                    vars$fiscal_year,
+                    subset(column_key,column==vars$fiscal_year)$title),
+          y=ifelse( is.na(subset(column_key,column==input$y_var)$title),
+                    input$y_var,
+                    subset(column_key,column==input$y_var)$title)
+        )
+      
+      line_plot <- build_line_plot_from_input(share_data,input) + 
+        scale_color_manual(
+          values = subset(labels_and_colors,column==input$color_var)$RGB,
+          limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+          labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+        )+
+        scale_fill_manual(
+          values = subset(labels_and_colors,column==input$color_var)$RGB,
+          limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+          labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+        )+labs(
+          x=ifelse( is.na(subset(column_key,column==vars$fiscal_year)$title),
+                    vars$fiscal_year,
+                    subset(column_key,column==vars$fiscal_year)$title),
+          y=ifelse( is.na(subset(column_key,column==input$y_var)$title),
+                    input$y_var,
+                    subset(column_key,column==input$y_var)$title)
+        )
+      # lay the stacked plots
+      lay <- rbind(c(1,1,1),
+                   c(1,1,1),
+                   c(2,2,2),
+                   c(2,2,2),
+                   c(2,2,2))
+      grid.arrange(bar_plot,
+                   line_plot,
+                   layout_matrix = lay)
 
-    # add overall visual settings to the plot
-    mainplot <- mainplot +  get_plot_theme()
+    } else {
+      # make the bar plot or line plot (total or share)
+      # set the dataset for plot
+      if(input$y_total_or_share == "As Share"){
+        plot_data <- share_data
+      } else {plot_data <- total_data}
+      # build bar plot or line plot
+       mainplot <- build_plot_from_input(plot_data, input)+
+        
+        scale_color_manual(
+          values = subset(labels_and_colors,column==input$color_var)$RGB,
+          limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+          labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+        )+
+        scale_fill_manual(
+          values = subset(labels_and_colors,column==input$color_var)$RGB,
+          limits=c(subset(labels_and_colors,column==input$color_var)$variable),
+          labels=c(subset(labels_and_colors,column==input$color_var)$Label)
+        )+labs(
+          x=ifelse( is.na(subset(column_key,column==vars$fiscal_year)$title),
+                    vars$fiscal_year,
+                    subset(column_key,column==vars$fiscal_year)$title),
+          y=ifelse( is.na(subset(column_key,column==input$y_var)$title),
+                    input$y_var,
+                    subset(column_key,column==input$y_var)$title)
+        )
+      
+      # add overall visual settings to the plot
+      mainplot <- mainplot +  get_plot_theme()
       #diigtheme1:::diiggraph()
+      
+      if(input$show_title == TRUE){
+        mainplot <- mainplot + ggtitle(input$title_text)
+      }
+      
+      # return the built plot
+      mainplot
+    } # END OF ELSE(bar or line plot)
 
-    if(input$show_title == TRUE){
-      mainplot <- mainplot + ggtitle(input$title_text)
-    }
-
-    # return the built plot
-    return(mainplot)
   })
 
   # calls mainplot(), defined above, to create a plot for the plot output area
@@ -109,7 +167,20 @@ shinyServer(function(input, output, session) {
   output$download_plot <- downloadHandler(
     filename = "plot_data.csv",
     content = function(file){
-      write_csv(format_data_for_plot(current_data, vars$fiscal_year, input), file)
+      if(input$chart_geom == "Double Stacked") {
+        plotdata <- format_data_for_plot(current_data, vars$fiscal_year, input)
+        sharedata <- format_share_data_for_plot(current_data, vars$fiscal_year, input)
+        joinkey <- names(sharedata)[1:ncol(sharedata)-1]
+        plot_data <- left_join(plotdata, sharedata, by=joinkey)
+        names(plot_data)[ncol(plot_data)] <- paste(input$y_var, ".Sharamout")
+      } else{
+        if(input$y_total_or_share == "As Share") {
+          plot_data <- format_share_data_for_plot(current_data, vars$fiscal_year, input)
+        } else{
+          plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
+        }
+      }
+      write_csv(plot_data, file)
     }
   )
 

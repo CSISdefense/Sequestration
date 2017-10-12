@@ -1,6 +1,6 @@
 ################################################################################
 # FPDS breakdowns 2.0 app - March 2017
-# V3 (add period button)
+# V4 Add stacked plots and drawdown period lines - Oct 2017
 # ui.R
 ################################################################################
 
@@ -28,7 +28,7 @@ shinyUI(fluidPage(
         radioButtons(
           inputId = "chart_geom",
           label = NULL,
-          choices = c("Bar Chart", "Line Chart"),
+          choices = c("Bar Chart", "Line Chart","Double Stacked"),
           selected = "Line Chart"
         ),
         selectInput(
@@ -57,11 +57,14 @@ shinyUI(fluidPage(
           width = "100%",
           selectize = TRUE
         ),
-        radioButtons(
-          inputId = "y_total_or_share",
-          label = NULL,
-          choices = c("As Total", "As Share"),
-          selected = "As Total"
+        conditionalPanel(
+          condition = "input.chart_geom == 'Bar Chart' | input.chart_geom == 'Line Chart'",
+          radioButtons(
+            inputId = "y_total_or_share",
+            label = NULL,
+            choices = c("As Total", "As Share"),
+            selected = "As Total"
+          )
         )
       ),
       wellPanel(
