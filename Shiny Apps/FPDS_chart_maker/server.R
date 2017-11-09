@@ -137,9 +137,7 @@ shinyServer(function(input, output, session) {
         )
       
       # add overall visual settings to the plot
-      mainplot <- mainplot +  get_plot_theme() +theme(#strip.background = element_rect(fill = "white"),
-        panel.border = element_rect(colour = "black", fill=NA, size=1),
-        strip.background = element_rect(colour = "black", fill = "white", size=1))
+      mainplot <- mainplot +  get_plot_theme() 
       #diigtheme1:::diiggraph()
       
       if(input$show_title == TRUE){

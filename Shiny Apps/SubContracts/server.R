@@ -106,7 +106,7 @@ shinyServer(function(input, output, session) {
     # add overall visual settings to the plot
     mainplot <- mainplot + 
       #diigtheme1:::diiggraph()
-      theme(panel.border = element_blank(),
+      theme(
         panel.background = element_rect(fill = "white"),
         plot.background = element_rect(fill = "white", color="white"),
         panel.grid.major.x = element_blank(),
