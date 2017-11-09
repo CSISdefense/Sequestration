@@ -21,7 +21,7 @@ library(csis360)
 
 # read in data
 full_data <- read_csv(
-  "2016_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.csv",
+  "Data//2016_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.csv",
   col_names = TRUE, col_types = "cccccccccc",na=c("NA","NULL"))
 
 
@@ -42,7 +42,7 @@ full_data<-deflate(full_data,
   
 
 #Consolidate categories for Vendor Size
-full_data<-read_and_join(full_data,
+full_data<-csis360::read_and_join(full_data,
   "LOOKUP_Contractor_Size.csv",
   by="Vendor.Size",
   add_var="Shiny.VendorSize"
@@ -51,7 +51,7 @@ full_data<-read_and_join(full_data,
 
 
 # classify competition
-full_data<-read_and_join(full_data,
+full_data<-csis360::read_and_join(full_data,
   "Lookup_SQL_CompetitionClassification.csv",
   by=c("CompetitionClassification","ClassifyNumberOfOffers"),
   replace_na_var="ClassifyNumberOfOffers",
@@ -63,7 +63,7 @@ full_data<-read_and_join(full_data,
 
 
 #Classify Product or Service Codes
-full_data<-read_and_join(full_data,
+full_data<-csis360::read_and_join(full_data,
   "LOOKUP_Buckets.csv",
   by="ProductOrServiceArea",
   replace_na_var="ProductOrServiceArea",
@@ -72,7 +72,7 @@ full_data<-read_and_join(full_data,
 
 
 full_data<-replace_nas_with_unlabeled(full_data,"SubCustomer","Uncategorized")
-full_data<-read_and_join(full_data,
+full_data<-csis360::read_and_join(full_data,
                         "Lookup_SubCustomer.csv",
                         by=c("Customer","SubCustomer"),
                         add_var="SubCustomer.platform"
@@ -103,4 +103,4 @@ full_data %<>%
 
 
 # write output to CleanedVendorSize.csv
-save(full_data,labels_and_colors,column_key, file="2016_unaggregated_FPDS.Rda")
+save(full_data,labels_and_colors,column_key, file="Shiny Apps//FPDS_chart_maker//2016_unaggregated_FPDS.Rda")

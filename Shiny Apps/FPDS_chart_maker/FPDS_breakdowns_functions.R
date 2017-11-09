@@ -259,7 +259,8 @@ build_plot_from_input <- function(
   if(input$facet_var != "None"){
     mainplot <- mainplot +
       facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) +
-      theme(strip.background = element_rect(fill = "white")) +
+      theme(strip.background = element_rect(fill = "white", size=1),
+            panel.border = element_rect(colour = "black", fill=NA, size=1)) +
       scale_x_continuous(
         breaks = function(x) {seq(input$year[1], input$year[2], by = 2)},
         labels = function(x){str_sub(as.character(x), -2, -1)}
