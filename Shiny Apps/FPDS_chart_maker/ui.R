@@ -91,7 +91,7 @@ shinyUI(fluidPage(
               wellPanel(
                 downloadButton(
                   outputId = "download_image",
-                  label = "Save Plot as JPG (300 DPI)",
+                  label = "Save Plot as PNG (300 DPI)",
                   width = "100%"
                 ),
                 br(),

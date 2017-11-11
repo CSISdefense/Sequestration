@@ -80,7 +80,6 @@ full_data<-csis360::read_and_join(full_data,
 
 full_data<-replace_nas_with_unlabeled(full_data,"PlatformPortfolio")
 
-
 labels_and_colors<-prepare_labels_and_colors(full_data)
 
 

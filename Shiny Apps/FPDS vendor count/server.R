@@ -64,7 +64,8 @@ shinyServer(function(input, output, session) {
     # add overall visual settings to the plot
     mainplot <- mainplot + labs(x = "Fiscal Year", y = "Vendor Count") + 
       #diigtheme1:::diiggraph()
-      theme(panel.border = element_blank(),
+      theme(
+        panel.border = element_blank(),
         panel.background = element_rect(fill = "white"),
         plot.background = element_rect(fill = "white", color="white"),
         panel.grid.major.x = element_blank(),
@@ -123,7 +124,10 @@ shinyServer(function(input, output, session) {
       mainplot <- mainplot +  theme(axis.text.x = element_text(
         size = 15,
         family = "Open Sans",
-        vjust = 7))}
+        vjust = 7),
+        strip.background = element_rect(colour = "#554449", fill = "white", size=0.5),
+        panel.border = element_rect(colour = "#554449", fill=NA, size=0.5)
+      )}
       
        
     # return the built plot

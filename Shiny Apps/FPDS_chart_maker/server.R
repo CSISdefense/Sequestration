@@ -184,9 +184,9 @@ shinyServer(function(input, output, session) {
     }
   )
 
-  # runs the download JPG button
+  # runs the download PNG button
   output$download_image <- downloadHandler(
-    filename = "plot_image.jpg",
+    filename = "plot_image.png",
     content = function(file){
       ggsave(
       filename = file,

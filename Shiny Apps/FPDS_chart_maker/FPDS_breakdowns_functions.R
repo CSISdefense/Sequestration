@@ -259,8 +259,8 @@ build_plot_from_input <- function(
   if(input$facet_var != "None"){
     mainplot <- mainplot +
       facet_wrap(as.formula(paste0("~ `",input$facet_var, "`"))) +
-      theme(strip.background = element_rect(colour = "black", fill = "white", size=0.5),
-            panel.border = element_rect(colour = "black", fill=NA, size=0.5)) +
+      theme(strip.background = element_rect(colour = "#554449", fill = "white", size=0.5),
+            panel.border = element_rect(colour = "#554449", fill=NA, size=0.5)) +
       scale_x_continuous(
         breaks = function(x) {seq(input$year[1], input$year[2], by = 2)},
         labels = function(x){str_sub(as.character(x), -2, -1)}
@@ -282,7 +282,7 @@ build_plot_from_input <- function(
     drawdownpd <- data.frame(period, startFY, endFY)
     if(input$chart_geom == "Line Chart") {
     mainplot <- mainplot +
-      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY), 
+      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY, color=period), 
                  linetype='dashed',size=0.2) +
       geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
                                             label=period), colour='#808389', size=3, angle=90, vjust=1.2, hjust=0)
