@@ -11,7 +11,7 @@ library(Cairo)
 library(shinyBS)
 library(stringr)
 library(tidyverse)
-
+library(csis360)
 
 shinyServer(function(input, output, session) {
   options(scipen = 99)
@@ -63,52 +63,7 @@ shinyServer(function(input, output, session) {
  
     # add overall visual settings to the plot
     mainplot <- mainplot + labs(x = "Fiscal Year", y = "Vendor Count") + 
-      #diigtheme1:::diiggraph()
-      theme(
-        panel.border = element_blank(),
-        panel.background = element_rect(fill = "white"),
-        plot.background = element_rect(fill = "white", color="white"),
-        panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        panel.grid.major.y = element_line(size=.1, color="lightgray"),
-        panel.grid.minor.y = element_line(size=.1, color="lightgray"),
-        axis.ticks = element_blank()
-  ) +
-    theme(plot.title = element_text(
-      family = "Open Sans",
-      color = "#554449",
-      size = 21, face="bold",
-      margin=margin(20,0,20,0),
-      hjust = 0.5))  +
-    theme(axis.text.y = element_text(
-      size = 15,
-      family = "Open Sans",
-      color ="#554449",
-      margin = margin(0,5,0,0))) +
-    theme(axis.title.x = element_text(
-      size = 16,
-      face = "bold",
-      color = "#554449",
-      family = "Open Sans",
-      margin = margin(15,0,0,60))) +
-    theme(axis.title.y = element_text(
-      size = 16,
-      face = "bold",
-      color = "#554449",
-      family = "Open Sans",
-      margin = margin(0,15,0,0))
-    ) +
-    theme(legend.text = element_text(
-      size = 15,
-      family = "Open Sans",
-      color ="#554449")) +
-    theme(legend.title = element_text(
-      size = 15,
-      family = "Open Sans",
-      color ="#554449")) +
-    theme(legend.position = 'bottom') +
-    theme(legend.background = element_rect(fill = "white")
-    )
+      get_plot_theme() 
     
     if(input$show_title == TRUE){
       mainplot <- mainplot + ggtitle(input$title_text) 
