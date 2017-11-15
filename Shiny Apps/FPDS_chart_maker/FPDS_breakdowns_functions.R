@@ -8,8 +8,6 @@ library(dplyr)
 library(lazyeval)
 library(forcats)
 
-load("2016_unaggregated_FPDS.Rda")
-
 populate_ui_var_lists <- function(
   # Fills the ui menus with appropriate variables from the tibble passed to it
   #
@@ -42,13 +40,25 @@ format_data_for_plot <- function(
   incoming_data,   # data to format for the plot, as a tibble
   fy_var,          # name of fiscal year variable, as string
   input,           # shiny input object
-  session = getDefaultReactiveDomain()  # shiny app session
+  labels_and_colors=NULL
   #
   # Returns:
   #   a tibble of formatted data
   ){  
 
   shown_data <- incoming_data
+  shown_data<-as.data.frame(shown_data)
+  if(!is.null(labels_and_colors)){
+    if(input$color_var!="None"){
+      shown_data[,colnames(shown_data)==input$color_var]<-
+        ordered(shown_data[,colnames(shown_data)==input$color_var],subset(labels_and_colors,column==input$color_var)$variable)
+    }
+    if(input$facet_var!="None"){
+      shown_data[,colnames(shown_data)==input$facet_var]<-
+        ordered(shown_data[,colnames(shown_data)==input$facet_var],subset(labels_and_colors,column==input$facet_var)$variable)
+    }
+  }
+  
   
   breakouts <- c(input$color_var, input$facet_var)
   breakouts <- breakouts[breakouts != "None"]
@@ -100,12 +110,25 @@ format_share_data_for_plot <- function(
   incoming_data,   # data to format for the plot, as a tibble
   fy_var,          # name of fiscal year variable, as string
   input,           # shiny input object
-  session = getDefaultReactiveDomain()  # shiny app session
+  labels_and_colors =NULL
   #
   # Returns:
   #   a tibble of formatted data
   ){
   shown_data <- incoming_data
+  
+  shown_data <- incoming_data
+  shown_data<-as.data.frame(shown_data)
+  if(!is.null(labels_and_colors)){
+    if(input$color_var!="None"){
+      shown_data[,colnames(shown_data)==input$color_var]<-
+        ordered(shown_data[,colnames(shown_data)==input$color_var],subset(labels_and_colors,column==input$color_var)$variable)
+    }
+    if(input$facet_var!="None"){
+      shown_data[,colnames(shown_data)==input$facet_var]<-
+        ordered(shown_data[,colnames(shown_data)==input$facet_var],subset(labels_and_colors,column==input$facet_var)$variable)
+    }
+  }
   
   breakouts <- c(input$color_var, input$facet_var)
   breakouts <- breakouts[breakouts != "None"]

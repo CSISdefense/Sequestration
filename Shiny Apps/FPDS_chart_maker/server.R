@@ -53,10 +53,9 @@ shinyServer(function(input, output, session) {
     #
     # Returns:
     #   a fully built ggplot object
-
     # get appropriately formatted data to use in the plot
-    total_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
-    share_data <- format_share_data_for_plot(current_data, vars$fiscal_year, input)
+    total_data <- format_data_for_plot(current_data, vars$fiscal_year, input,labels_and_colors)
+    share_data <- format_share_data_for_plot(current_data, vars$fiscal_year, input,labels_and_colors)
 
     # build plot with user-specified geoms
     if(input$chart_geom == "Double Stacked"){
@@ -168,16 +167,16 @@ shinyServer(function(input, output, session) {
     filename = "plot_data.csv",
     content = function(file){
       if(input$chart_geom == "Double Stacked") {
-        plotdata <- format_data_for_plot(current_data, vars$fiscal_year, input)
-        sharedata <- format_share_data_for_plot(current_data, vars$fiscal_year, input)
+        plotdata <- format_data_for_plot(current_data, vars$fiscal_year, input,labels_and_colors)
+        sharedata <- format_share_data_for_plot(current_data, vars$fiscal_year, input,labels_and_colors)
         joinkey <- names(sharedata)[1:ncol(sharedata)-1]
         plot_data <- left_join(plotdata, sharedata, by=joinkey)
         names(plot_data)[ncol(plot_data)] <- paste(input$y_var, ".Sharamout")
       } else{
         if(input$y_total_or_share == "As Share") {
-          plot_data <- format_share_data_for_plot(current_data, vars$fiscal_year, input)
+          plot_data <- format_share_data_for_plot(current_data, vars$fiscal_year, input,labels_and_colors)
         } else{
-          plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input)
+          plot_data <- format_data_for_plot(current_data, vars$fiscal_year, input,labels_and_colors)
         }
       }
       write_csv(plot_data, file)
