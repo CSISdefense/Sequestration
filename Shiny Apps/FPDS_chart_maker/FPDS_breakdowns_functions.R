@@ -12,26 +12,26 @@ populate_ui_var_lists <- function(
   # Fills the ui menus with appropriate variables from the tibble passed to it
   #
   # Args:
-  data_source,    # tibble from which to populate the ui menus  
+  data_source,    # tibble from which to populate the ui menus
   session = getDefaultReactiveDomain()  # shiny app session
   ){
-  
+
   # get the class for each variable (except fiscal year)
-  var_class <- sapply(data_source, class) 
-  
+  var_class <- sapply(data_source, class)
+
   # put numeric variables in the y_var list
   numerics <- names(data_source)[
     (var_class == "numeric" | var_class == "integer") & colnames(data_source)!="Fiscal.Year"]
-  updateSelectInput(session, "y_var", 
+  updateSelectInput(session, "y_var",
                     choices = numerics,
                     selected = "Action.Obligation.2016")
-  
+
   # put categorical variables in the color_var and facet_var lists
   categories <- names(data_source)[var_class == "factor"]
   categories <- c("None", categories)
   updateSelectInput(session, "color_var", choices = categories)
   updateSelectInput(session, "facet_var", choices = categories)
-}  
+}
 
 format_data_for_plot <- function(
   # Returns data in the appropriate format for the user-specified plot
@@ -44,7 +44,7 @@ format_data_for_plot <- function(
   #
   # Returns:
   #   a tibble of formatted data
-  ){  
+  ){
 
   shown_data <- incoming_data
   shown_data<-as.data.frame(shown_data)
@@ -58,11 +58,11 @@ format_data_for_plot <- function(
         ordered(shown_data[,colnames(shown_data)==input$facet_var],subset(labels_and_colors,column==input$facet_var)$variable)
     }
   }
-  
-  
+
+
   breakouts <- c(input$color_var, input$facet_var)
   breakouts <- breakouts[breakouts != "None"]
-  
+
   # account for potential spaces in breakouts and fy_var
   if(grepl(" ", fy_var)) fy_var <- paste0("`", fy_var, "`")
   if(length(breakouts) >= 1){
@@ -75,11 +75,11 @@ format_data_for_plot <- function(
   shown_data %<>%
     filter_(paste0(fy_var, ">=", as.character(input$year[1]), "&", fy_var,
                    "<=", as.character(input$year[2])))
-  
+
   # aggregate to the level of [fiscal year x breakouts]
   # the evaluation for dplyr::summarize_ was a pain in the ass to figure out;
   # see stack overflow at https://tinyurl.com/z82ywf3
-  
+
   if(length(breakouts) == 0){
     shown_data %<>%
       group_by_(fy_var) %>%
@@ -91,14 +91,14 @@ format_data_for_plot <- function(
       summarize_(
         sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
   }
-  
+
   names(shown_data)[which(names(shown_data) == "sum_val")] <- input$y_var
-  
+
   #
   # NOTE: NAs replaced with 0 here; potential data quality issue
   #
   shown_data[is.na(shown_data)] <- 0
-  
+
   # return the ggplot-ready data
   return(shown_data)
 }
@@ -116,7 +116,7 @@ format_share_data_for_plot <- function(
   #   a tibble of formatted data
   ){
   shown_data <- incoming_data
-  
+
   shown_data <- incoming_data
   shown_data<-as.data.frame(shown_data)
   if(!is.null(labels_and_colors)){
@@ -129,10 +129,10 @@ format_share_data_for_plot <- function(
         ordered(shown_data[,colnames(shown_data)==input$facet_var],subset(labels_and_colors,column==input$facet_var)$variable)
     }
   }
-  
+
   breakouts <- c(input$color_var, input$facet_var)
   breakouts <- breakouts[breakouts != "None"]
-  
+
   # account for potential spaces in breakouts and fy_var
   if(grepl(" ", fy_var)) fy_var <- paste0("`", fy_var, "`")
   if(length(breakouts) >= 1){
@@ -145,11 +145,11 @@ format_share_data_for_plot <- function(
   shown_data %<>%
     filter_(paste0(fy_var, ">=", as.character(input$year[1]), "&", fy_var,
                    "<=", as.character(input$year[2])))
-  
+
   # aggregate to the level of [fiscal year x breakouts]
   # the evaluation for dplyr::summarize_ was a pain in the ass to figure out;
   # see stack overflow at https://tinyurl.com/z82ywf3
-  
+
   if(length(breakouts) == 0){
     shown_data %<>%
       group_by_(fy_var) %>%
@@ -161,43 +161,46 @@ format_share_data_for_plot <- function(
       summarize_(
         sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
   }
-  
+
   names(shown_data)[which(names(shown_data) == "sum_val")] <- input$y_var
-  
+
   #
   # NOTE: NAs replaced with 0 here; potential data quality issue
   #
   shown_data[is.na(shown_data)] <- 0
-  
+
   # calculate shares if share checkbox is checked
   if(input$color_var != "None"){
-    
+
     # share_vars indicates which columns are being used to calculate the shares.
     # If there's only one breakout, it's set to -1:
-    # "everything except fiscal year." 
+    # "everything except fiscal year."
     # With two breakouts, it's set to c(-1, -2):
     # "everything except fiscal year and the facet variable."
-    share_vars <- c(-1, -length(breakouts))
-    
+    if(input$facet_var=="None" | input$facet_var == input$color_var)
+      share_vars <- c(-1)
+    else
+      share_vars <- c(-1,-2)
+
     # spread the shares breakout variable across multiple columns
     shown_data %<>%
       spread_(input$color_var, input$y_var)
-    
+
     #
     # NOTE: NAs replaced with 0 here; potential data quality issue
     #
     shown_data[is.na(shown_data)] <- 0
-    
+
     # calculate a total for each row - i.e. the total for the shares breakout
     # variable for each fiscal year,
     # or for each [fiscal year x facet variable] combo
     shown_data$total <- rowSums(shown_data[share_vars])
-    
+
     # divide each column by the total column, to get each column as shares
     shown_data[share_vars] <-
       sapply(shown_data[share_vars], function(x){x / shown_data$total})
     shown_data %<>% select(-total)
-    
+
     # gather the data back to long form
     shown_data <- gather_(
       data = shown_data,
@@ -206,7 +209,7 @@ format_share_data_for_plot <- function(
       gather_cols = names(shown_data[share_vars])
     )
   }
-  
+
   # For the case where the user displays shares not broken out by any variable.
   # This is going to make a very boring chart of 100% shares,
   # but it's handled here to avoid displaying an error.
@@ -217,13 +220,13 @@ format_share_data_for_plot <- function(
     shown_data <- shown_data[which(names(shown_data) != input$y_var)]
     names(shown_data)[which(names(shown_data) == "total")] <- input$y_var
   }
-  
+
   # return the ggplot-ready data
   return(shown_data)
 }
 
 build_plot_from_input <- function(
-  # Adds a geom layer to a ggplot object based on user input.  
+  # Adds a geom layer to a ggplot object based on user input.
   # Intended to handle ggplot settings that depend on user input.
   # Settings that apply universally should be added in server.R
   #
@@ -235,9 +238,9 @@ build_plot_from_input <- function(
   # Returns:
   #   A ggplot object including user-specified geom layer
   ){
-  
+
   mainplot <- ggplot(data = plot_data)
-  
+
   # add a line layer, broken out by color if requested
   if(input$chart_geom == "Line Chart"){
     if(input$color_var == "None"){
@@ -257,7 +260,7 @@ build_plot_from_input <- function(
         theme(legend.key = element_rect(fill = "white"))
     }
   }
-  
+
   # add a bar layer, broken out by color if requested
   if(input$chart_geom == "Bar Chart"){
     if(input$color_var == "None"){
@@ -277,7 +280,7 @@ build_plot_from_input <- function(
         stat = "identity")
     }
   }
-  
+
   # add faceting if requested, and x-axis labeling
   if(input$facet_var != "None"){
     mainplot <- mainplot +
@@ -287,15 +290,15 @@ build_plot_from_input <- function(
       scale_x_continuous(
         breaks = function(x) {seq(input$year[1], input$year[2], by = 2)},
         labels = function(x){str_sub(as.character(x), -2, -1)}
-      ) 
+      )
   } else {
     mainplot <- mainplot +
       scale_x_continuous(
       breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
       labels = function(x){str_sub(as.character(x), -2, -1)}
-    ) 
+    )
   }
-  
+
   # add 4 drawdown periods
   if (input$show_period == "Yes") {
     # specify four drawdown periods
@@ -305,19 +308,19 @@ build_plot_from_input <- function(
     drawdownpd <- data.frame(period, startFY, endFY)
     if(input$chart_geom == "Line Chart") {
     mainplot <- mainplot +
-      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY, color=period), 
+      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY, color=period),
                  linetype='dashed',size=0.2) +
       geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
                                             label=period), colour='#808389', size=3, angle=90, vjust=1.2, hjust=0)
     } else {
       mainplot <- mainplot +
-        geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5), 
+        geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5),
                    linetype='dashed',size=0.2) +
         geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
                                               label=period), colour='#808389', size=3, angle=90, vjust=-0.5, hjust=0)
     }
   }
-  
+
   # add y-axis labeling
   if(input$y_total_or_share == "As Share"){
     mainplot <- mainplot + scale_y_continuous(labels = scales::percent) +
@@ -347,14 +350,14 @@ build_plot_from_input <- function(
         })
       }
     )
-  }  
-  
+  }
+
   # return the plot to server.R
   return(mainplot)
 } # End of build_plot_from_input
 
 build_bar_plot_from_input <- function(
-  # Adds a geom layer to a ggplot object based on user input.  
+  # Adds a geom layer to a ggplot object based on user input.
   # Intended to handle ggplot settings that depend on user input.
   # Settings that apply universally should be added in server.R
   #
@@ -392,15 +395,15 @@ build_bar_plot_from_input <- function(
       scale_x_continuous(
         breaks = function(x) {seq(input$year[1], input$year[2], by = 2)},
         labels = function(x){str_sub(as.character(x), -2, -1)}
-      ) 
+      )
   } else {
     barplot <- barplot +
       scale_x_continuous(
         breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
         labels = function(x){str_sub(as.character(x), -2, -1)}
-      ) 
+      )
   }
-  
+
   # add 4 drawdown periods
   if (input$show_period == "Yes") {
     # specify four drawdown periods
@@ -409,12 +412,12 @@ build_bar_plot_from_input <- function(
     endFY <- c(2010,2012,2015,2016)
     drawdownpd <- data.frame(period, startFY, endFY)
     barplot <- barplot +
-      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5), 
+      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5),
                  linetype='dashed',size=0.2) +
       geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
                                             label=period), colour='#808389', size=2.5, angle=90, vjust=0, hjust=0)
   }
-  
+
   # add y-axis labeling
   barplot <- barplot + scale_y_continuous(
     labels = function(x){
@@ -443,7 +446,7 @@ build_bar_plot_from_input <- function(
   # add overall visual settings to the plot
   barplot <- barplot +  get_plot_theme()
   #diigtheme1:::diiggraph()
-  
+
   if(input$show_title == TRUE){
     barplot <- barplot + ggtitle(input$title_text)
   }
@@ -454,7 +457,7 @@ build_bar_plot_from_input <- function(
 
 
 build_line_plot_from_input <- function(
-  # Adds a geom layer to a ggplot object based on user input.  
+  # Adds a geom layer to a ggplot object based on user input.
   # Intended to handle ggplot settings that depend on user input.
   # Settings that apply universally should be added in server.R
   #
@@ -483,7 +486,7 @@ build_line_plot_from_input <- function(
       guides(color = guide_legend(override.aes = list(size = 5)))+
       theme(legend.key = element_rect(fill = "white"))
   }
-  
+
   # add faceting if requested, and x-axis labeling
   if(input$facet_var != "None"){
     lineplot <- lineplot +
@@ -492,15 +495,15 @@ build_line_plot_from_input <- function(
       scale_x_continuous(
         breaks = function(x) {seq(input$year[1], input$year[2], by = 2)},
         labels = function(x){str_sub(as.character(x), -2, -1)}
-      ) 
+      )
   } else {
     lineplot <- lineplot +
       scale_x_continuous(
         breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
         labels = function(x){str_sub(as.character(x), -2, -1)}
-      ) 
+      )
   }
-  
+
   # add 4 drawdown periods
   if (input$show_period == "Yes") {
     # specify four drawdown periods
@@ -509,20 +512,20 @@ build_line_plot_from_input <- function(
     endFY <- c(2010,2012,2015,2016)
     drawdownpd <- data.frame(period, startFY, endFY)
     lineplot <- lineplot +
-      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY), 
+      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY),
                  linetype='dashed',size=0.2) +
       geom_text(data=drawdownpd,mapping=aes(x=startFY, y=(range(plot_data[,ncol(plot_data)])[1]),
                                             label=period), colour='#808389', size=2.5, angle=90, vjust=1.2, hjust=0)
   }
-  
+
   # add y-axis labeling
   lineplot <- lineplot + scale_y_continuous(labels = scales::percent) +
     ylab(label = paste("Share of", input$y_var))
-  
+
   # add overall visual settings to the plot
   lineplot <- lineplot +  get_plot_theme()
   #diigtheme1:::diiggraph()
-  
+
   # return the plot to server.R
   return(lineplot)
 } # End of build_line_plot_from_input
@@ -530,13 +533,13 @@ build_line_plot_from_input <- function(
 
 populate_edit_var <- function(
   # Populates the edit_var element on the edit page, based on the current data
-  
+
   # Args:
   current_data,    # the current data for the app
   input,           # shiny input object
   session = getDefaultReactiveDomain() # shiny app session
   ){
-  
+
   # insert the variable selection list
   insertUI(
     selector = "#edit_var_placeholder",
@@ -553,15 +556,15 @@ populate_edit_var <- function(
       id = "edit_var_select"
     )
   )
-  
-  
+
+
   # update the variable renaming text box
   updateTextInput(
     session,
     inputId = "rename_var_txt",
     value = names(current_data)[1]
   )
-  
+
 }
 
 
@@ -575,14 +578,14 @@ create_edit_values_list <- function(
   session = getDefaultReactiveDomain()  # shiny session object
   ){
 
-  
+
   edit_var_class <- class(unlist(
     current_data[which(names(current_data) == input$edit_var)]
   ))
-  
+
   if(edit_var_class != "factor") {
     values_shown <- "*Not a Category Variable*"
-    
+
     insertUI(
       selector = "#edit_value_placeholder",
       ui = tags$div(
@@ -600,7 +603,7 @@ create_edit_values_list <- function(
   } else {
     values_shown <- levels(unlist(
       current_data[which(names(current_data) == input$edit_var)]))
-    
+
     insertUI(
       selector = "#edit_value_placeholder",
       ui = tags$div(
@@ -616,14 +619,14 @@ create_edit_values_list <- function(
       )
     )
   }
-  
+
   # update the rename text box
   updateTextInput(
     session,
     inputId = "rename_value_txt",
     value = values_shown[1]
   )
-  
+
 }
 
 
@@ -634,20 +637,20 @@ clear_edit_ui <- function(
   input,    # shiny input object
   session = getDefaultReactiveDomain()  # shiny session object
   ){
-  
+
   removeUI(
     selector = "#edit_value_select",
     multiple = TRUE,
     immediate = TRUE
   )
-  
+
   removeUI(
     selector = "#edit_var_select",
     multiple = TRUE,
     immediate = TRUE
   )
-  
-}  
+
+}
 
 drop_from_frame <- function(
   # filters out and drops factor levels from a factor in a data frame
@@ -664,18 +667,18 @@ drop_from_frame <- function(
   # stack overflow: https://tinyurl.com/mtys7xo
   passed_frame %<>%
     filter_(interp(~!val %in% passed_levels, val = as.name(passed_var)))
-    
+
   passed_frame[[passed_var]] <- fct_drop(passed_frame[[passed_var]])
-  
+
   return(passed_frame)
 }
 
 
-  
+
 
 update_title <- function(
   # populates the title field with a dynamic title, if appropriate
-  # 
+  #
   # Args:
   passed_data,   # the data used in the plot
   input,    # shiny input object
@@ -688,7 +691,7 @@ update_title <- function(
     updateTextInput(session, "title_text", value = user_title)
     return()
     }
-  
+
   title <- input$y_var
   if(input$color_var != "None"){
     if(input$facet_var != "None"){
@@ -700,7 +703,7 @@ update_title <- function(
   } else if(input$facet_var != "None"){
     title <- paste(title, "by", input$facet_var)
   }
-  
+
   # check for a single-level filter
   cats <- names(passed_data)[sapply(passed_data, class) == "factor"]
   for(i in seq_along(cats)){
@@ -708,12 +711,12 @@ update_title <- function(
       title <- paste(unlist(unique(passed_data[[i]])), title)
     }
   }
-  
+
   if(input$y_total_or_share == "As Total") title <- paste("Total", title)
   if(input$y_total_or_share == "As Share") title <- paste("Share of", title)
-      
+
   updateTextInput(session, "title_text", value = title)
-  
+
 }
 
 
@@ -729,6 +732,6 @@ rename_value <- function(
 ){
   levels(passed_data[[input$edit_var]])[levels(passed_data[[
         input$edit_var]]) == input$edit_value] <- input$rename_value_txt
-  
+
   return(passed_data)
 }
