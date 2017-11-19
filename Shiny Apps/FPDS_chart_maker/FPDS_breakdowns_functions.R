@@ -33,197 +33,44 @@ populate_ui_var_lists <- function(
   updateSelectInput(session, "facet_var", choices = categories)
 }
 
-format_data_for_plot <- function(
-  # Returns data in the appropriate format for the user-specified plot
-  #
-  # Args:
-  incoming_data,   # data to format for the plot, as a tibble
-  fy_var,          # name of fiscal year variable, as string
-  input,           # shiny input object
-  labels_and_colors=NULL
-  #
-  # Returns:
-  #   a tibble of formatted data
-  ){
+#Extract a legend
+# https://stackoverflow.com/questions/43366616/ggplot2-legend-only-in-a-plot
+g_legend<-function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)}
 
-  shown_data <- incoming_data
-  shown_data<-as.data.frame(shown_data)
-  if(!is.null(labels_and_colors)){
-    if(input$color_var!="None"){
-      shown_data[,colnames(shown_data)==input$color_var]<-
-        ordered(shown_data[,colnames(shown_data)==input$color_var],subset(labels_and_colors,column==input$color_var)$variable)
-    }
-    if(input$facet_var!="None"){
-      shown_data[,colnames(shown_data)==input$facet_var]<-
-        ordered(shown_data[,colnames(shown_data)==input$facet_var],subset(labels_and_colors,column==input$facet_var)$variable)
-    }
-  }
-
-
-  breakouts <- c(input$color_var, input$facet_var)
-  breakouts <- breakouts[breakouts != "None"]
-
-  # account for potential spaces in breakouts and fy_var
-  if(grepl(" ", fy_var)) fy_var <- paste0("`", fy_var, "`")
-  if(length(breakouts) >= 1){
-    if(grepl(" ", breakouts[1])) breakouts[1] <- paste0("`", breakouts[1], "`")
-  }
-  if(length(breakouts) == 2){
-    if(grepl(" ", breakouts[2])) breakouts[2] <- paste0("`", breakouts[2], "`")
-  }
-  # filter by year - see https://tinyurl.com/lm2u8xs
-  shown_data %<>%
-    filter_(paste0(fy_var, ">=", as.character(input$year[1]), "&", fy_var,
-                   "<=", as.character(input$year[2])))
-
-  # aggregate to the level of [fiscal year x breakouts]
-  # the evaluation for dplyr::summarize_ was a pain in the ass to figure out;
-  # see stack overflow at https://tinyurl.com/z82ywf3
-
-  if(length(breakouts) == 0){
-    shown_data %<>%
-      group_by_(fy_var) %>%
-      summarize_(
-        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
-  } else {
-    shown_data %<>%
-      group_by_(.dots = c(fy_var, breakouts)) %>%
-      summarize_(
-        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
-  }
-
-  names(shown_data)[which(names(shown_data) == "sum_val")] <- input$y_var
-
-  #
-  # NOTE: NAs replaced with 0 here; potential data quality issue
-  #
-  shown_data[is.na(shown_data)] <- 0
-
-  # return the ggplot-ready data
-  return(shown_data)
+#From https://github.com/tidyverse/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
+grid_arrange_shared_legend <- function(..., ncol = length(list(...)), nrow = 1, position = c("bottom", "right")) {
+  
+  plots <- list(...)
+  position <- match.arg(position)
+  g <- ggplotGrob(plots[[1]] + theme(legend.position = position))$grobs
+  legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+  lheight <- sum(legend$height)
+  lwidth <- sum(legend$width)
+  gl <- lapply(plots, function(x) x + theme(legend.position="none"))
+  gl <- c(gl, ncol = ncol, nrow = nrow)
+  
+  combined <- switch(position,
+                     "bottom" = arrangeGrob(do.call(arrangeGrob, gl),
+                                            legend,
+                                            ncol = 1,
+                                            heights = unit.c(unit(1, "npc") - lheight, lheight)),
+                     "right" = arrangeGrob(do.call(arrangeGrob, gl),
+                                           legend,
+                                           ncol = 2,
+                                           widths = unit.c(unit(1, "npc") - lwidth, lwidth)))
+  
+  grid.newpage()
+  grid.draw(combined)
+  
+  # return gtable invisibly
+  invisible(combined)
+  
 }
 
-format_share_data_for_plot <- function(
-  # Returns data in the appropriate format for the user-specified plot
-  #
-  # Args:
-  incoming_data,   # data to format for the plot, as a tibble
-  fy_var,          # name of fiscal year variable, as string
-  input,           # shiny input object
-  labels_and_colors =NULL
-  #
-  # Returns:
-  #   a tibble of formatted data
-  ){
-  shown_data <- incoming_data
-
-  shown_data <- incoming_data
-  shown_data<-as.data.frame(shown_data)
-  if(!is.null(labels_and_colors)){
-    if(input$color_var!="None"){
-      shown_data[,colnames(shown_data)==input$color_var]<-
-        ordered(shown_data[,colnames(shown_data)==input$color_var],subset(labels_and_colors,column==input$color_var)$variable)
-    }
-    if(input$facet_var!="None"){
-      shown_data[,colnames(shown_data)==input$facet_var]<-
-        ordered(shown_data[,colnames(shown_data)==input$facet_var],subset(labels_and_colors,column==input$facet_var)$variable)
-    }
-  }
-
-  breakouts <- c(input$color_var, input$facet_var)
-  breakouts <- breakouts[breakouts != "None"]
-
-  # account for potential spaces in breakouts and fy_var
-  if(grepl(" ", fy_var)) fy_var <- paste0("`", fy_var, "`")
-  if(length(breakouts) >= 1){
-    if(grepl(" ", breakouts[1])) breakouts[1] <- paste0("`", breakouts[1], "`")
-  }
-  if(length(breakouts) == 2){
-    if(grepl(" ", breakouts[2])) breakouts[2] <- paste0("`", breakouts[2], "`")
-  }
-  # filter by year - see https://tinyurl.com/lm2u8xs
-  shown_data %<>%
-    filter_(paste0(fy_var, ">=", as.character(input$year[1]), "&", fy_var,
-                   "<=", as.character(input$year[2])))
-
-  # aggregate to the level of [fiscal year x breakouts]
-  # the evaluation for dplyr::summarize_ was a pain in the ass to figure out;
-  # see stack overflow at https://tinyurl.com/z82ywf3
-
-  if(length(breakouts) == 0){
-    shown_data %<>%
-      group_by_(fy_var) %>%
-      summarize_(
-        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
-  } else {
-    shown_data %<>%
-      group_by_(.dots = c(fy_var, breakouts)) %>%
-      summarize_(
-        sum_val = interp(~sum(var, na.rm = TRUE), var = as.name(input$y_var)))
-  }
-
-  names(shown_data)[which(names(shown_data) == "sum_val")] <- input$y_var
-
-  #
-  # NOTE: NAs replaced with 0 here; potential data quality issue
-  #
-  shown_data[is.na(shown_data)] <- 0
-
-  # calculate shares if share checkbox is checked
-  if(input$color_var != "None"){
-
-    # share_vars indicates which columns are being used to calculate the shares.
-    # If there's only one breakout, it's set to -1:
-    # "everything except fiscal year."
-    # With two breakouts, it's set to c(-1, -2):
-    # "everything except fiscal year and the facet variable."
-    if(input$facet_var=="None" | input$facet_var == input$color_var)
-      share_vars <- c(-1)
-    else
-      share_vars <- c(-1,-2)
-
-    # spread the shares breakout variable across multiple columns
-    shown_data %<>%
-      spread_(input$color_var, input$y_var)
-
-    #
-    # NOTE: NAs replaced with 0 here; potential data quality issue
-    #
-    shown_data[is.na(shown_data)] <- 0
-
-    # calculate a total for each row - i.e. the total for the shares breakout
-    # variable for each fiscal year,
-    # or for each [fiscal year x facet variable] combo
-    shown_data$total <- rowSums(shown_data[share_vars])
-
-    # divide each column by the total column, to get each column as shares
-    shown_data[share_vars] <-
-      sapply(shown_data[share_vars], function(x){x / shown_data$total})
-    shown_data %<>% select(-total)
-
-    # gather the data back to long form
-    shown_data <- gather_(
-      data = shown_data,
-      key_col = input$color_var,
-      value_col = input$y_var,
-      gather_cols = names(shown_data[share_vars])
-    )
-  }
-
-  # For the case where the user displays shares not broken out by any variable.
-  # This is going to make a very boring chart of 100% shares,
-  # but it's handled here to avoid displaying an error.
-  # if(input$color_var == "None")
-  else{
-    shown_data %<>%
-      mutate(total = 1)
-    shown_data <- shown_data[which(names(shown_data) != input$y_var)]
-    names(shown_data)[which(names(shown_data) == "total")] <- input$y_var
-  }
-
-  # return the ggplot-ready data
-  return(shown_data)
-}
 
 build_plot_from_input <- function(
   # Adds a geom layer to a ggplot object based on user input.
