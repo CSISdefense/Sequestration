@@ -78,9 +78,11 @@ full_data<-csis360::read_and_join(full_data,
                         add_var="SubCustomer.platform"
 )
 
+
 full_data<-replace_nas_with_unlabeled(full_data,"PlatformPortfolio")
 
-labels_and_colors<-prepare_labels_and_colors(full_data)
+# load("Shiny Apps/FPDS_chart_maker/2016_unaggregated_FPDS.Rda")
+labels_and_colors<-csis360::prepare_labels_and_colors(full_data)
 
 
 column_key<-csis360::get_column_key(full_data)
