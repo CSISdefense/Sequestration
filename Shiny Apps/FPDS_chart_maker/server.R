@@ -173,7 +173,7 @@ shinyServer(function(input, output, session) {
           bar_plot <-  add_period(bar_plot,total_data,"Bar Chart",
                                   text=FALSE)
         
-        
+        #The line plot limits are shifted to align with the bar plot.
         line_plot <- build_plot(data=share_data,
                                 chart_geom="Line Chart",
                                 share=TRUE,
@@ -182,7 +182,12 @@ shinyServer(function(input, output, session) {
                                 color_var=input$color_var,
                                 facet_var=input$facet_var,
                                 labels_and_colors=labels_and_colors,
-                                column_key=column_key)
+                                column_key=column_key)+         scale_x_continuous(
+                                  limits = c(input$year[1]-0.5, input$year[2]+0.5),
+                                  breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
+                                  labels = function(x){str_sub(as.character(x), -2, -1)}
+                                )
+        bar_plot$width<-line_plot$width
         if (input$show_period == "Yes")
           line_plot <-  add_period(line_plot,share_data,"Line Chart",
                                    text=FALSE)
