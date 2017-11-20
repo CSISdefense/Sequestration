@@ -24,7 +24,6 @@ library(gtable)
 library(plyr)
 
 
-
 shinyServer(function(input, output, session) {
   options(scipen = 99)
   options(shiny.maxRequestSize=1000*1024^2)
@@ -90,6 +89,9 @@ shinyServer(function(input, output, session) {
                               column_key=column_key,
                               legend=FALSE,
                               caption=FALSE)
+      if (input$show_period == "Yes")
+        bar_plot <-  add_period(bar_plot,total_data,"Bar Chart")
+
       
       #If there is a breakout, extract the legend
       if(input$color_var!="None"){
@@ -109,6 +111,8 @@ shinyServer(function(input, output, session) {
                               legend=FALSE,
                               caption=FALSE
         )
+      if (input$show_period == "Yes")
+        line_plot <-  add_period(line_plot,share_data,"Line Chart")
       
         OG <-full_data
 
@@ -163,7 +167,9 @@ shinyServer(function(input, output, session) {
                                 column_key=column_key,
                                 legend=FALSE,
                                 caption=FALSE)
-          
+        if (input$show_period == "Yes")
+          bar_plot <-  add_period(bar_plot,total_data,"Bar Chart")
+        
         
         line_plot <- build_plot(data=share_data,
                                 chart_geom="Line Chart",
@@ -174,6 +180,8 @@ shinyServer(function(input, output, session) {
                                 facet_var=input$facet_var,
                                 labels_and_colors=labels_and_colors,
                                 column_key=column_key)
+        if (input$show_period == "Yes")
+          line_plot <-  add_period(line_plot,share_data,"Line Chart")
         
         
         # lay the stacked plots
@@ -194,8 +202,6 @@ shinyServer(function(input, output, session) {
       } else {plot_data <- total_data}
       
       
-      
-      
       # build bar plot or line plot
       mainplot <- build_plot(data=plot_data,
                              chart_geom=input$chart_geom,
@@ -206,6 +212,8 @@ shinyServer(function(input, output, session) {
                              facet_var=input$facet_var,
                              labels_and_colors=labels_and_colors,
                              column_key=column_key)
+      if (input$show_period == "Yes")
+        mainplot <-  add_period(mainplot,plot_data,input$chart_geom)
       
       #diigtheme1:::diiggraph()
       
