@@ -90,7 +90,8 @@ shinyServer(function(input, output, session) {
                               legend=FALSE,
                               caption=FALSE)
       if (input$show_period == "Yes")
-        bar_plot <-  add_period(bar_plot,total_data,"Bar Chart")
+        bar_plot <-  add_period(bar_plot,total_data,"Bar Chart",
+                                text=FALSE)
 
       
       #If there is a breakout, extract the legend
@@ -112,7 +113,8 @@ shinyServer(function(input, output, session) {
                               caption=FALSE
         )
       if (input$show_period == "Yes")
-        line_plot <-  add_period(line_plot,share_data,"Line Chart")
+        line_plot <-  add_period(line_plot,share_data,"Line Chart",
+                                 text=FALSE)
       
         OG <-full_data
 
@@ -168,7 +170,8 @@ shinyServer(function(input, output, session) {
                                 legend=FALSE,
                                 caption=FALSE)
         if (input$show_period == "Yes")
-          bar_plot <-  add_period(bar_plot,total_data,"Bar Chart")
+          bar_plot <-  add_period(bar_plot,total_data,"Bar Chart",
+                                  text=FALSE)
         
         
         line_plot <- build_plot(data=share_data,
@@ -181,7 +184,8 @@ shinyServer(function(input, output, session) {
                                 labels_and_colors=labels_and_colors,
                                 column_key=column_key)
         if (input$show_period == "Yes")
-          line_plot <-  add_period(line_plot,share_data,"Line Chart")
+          line_plot <-  add_period(line_plot,share_data,"Line Chart",
+                                   text=FALSE)
         
         
         # lay the stacked plots
@@ -213,7 +217,8 @@ shinyServer(function(input, output, session) {
                              labels_and_colors=labels_and_colors,
                              column_key=column_key)
       if (input$show_period == "Yes")
-        mainplot <-  add_period(mainplot,plot_data,input$chart_geom)
+        mainplot <-  add_period(mainplot,plot_data,input$chart_geom,
+                                text=FALSE)
       
       #diigtheme1:::diiggraph()
       

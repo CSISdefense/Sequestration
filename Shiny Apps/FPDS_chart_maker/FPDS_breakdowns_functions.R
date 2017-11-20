@@ -53,6 +53,7 @@ add_period <- function(
   main_plot,    # a plot of the data, should be drawn using build_plot
   plot_data,
   chart_geom, #Line chart or bar chart
+  color='#808389',
   text=TRUE #Whether or not to show period names
   #
   # Returns:
@@ -67,20 +68,30 @@ add_period <- function(
     drawdownpd <- data.frame(period, startFY, endFY)
     if(chart_geom == "Line Chart") {
       main_plot <-main_plot+
-      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY, color=period),
-                 linetype='dashed',size=0.2) +
-      geom_text(data=drawdownpd,mapping=aes(x=startFY,
+      geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5
+                                              # color=period
+                                              ),
+                 linetype='dashed',
+                 colour=color,
+                 size=0.2)
+      if(text==TRUE)
+        main_plot <-main_plot+
+          geom_text(data=drawdownpd,mapping=aes(x=startFY-0.5,
                                             label=period),
                 y=(range(plot_data[,ncol(plot_data)])[1]),
-                colour='#808389', size=3, angle=90, vjust=1.2, hjust=0)
+                colour=color, size=3, angle=90, vjust=1.2, hjust=0)
     } else {
       main_plot <- main_plot+
         geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5),
-                   linetype='dashed',size=0.2) +
-        geom_text(data=drawdownpd,mapping=aes(x=startFY, 
+                   linetype='dashed',size=0.2,
+                   colour=color) +
+        if(text==TRUE)
+          main_plot <-main_plot+
+            geom_text(data=drawdownpd,mapping=aes(x=startFY, 
                                               label=period),
                   # y=(range(plot_data[,ncol(plot_data)])[1]),
-                  colour='#808389', size=3, angle=90, vjust=-0.5, hjust=0)
+                  y=0,
+                  colour=color, size=3, angle=90, vjust=-0.5, hjust=0)
     }
     main_plot
 }
