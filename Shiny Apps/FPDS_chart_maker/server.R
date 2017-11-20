@@ -75,87 +75,126 @@ shinyServer(function(input, output, session) {
                                        labels_and_colors=labels_and_colors)
     
     # build plot with user-specified geoms
+    # build plot with user-specified geoms
     if(input$chart_geom == "Period Stacked"){
       # make the stacked plot
       # produce the single bar plot and line plot
       bar_plot <-  build_plot(data=total_data,
-                              chart_geom="Bar Chart",
-                              share=FALSE,
-                              x_var=vars$fiscal_year,
-                              y_var=input$y_var,
-                              color_var=input$color_var,
-                              facet_var=input$facet_var,
-                              labels_and_colors=labels_and_colors,
-                              column_key=column_key,
-                              legend=FALSE,
-                              caption=FALSE)
+        chart_geom="Bar Chart",
+        share=FALSE,
+        x_var=vars$fiscal_year,
+        y_var=input$y_var,
+        color_var=input$color_var,
+        facet_var=input$facet_var,
+        labels_and_colors=labels_and_colors,
+        column_key=column_key,
+        legend=FALSE,
+        caption=FALSE)
       if (input$show_period == "Yes")
         bar_plot <-  add_period(bar_plot,total_data,"Bar Chart",
                                 text=FALSE)
-
+      
       
       #If there is a breakout, extract the legend
       if(input$color_var!="None"){
-        bar_legend<-g_legend(bar_plot+theme(legend.position = "bottom"))
+        bar_legend<-get_legend(bar_plot+theme(legend.position = "bottom"))
       }
       
       bar_plot<-bar_plot+theme(legend.position = "none")
       line_plot <- build_plot(data=share_data,
-                              chart_geom="Line Chart",
-                              share=TRUE,
-                              x_var=vars$fiscal_year,
-                              y_var=input$y_var,
-                              color_var=input$color_var,
-                              facet_var=input$facet_var,
-                              labels_and_colors=labels_and_colors,
-                              column_key=column_key,
-                              legend=FALSE,
-                              caption=FALSE
-        )
+        chart_geom="Line Chart",
+        share=TRUE,
+        x_var=vars$fiscal_year,
+        y_var=input$y_var,
+        color_var=input$color_var,
+        facet_var=input$facet_var,
+        labels_and_colors=labels_and_colors,
+        column_key=column_key,
+        legend=FALSE,
+        caption=FALSE
+      )
       if (input$show_period == "Yes")
         line_plot <-  add_period(line_plot,share_data,"Line Chart",
                                  text=FALSE)
       
-        OG <-full_data
-
-        # PD <-ddply(full_data, c("Period"), summarise,
-                         # mean = mean(Action.Obligation.2016))
       
-        # P1 <- ggplot(data=PD, aes(x=Period, y=mean),fill = as.name(input$color_var)) +geom_bar(stat="identity")
+      
+      
+      
+      #Consolidate categories for Vendor Size
+      period_data<-read_and_join(total_data,
+        "Lookup_Fiscal_Year_Period.csv",
+        directory="economic/",
+        path="https://raw.githubusercontent.com/CSISdefense/Lookup-Tables/master/",
+        by="Fiscal.Year",
+        add_var="sequestration.period"
+      )
+      
+      period_data <-format_period_average(data=period_data,
+        period_var="sequestration.period",
+        y_var=input$y_var,
+        breakout=c(input$color_var,input$facet_var),
+        labels_and_colors=labels_and_colors)
+      
+      
+      #Doing this manually for now
+      period_data<-as.data.frame(period_data)
+      period_data[,"sequestration.period"] <- ordered(period_data[,"sequestration.period"],
+        levels=c("Out of Period",
+          "Pre-drawdown",
+          "Start of Drawdown",
+          "BCA decline period",
+          "Current")
+      )
+      
+      
+      
+      period_plot<-build_plot(data=period_data,
+        chart_geom="Bar Chart",
+        share=FALSE,
+        x_var="sequestration.period",
+        y_var=input$y_var,
+        color_var=input$color_var,
+        facet_var=input$facet_var,
+        labels_and_colors=labels_and_colors,
+        column_key=column_key,
+        legend=FALSE,
+        caption=TRUE
+      )+labs(
+        y="Average Constant 2016 $",
+        x="Period"
+      )
+      
       
       if(input$color_var!="None"){
-      # lay the stacked plots
-      lay <- rbind(c(1,1,1,1),
-                   c(1,1,1,1),
-                   c(1,1,1,1),
-                   c(2,2,3,3),
-                   c(2,2,3,3),
-                   c(4,4,4,4))
-      grid.arrange(bar_plot,
-                   line_plot,
-                   line_plot+
-                     labs(caption = "Source: FPDS; CSIS analysis"
-                     ), #P1,
-                   bar_legend,
-                   layout_matrix = lay)
+        # lay the stacked plots
+        lay <- rbind(c(1,1,1,1),
+          c(1,1,1,1),
+          c(1,1,1,1),
+          c(2,2,3,3),
+          c(2,2,3,3),
+          c(4,4,4,4))
+        grid.arrange(bar_plot,
+          line_plot,
+          period_plot,
+          bar_legend,
+          layout_matrix = lay)
       }
-        else{
-          # lay the stacked plots
-          lay <- rbind(c(1,1,1,1),
-                       c(1,1,1,1),
-                       c(1,1,1,1),
-                       c(2,2,3,3),
-                       c(2,2,3,3))
-          grid.arrange(bar_plot,
-                       line_plot,
-                       line_plot+
-                         labs(caption = "Source: FPDS; CSIS analysis"
-                         ), #P1,
-                       layout_matrix = lay)
-          
-        }
+      else{
+        # lay the stacked plots
+        lay <- rbind(c(1,1,1,1),
+          c(1,1,1,1),
+          c(1,1,1,1),
+          c(2,2,3,3),
+          c(2,2,3,3))
+        grid.arrange(bar_plot,
+          line_plot,
+          period_plot,
+          layout_matrix = lay)
+        
+      }
       # build plot with user-specified geoms
-      } else if(input$chart_geom == "Double Stacked"){
+    } else if(input$chart_geom == "Double Stacked"){
         # make the stacked plot
         # produce the single bar plot and line plot
         bar_plot <-  build_plot(data=total_data,
