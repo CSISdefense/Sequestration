@@ -72,7 +72,7 @@ shinyUI(fluidPage(
           inputId = "show_period",
           label = "Show Drawdown Periods",
           choices = c("Yes", "No"),
-          selected = "No"
+          selected = "Yes"
         )
       )
     ),

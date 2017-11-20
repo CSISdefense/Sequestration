@@ -121,7 +121,9 @@ shinyServer(function(input, output, session) {
         # PD <-ddply(full_data, c("Period"), summarise,
                          # mean = mean(Action.Obligation.2016))
       
-        # P1 <- ggplot(data=PD, aes(x=Period, y=mean),fill = as.name(input$color_var)) +geom_bar(stat="identity")
+        format_period_average(data,
+                              "sequestration.period")
+        P1 <- ggplot(data=PD, aes(x=Period, y=mean),fill = as.name(input$color_var)) +geom_bar(stat="identity")
       
       if(input$color_var!="None"){
       # lay the stacked plots

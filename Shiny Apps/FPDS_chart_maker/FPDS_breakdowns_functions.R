@@ -33,21 +33,11 @@ populate_ui_var_lists <- function(
   updateSelectInput(session, "facet_var", choices = categories)
 }
 
-#Extract a legend
-# https://stackoverflow.com/questions/43366616/ggplot2-legend-only-in-a-plot
-# Alternate unused approach From https://github.com/tidyverse/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs
-
-g_legend<-function(a.gplot){
-  tmp <- ggplot_gtable(ggplot_build(a.gplot))
-  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-  legend <- tmp$grobs[[leg]]
-  return(legend)}
-
 
 #When facet !="None"
 # theme(strip.background = element_rect(colour = "#554449", fill = "white", size=0.5),
       # panel.border = element_rect(colour = "#554449", fill=NA, size=0.5)) +
-  
+
 add_period <- function(
   # Args:
   main_plot,    # a plot of the data, should be drawn using build_plot
@@ -62,7 +52,7 @@ add_period <- function(
 
   # add 4 drawdown periods
     # specify four drawdown periods
-    period <- c("Pre-drawdown", "Start of Drawdown", "BCA deline period", "Current")
+    period <- c("Pre-drawdown", "Start of Drawdown", "BCA decline period", "Current")
     startFY <- c(2009, 2011, 2013, 2016)
     endFY <- c(2010,2012,2015,2016)
     drawdownpd <- data.frame(period, startFY, endFY)
@@ -87,7 +77,7 @@ add_period <- function(
                    colour=color) +
         if(text==TRUE)
           main_plot <-main_plot+
-            geom_text(data=drawdownpd,mapping=aes(x=startFY, 
+            geom_text(data=drawdownpd,mapping=aes(x=startFY,
                                               label=period),
                   # y=(range(plot_data[,ncol(plot_data)])[1]),
                   y=0,
