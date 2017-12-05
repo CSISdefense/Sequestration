@@ -55,7 +55,7 @@ shinyServer(function(input, output, session) {
     # Returns:
     #   a fully built ggplot object
     # get appropriately formatted data to use in the plot
-    total_data <- format_data_for_plot(data=current_data,
+    total_data <- csis360::format_data_for_plot(data=current_data,
                                        share=FALSE,
                                        fy_var=vars$fiscal_year,
                                        start_fy=input$year[1],
@@ -64,7 +64,7 @@ shinyServer(function(input, output, session) {
                                        color_var=input$color_var,
                                        facet_var=input$facet_var,
                                        labels_and_colors=labels_and_colors)
-    share_data <- format_data_for_plot(data=current_data,
+    share_data <- csis360::format_data_for_plot(data=current_data,
                                        share=TRUE,
                                        fy_var=vars$fiscal_year,
                                        start_fy=input$year[1],
@@ -118,14 +118,7 @@ shinyServer(function(input, output, session) {
                                  text=FALSE)
       
       
-<<<<<<< HEAD
-        format_period_average(data,
-                              "sequestration.period")
-        P1 <- ggplot(data=PD, aes(x=Period, y=mean),fill = as.name(input$color_var)) +geom_bar(stat="identity")
-=======
-      
-      
-      
+
       #Consolidate categories for Vendor Size
       period_data<-read_and_join(total_data,
         "Lookup_Fiscal_Year_Period.csv",
@@ -170,8 +163,7 @@ shinyServer(function(input, output, session) {
         x="Period"
       )
       
->>>>>>> 98987fa9ebff520a8cfb2d88183c98c7b08a0564
-      
+    
       if(input$color_var!="None"){
         # lay the stacked plots
         lay <- rbind(c(1,1,1,1),
