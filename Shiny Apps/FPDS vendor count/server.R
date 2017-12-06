@@ -19,10 +19,8 @@ shinyServer(function(input, output, session) {
   source("vendor_count_functions.R")
   
   # read data  
-  platform_sub <- read.csv("platform_sub.csv")
-  sub_only <- read.csv("sub_only.csv")
-  platform_only <- read.csv("platform_only.csv")
-  top_level <- read.csv("top_level.csv")
+  load("2016_vendor_count.Rda")
+  
   # in case user renames the data-frame choosing variables
   vars <- reactiveValues(
     double_counted = c(
@@ -46,6 +44,9 @@ shinyServer(function(input, output, session) {
   # fill the variable lists in the ui with variables from current_platform_sub
   populate_ui_var_lists(current_platform_sub)
   
+  if("EntityCount" %in% tolower(colnames(current_platform_sub))){
+    input$y_var <- "EntityCount"
+  }
   
   mainplot <- reactive({
     # Builds a ggplot based on user settings, for display on the main panel.
@@ -57,9 +58,30 @@ shinyServer(function(input, output, session) {
     # get appropriately formatted data to use in the plot
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
-    plot_data <- format_data_for_plot(get(vars$frame), vars$fiscal_year, input)
+    plot_data <- csis360::format_data_for_plot(data=get(vars$frame),
+      share=FALSE,
+      fy_var=vars$fiscal_year,
+      start_fy=input$year[1],
+      end_fy=input$year[2],
+      y_var=input$y_var,
+      color_var=input$color_var,
+      facet_var=input$facet_var,
+      labels_and_colors=labels_and_colors)
+      
+      # format_data_for_plot(get(vars$frame), vars$fiscal_year, input)
     # build plot with user-specified geoms
-    mainplot <- build_plot_from_input(plot_data, input)
+    mainplot <- build_plot(data=plot_data,
+      chart_geom=input$chart_geom,
+      share=FALSE,
+      x_var=vars$fiscal_year,
+      y_var=input$y_var,
+      color_var=input$color_var,
+      facet_var=input$facet_var,
+      labels_and_colors=labels_and_colors,
+      column_key=column_key,
+      legend=FALSE,
+      caption=FALSE)
+      # build_plot_from_input(plot_data, input)
  
     # add overall visual settings to the plot
     mainplot <- mainplot + labs(x = "Fiscal Year", y = "Vendor Count") + 

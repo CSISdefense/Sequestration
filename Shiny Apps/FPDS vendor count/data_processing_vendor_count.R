@@ -6,14 +6,18 @@ library(magrittr)
 library(tidyverse)
 library(forcats)
 
-  platform_sub <- read.csv(
-    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv")
-  sub_only <- read.csv(
-    "Defense_Vendor_sp_EntityCountHistorySubCustomer.csv")
-  platform_only <- read.csv(
-    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv")
-  top_level <- read.csv(
-    "Vendor_sp_EntityCountHistoryCustomer.csv")
+  platform_sub <- read_csv(
+    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv",
+    na=c("NA","NULL"))
+  sub_only <- read_csv(
+    "Defense_Vendor_sp_EntityCountHistorySubCustomer.csv",
+    na=c("NA","NULL"))
+  platform_only <- read_csv(
+    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv",
+    na=c("NA","NULL"))
+  top_level <- read_csv(
+    "Vendor_sp_EntityCountHistoryCustomer.csv",
+    na=c("NA","NULL"))
 
   # remove unused variables
   platform_sub %<>%
@@ -23,9 +27,9 @@ library(forcats)
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
     mutate(
       SumOfNumberOfActions = as.integer(
-        ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
+        ifelse(is.na(SumOfNumberOfActions), 0, SumOfNumberOfActions)),
       SumOfObligatedAmount = as.numeric(
-        ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+        ifelse(is.na(SumOfObligatedAmount), 0, SumOfObligatedAmount))) %>%
     mutate(
       EntitySizeText = fct_recode(
         EntitySizeText,
@@ -57,9 +61,9 @@ library(forcats)
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
     mutate(
       SumOfNumberOfActions = as.integer(
-        ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
+        ifelse(is.na(SumOfNumberOfActions), 0, SumOfNumberOfActions)),
       SumOfObligatedAmount = as.numeric(
-        ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+        ifelse(is.na(SumOfObligatedAmount), 0, SumOfObligatedAmount))) %>%
     mutate(
       EntitySizeText = fct_recode(
         EntitySizeText,
@@ -91,9 +95,9 @@ library(forcats)
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
     mutate(
       SumOfNumberOfActions = as.integer(
-        ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
+        ifelse(is.na(SumOfNumberOfActions), 0, SumOfNumberOfActions)),
       SumOfObligatedAmount = as.numeric(
-        ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+        ifelse(is.na(SumOfObligatedAmount), 0, SumOfObligatedAmount))) %>%
     mutate(
       EntitySizeText = fct_recode(
         EntitySizeText,
@@ -126,9 +130,9 @@ library(forcats)
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
     mutate(
       SumOfNumberOfActions = as.integer(
-        ifelse(SumOfNumberOfActions == "NULL", 0, SumOfNumberOfActions)),
+        ifelse(is.na(SumOfNumberOfActions), 0, SumOfNumberOfActions)),
       SumOfObligatedAmount = as.numeric(
-        ifelse(SumOfObligatedAmount == "NULL", 0, SumOfObligatedAmount))) %>%
+        ifelse(is.na(SumOfObligatedAmount), 0, SumOfObligatedAmount))) %>%
     mutate(
       EntitySizeText = fct_recode(
         EntitySizeText,
@@ -197,9 +201,38 @@ platform_only$fiscal_year <- as.numeric(platform_only$fiscal_year)
 top_level$fiscal_year <- as.numeric(top_level$fiscal_year)
 platform_sub$fiscal_year <- as.numeric(platform_sub$fiscal_year)
   
-  
-  write_csv(platform_only, "platform_only.csv")
-  write_csv(sub_only, "sub_only.csv")
-  write_csv(platform_sub, "platform_sub.csv")
-  write_csv(top_level, "top_level.csv")
-  
+
+  # write_csv(platform_only, "platform_only.csv")
+  # write_csv(sub_only, "sub_only.csv")
+  # write_csv(platform_sub, "platform_sub.csv")
+  # write_csv(top_level, "top_level.csv")
+
+prepare_vendor<-function(data)
+  {
+  #Add this to replace NAs function
+  if("SubCustomer" %in% colnames(data)){
+    if(!is.factor(data$SubCustomer))
+      data$SubCustomer<-factor(data$SubCustomer)
+    data<-replace_nas_with_unlabeled(data,"SubCustomer","Uncategorized")
+  }
+  if("PlatformPortfolio" %in% colnames(data)){
+    if(!is.factor(data$PlatformPortfolio))
+      data$PlatformPortfolio<-factor(data$PlatformPortfolio)
+    data<-replace_nas_with_unlabeled(data,"PlatformPortfolio")
+  }
+  data
+}
+
+
+platform_sub<-prepare_vendor(platform_sub)
+top_level<-prepare_vendor(top_level)
+sub_only<-prepare_vendor(sub_only)
+platform_only<-prepare_vendor(platform_only)
+
+
+
+labels_and_colors<-csis360::prepare_labels_and_colors(platform_sub)
+column_key<-csis360::get_column_key(platform_sub)
+
+  # write output to CleanedVendorSize.csv
+  save(platform_only,sub_only,platform_sub,top_level, column_key, file="2016_vendor_count.Rda")  #Shiny Apps//FPDS vendor count//
