@@ -235,4 +235,4 @@ labels_and_colors<-csis360::prepare_labels_and_colors(platform_sub)
 column_key<-csis360::get_column_key(platform_sub)
 
   # write output to CleanedVendorSize.csv
-  save(platform_only,sub_only,platform_sub,top_level, column_key, file="2016_vendor_count.Rda")  #Shiny Apps//FPDS vendor count//
+  save(platform_only,sub_only,platform_sub,top_level, column_key, labels_and_colors, file="2016_vendor_count.Rda")  #Shiny Apps//FPDS vendor count//
