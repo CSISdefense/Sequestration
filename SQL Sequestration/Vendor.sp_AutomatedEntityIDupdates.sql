@@ -1,7 +1,7 @@
 USE [DIIG]
 GO
 
-/****** Object:  StoredProcedure [agency].[SP_AssignSubCustomerToAgencyID]    Script Date: 3/21/2017 9:11:04 AM ******/
+/****** Object:  StoredProcedure [Vendor].[sp_AutomatedEntityIDupdates]    Script Date: 1/9/2018 12:14:06 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,12 +12,13 @@ GO
 
 
 
+
 -- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-alter PROCEDURE Vendor.AutomatedEntityIDupdates
+ALTER PROCEDURE [Vendor].[sp_AutomatedEntityIDupdates]
 	-- Add the parameters for the stored procedure here
 	
 AS
@@ -33,7 +34,7 @@ BEGIN
 	 IsAbove1990constantReportingThreshold=iif( contracttotal.SumOfobligatedAmountConstant1990>=25000 or
 		contracttotal.SumOfbaseandexercisedoptionsvalue>=mtt.MicroTransactionThreshold1990constant  or
 		contracttotal.SumOfBaseandalloptionsvalue>=mtt.MicroTransactionThreshold1990constant ,1,0) 
-	 ,IsAbove2016constantReportingThreshold=iif( contracttotal.SumOfobligatedAmountConstant1990>=3500 or
+	 ,IsAbove2016constantReportingThreshold=iif( contracttotal.SumOfobligatedAmountConstant2016>=3500 or
 		contracttotal.SumOfbaseandexercisedoptionsvalue>=mtt.MicroTransactionThreshold2016constant  or
 		contracttotal.SumOfBaseandalloptionsvalue>=mtt.MicroTransactionThreshold2016constant ,1,0) 
 	from  (select CSIScontractID
@@ -569,7 +570,7 @@ and vn.entityid is null
 --,c.placeofmanufacture
 --,c.pop_cd
 --,c.pop_state_code
---,c.placeofperformancecongressionaldis	trict
+--,c.placeofperformancecongressionaldistrict
 --,c.placeofperformancecountrycode
 --,c.placeofperformancezipcode
 --,c.countryoforigin
@@ -581,6 +582,7 @@ and vn.entityid is null
 
 
 END
+
 
 
 

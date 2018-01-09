@@ -65,63 +65,116 @@ shinyServer(function(input, output, session) {
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
     plot_data <- csis360::format_data_for_plot(data=get(vars$frame),
-      share=FALSE,
-      fy_var=vars$fiscal_year,
-      start_fy=input$year[1],
-      end_fy=input$year[2],
-      y_var=input$y_var,
-      color_var=input$color_var,
-      facet_var=input$facet_var,
-      labels_and_colors=labels_and_colors)
-      
-      # format_data_for_plot(get(vars$frame), vars$fiscal_year, input)
-    # build plot with user-specified geoms
-    mainplot <- build_plot(data=plot_data,
-      chart_geom=input$chart_geom,
-      share=FALSE,
-      x_var=vars$fiscal_year,
-      y_var=input$y_var,
-      color_var=input$color_var,
-      facet_var=input$facet_var,
-      labels_and_colors=labels_and_colors,
-      column_key=column_key,
-      legend=FALSE,
-      caption=FALSE)
-      # build_plot_from_input(plot_data, input)
- 
-    # add overall visual settings to the plot
-    mainplot <- mainplot + labs(x = "Fiscal Year", y = "Vendor Count") + 
-      get_plot_theme() 
+                                               share=FALSE,
+                                               fy_var=vars$fiscal_year,
+                                               start_fy=input$year[1],
+                                               end_fy=input$year[2],
+                                               y_var=input$y_var,
+                                               color_var=input$color_var,
+                                               facet_var=input$facet_var,
+                                               labels_and_colors=labels_and_colors)
     
-    if(input$show_title == TRUE){
-      mainplot <- mainplot + ggtitle(input$title_text) 
+    
+    # format_data_for_plot(get(vars$frame), vars$fiscal_year, input)
+    # build plot with user-specified geoms
+    if(input$chart_geom == "Double Stacked"){
+      VC_Bar_Plot <- build_plot(data=plot_data,
+                                chart_geom="Bar Chart",
+                                share=FALSE,
+                                x_var=vars$fiscal_year,
+                                y_var=input$y_var,
+                                color_var= input$facet_var,
+                                labels_and_colors=labels_and_colors,
+                                column_key=column_key,
+                                legend=FALSE,
+                                caption=FALSE)
+      VC_Bar_Plot <-    VC_Bar_Plot + labs(y="Total #
+Vendors") 
+      VC_Bar_Plot <- VC_Bar_Plot + theme(plot.margin=unit(c(.25,0.25,-.2,0.25), "cm"))
+      
+      
+      
+      # build_plot_from_input(plot_data, input)
+      line_plot <- build_plot(data=plot_data,
+                              chart_geom="Line Chart",
+                              share=FALSE,
+                              x_var=vars$fiscal_year,
+                              y_var=input$y_var,
+                              color_var=input$color_var,
+                              labels_and_colors=labels_and_colors,
+                              legend=TRUE,
+                              caption = TRUE,
+                              column_key=column_key) +         scale_x_continuous(
+                                limits = c(input$year[1]-0.5, input$year[2]+0.5),
+                                breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
+                                labels = function(x){str_sub(as.character(x), -2, -1)}
+                              )
+      line_plot <-    line_plot + theme(plot.margin=unit(c(-0.3,0.25,0,0.25), "cm"))
+      VC_Bar_Plot$width<-line_plot$width
+      line_plot <- line_plot + labs(x = "Fiscal Year", 
+                                    y = "Vendor Count 
+by Vendor Size")
+      
+      line_plot <- line_plot+ theme(legend.position = "bottom", legend.margin=margin(t = -0.2, unit='cm'))
+
+      lay <- rbind(c(1,1,1,1),
+                   c(1,1,1,1),
+                   c(2,2,2,2),
+                   c(2,2,2,2),
+                   c(2,2,2,2))
+      grid.arrange(VC_Bar_Plot,
+                   line_plot,
+                   layout_matrix = lay)
+    } else {
+      mainplot <- build_plot(data=plot_data,
+                             chart_geom=input$chart_geom,
+                             share=FALSE,
+                             x_var=vars$fiscal_year,
+                             y_var=input$y_var,
+                             color_var=input$color_var,
+                             facet_var=input$facet_var,
+                             labels_and_colors=labels_and_colors,
+                             column_key=column_key,
+                             legend=TRUE,
+                             caption=TRUE)
+      
+      # add overall visual settings to the plot
+      mainplot <- mainplot + labs(x = "Fiscal Year", y = "Vendor Count") + 
+        get_plot_theme() 
+      
+      if(input$show_title == TRUE){
+        mainplot <- mainplot + ggtitle(input$title_text) 
+      }
+      
+      if(length(input$facet_var) == 0){
+        mainplot <- mainplot +  theme(axis.text.x = element_text(
+          size = 9,
+          family = "Open Sans",
+          vjust = 7,
+          margin = margin(-10,0,0,0)))}
+      else if(length(input$facet_var) > 0){
+        mainplot <- mainplot +  theme(axis.text.x = element_text(
+          size = 9,
+          family = "Open Sans",
+          vjust = 7),
+          strip.background = element_rect(colour = "#554449", fill = "white", size=0.5),
+          panel.border = element_rect(colour = "#554449", fill=NA, size=0.5)
+        )}
+      
+      
+      # return the built plot
+      return(mainplot)
     }
     
-     if(length(input$facet_var) == 0){
-    mainplot <- mainplot +  theme(axis.text.x = element_text(
-      size = 15,
-      family = "Open Sans",
-      vjust = 7,
-      margin = margin(-10,0,0,0)))}
-    else if(length(input$facet_var) > 0){
-      mainplot <- mainplot +  theme(axis.text.x = element_text(
-        size = 15,
-        family = "Open Sans",
-        vjust = 7),
-        strip.background = element_rect(colour = "#554449", fill = "white", size=0.5),
-        panel.border = element_rect(colour = "#554449", fill=NA, size=0.5)
-      )}
-      
-       
-    # return the built plot
-    return(mainplot)
+    
   })
+  
   
   output$plot <- renderPlot({
     mainplot()
   })
-
-    
+  
+  
   output$current_frame <- renderText({
     paste("displayed data: \n", vars$frame)
   })
@@ -285,7 +338,11 @@ shinyServer(function(input, output, session) {
       choose_data_frame(current_platform_sub, input, vars$double_counted)
     update_title(get(vars$frame), input, vars$user_title)
   })
-    
+  observeEvent(input$color_var_2, {
+    vars$frame <- 
+      choose_data_frame(current_platform_sub, input, vars$double_counted)
+    update_title(get(vars$frame), input, vars$user_title)
+  })
   observeEvent(input$facet_var, {
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)

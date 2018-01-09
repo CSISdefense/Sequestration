@@ -226,6 +226,22 @@ prepare_vendor<-function(data)
       data$EntitySizeText<-factor(data$EntitySizeText)
     data<-replace_nas_with_unlabeled(data,"EntitySizeText")
   }
+  if("AnyEntityUSplaceOfPerformance" %in% colnames(data)){
+    if(!is.factor(data$AnyEntityUSplaceOfPerformance))
+      data$AnyEntityUSplaceOfPerformance<-factor(data$AnyEntityUSplaceOfPerformance)
+    data<-replace_nas_with_unlabeled(data,"AnyEntityUSplaceOfPerformance")
+  }
+  if("IsEntityAbove1990constantReportingThreshold" %in% colnames(data)){
+    if(!is.factor(data$IsEntityAbove1990constantReportingThreshold))
+      data$IsEntityAbove1990constantReportingThreshold<-factor(data$IsEntityAbove1990constantReportingThreshold)
+    data<-replace_nas_with_unlabeled(data,"IsEntityAbove1990constantReportingThreshold")
+  }
+  if("IsEntityAbove2016constantReportingThreshold" %in% colnames(data)){
+    if(!is.factor(data$IsEntityAbove2016constantReportingThreshold))
+      data$IsEntityAbove2016constantReportingThreshold<-factor(data$IsEntityAbove2016constantReportingThreshold)
+    data<-replace_nas_with_unlabeled(data,"IsEntityAbove2016constantReportingThreshold")
+  }
+  
   data
 }
 
