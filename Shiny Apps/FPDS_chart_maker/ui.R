@@ -46,6 +46,14 @@ shinyUI(fluidPage(
           selected = "None",
           width = "100%",
           selectize = TRUE
+        ),
+        wellPanel(
+          radioButtons(
+            inputId = "show_legend",
+            label = "Show Legend",
+            choices = c("Yes", "No"),
+            selected = "Yes"
+          )
         )
       ),
       wellPanel(
@@ -72,7 +80,7 @@ shinyUI(fluidPage(
           inputId = "show_period",
           label = "Show Drawdown Periods",
           choices = c("Yes", "No"),
-          selected = "Yes"
+          selected = "No"
         )
       )
     ),

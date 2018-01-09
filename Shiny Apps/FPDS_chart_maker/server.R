@@ -10,6 +10,7 @@ library(magrittr)
 library(forcats)
 library(Cairo)
 library(shinyBS)
+library(csis360)
 #library(diigtheme1)
 library(stringr)
 library(plyr)
@@ -18,11 +19,10 @@ library(ggplot2)
 library(readr)
 library(tidyr)
 library(data.table)
-library(csis360)
 library(gridExtra)
 library(grid)
 library(gtable)
-
+library(ggpubr)
 
 
 shinyServer(function(input, output, session) {
@@ -294,24 +294,24 @@ shinyServer(function(input, output, session) {
     content = function(file){
       if(input$chart_geom == "Double Stacked") {
         plotdata <- csis360::format_data_for_plot(data=current_data,
-                                         share=FALSE,
-                                         fy_var=vars$fiscal_year,
-                                         start_fy=input$year[1],
-                                         end_fy=input$year[2],
-                                         y_var=input$y_var,
-                                         color_var=input$color_var,
-                                         facet_var=input$facet_var,
-                                         labels_and_colors=labels_and_colors)
+                                                  share=FALSE,
+                                                  fy_var=vars$fiscal_year,
+                                                  start_fy=input$year[1],
+                                                  end_fy=input$year[2],
+                                                  y_var=input$y_var,
+                                                  color_var=input$color_var,
+                                                  facet_var=input$facet_var,
+                                                  labels_and_colors=labels_and_colors)
         
         sharedata <-   csis360::format_data_for_plot(data=current_data,
-                                            share=TRUE,
-                                            fy_var=vars$fiscal_year,
-                                            start_fy=input$year[1],
-                                            end_fy=input$year[2],
-                                            y_var=input$y_var,
-                                            color_var=input$color_var,
-                                            facet_var=input$facet_var,
-                                            labels_and_colors=labels_and_colors)
+                                                     share=TRUE,
+                                                     fy_var=vars$fiscal_year,
+                                                     start_fy=input$year[1],
+                                                     end_fy=input$year[2],
+                                                     y_var=input$y_var,
+                                                     color_var=input$color_var,
+                                                     facet_var=input$facet_var,
+                                                     labels_and_colors=labels_and_colors)
         
         
         joinkey <- names(sharedata)[1:ncol(sharedata)-1]
@@ -319,14 +319,14 @@ shinyServer(function(input, output, session) {
         names(plot_data)[ncol(plot_data)] <- paste(input$y_var, ".Sharamout")
       } else{
         csis360::format_data_for_plot(data=current_data,
-                             share=ifelse(input$y_total_or_share == "As Share",TRUE,FALSE),
-                             fy_var=vars$fiscal_year,
-                             start_fy=input$year[1],
-                             end_fy=input$year[2],
-                             y_var=input$y_var,
-                             color_var=input$color_var,
-                             facet_var=input$facet_var,
-                             labels_and_colors=labels_and_colors)
+                                      share=ifelse(input$y_total_or_share == "As Share",TRUE,FALSE),
+                                      fy_var=vars$fiscal_year,
+                                      start_fy=input$year[1],
+                                      end_fy=input$year[2],
+                                      y_var=input$y_var,
+                                      color_var=input$color_var,
+                                      facet_var=input$facet_var,
+                                      labels_and_colors=labels_and_colors)
       }
       write_csv(plot_data, file)
     }

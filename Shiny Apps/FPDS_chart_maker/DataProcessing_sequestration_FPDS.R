@@ -22,7 +22,7 @@ library(csis360)
 # read in data
 full_data <- read_csv(
   "Data//2016_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.csv",
-  col_names = TRUE, col_types = "cccccccccc",na=c("NA","NULL"))
+  col_names = TRUE, col_types = "ccccccccccc",na=c("NA","NULL"))
 
 
 full_data<-standardize_variable_names(full_data)
