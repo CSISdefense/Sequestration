@@ -62,8 +62,8 @@ add_period <- function(
                                               # color=period
                                               ),
                  linetype='dashed',
-                 colour=color,
-                 size=0.2)
+                 colour="black",
+                 size=0.3)
       if(text==TRUE)
         main_plot <-main_plot+
           geom_text(data=drawdownpd,mapping=aes(x=startFY-0.5,
@@ -73,11 +73,11 @@ add_period <- function(
     } else {
       main_plot <- main_plot+
         geom_vline(data=drawdownpd, mapping=aes(xintercept=startFY-0.5),
-                   linetype='dashed',size=0.2,
-                   colour=color) +
+                   linetype='solid',size=0.35,
+                   colour="black") +
         if(text==TRUE)
           main_plot <-main_plot+
-            geom_text(data=drawdownpd,mapping=aes(x=startFY,
+            geom_text(data=drawdownpd,mapping=aes(x=startFY, 
                                               label=period),
                   # y=(range(plot_data[,ncol(plot_data)])[1]),
                   y=0,
