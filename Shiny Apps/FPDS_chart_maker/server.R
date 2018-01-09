@@ -12,6 +12,7 @@ library(Cairo)
 library(shinyBS)
 #library(diigtheme1)
 library(stringr)
+library(plyr)
 library(dplyr)
 library(ggplot2)
 library(readr)
@@ -21,7 +22,7 @@ library(csis360)
 library(gridExtra)
 library(grid)
 library(gtable)
-library(plyr)
+
 
 
 shinyServer(function(input, output, session) {
