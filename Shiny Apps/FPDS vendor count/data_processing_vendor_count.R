@@ -5,6 +5,7 @@
 library(magrittr)
 library(tidyverse)
 library(forcats)
+library(csis360)
 
   platform_sub <- read_csv(
     "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv",
@@ -15,9 +16,9 @@ library(forcats)
   platform_only <- read_csv(
     "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv",
     na=c("NA","NULL"))
-  top_level <- read_csv(
-    "Vendor_sp_EntityCountHistoryCustomer.csv",
-    na=c("NA","NULL"))
+  top_level <- read_delim(
+    "Vendor_sp_EntityCountHistoryCustomer.txt",
+    na=c("NA","NULL"),delim="\t")
 
   # remove unused variables
   platform_sub %<>%
