@@ -1543,7 +1543,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 1998,Defense,Other Products,S,Always Small Vendor,PDuns,NULL,1,1,1657,1676,5719,1105192598
 1998,Defense,Other Products,S,Always Small Vendor,PID,NULL,0,1,1,1,1,28725
 1998,Defense,Other Products,S,Always Small Vendor,PID,NULL,1,1,26,26,121,209837715
-1998,Defense,Other Products,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,7,3759749
+1998,Defense,Other Products,U,NULL,Duns,NULL,1,1,1,1,7,3759749
 1998,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,2,2,3,190199
 1998,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,NULL,1,1,1,2,23,7161641
 1998,Defense,Other R&D and Knowledge Based,B,Big Five,PID,NULL,1,1,5,5,1748,1150847257
@@ -1621,7 +1621,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 1999,Defense,Aircraft,S,Always Small Vendor,PDuns,NULL,1,1,1523,1550,4812,823539073
 1999,Defense,Aircraft,S,Always Small Vendor,PID,NULL,0,0,1,1,1,71820
 1999,Defense,Aircraft,S,Always Small Vendor,PID,NULL,1,1,35,35,118,42906032
-1999,Defense,Aircraft,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,1,75121
+1999,Defense,Aircraft,U,NULL,Duns,NULL,1,1,1,1,1,75121
 1999,Defense,"Electronics, Comms, & Sensors",NULL,NULL,PID,NULL,NULL,NULL,4,4,6,1822481
 1999,Defense,"Electronics, Comms, & Sensors",B,Big Five,PDuns,NULL,1,1,3,12,42,12036714
 1999,Defense,"Electronics, Comms, & Sensors",B,Big Five,PID,NULL,1,1,5,5,7627,6246994629
@@ -1683,7 +1683,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 1999,Defense,Land Vehicles,S,Always Small Vendor,PDuns,NULL,1,1,775,780,2080,290769555
 1999,Defense,Land Vehicles,S,Always Small Vendor,PID,NULL,0,1,2,2,2,54955
 1999,Defense,Land Vehicles,S,Always Small Vendor,PID,NULL,1,1,7,7,30,9559739
-1999,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,1,59753
+1999,Defense,Land Vehicles,U,NULL,Duns,NULL,1,1,1,1,1,59753
 1999,Defense,Missile Defense,B,Big Five,PDuns,NULL,1,1,1,1,1,238775
 1999,Defense,Missile Defense,B,Big Five,PID,NULL,1,1,5,5,357,1130257995
 1999,Defense,Missile Defense,L,Large Vendor,PID,NULL,1,1,9,9,242,132147890
@@ -1726,7 +1726,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 1999,Defense,Other Products,S,Always Small Vendor,PDuns,NULL,0,1,216,217,231,5355117
 1999,Defense,Other Products,S,Always Small Vendor,PDuns,NULL,1,1,1828,1853,5989,1092083566
 1999,Defense,Other Products,S,Always Small Vendor,PID,NULL,1,1,31,31,162,224519025
-1999,Defense,Other Products,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,20,8050090
+1999,Defense,Other Products,U,NULL,Duns,NULL,1,1,1,1,20,8050090
 1999,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,1,1,20,11474471
 1999,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,NULL,1,1,3,3,10,5166770
 1999,Defense,Other R&D and Knowledge Based,B,Big Five,PID,NULL,1,1,5,5,2040,1258924743
@@ -1827,7 +1827,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2000,Defense,Aircraft,S,Always Small Vendor,PDuns,0,0,1,112,112,128,2893508
 2000,Defense,Aircraft,S,Always Small Vendor,PDuns,0,1,1,1921,1957,6688,1191779569
 2000,Defense,Aircraft,S,Always Small Vendor,PID,0,1,1,61,61,368,140545391
-2000,Defense,Aircraft,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,4,6683350
+2000,Defense,Aircraft,U,NULL,Duns,NULL,1,1,1,1,4,6683350
 2000,Defense,"Electronics, Comms, & Sensors",NULL,NULL,PID,NULL,NULL,NULL,2,2,7,3519134
 2000,Defense,"Electronics, Comms, & Sensors",B,Big Five,PDuns,0,1,1,1,1,17,2588090
 2000,Defense,"Electronics, Comms, & Sensors",B,Big Five,PID,0,1,1,5,5,7577,6241546553
@@ -1897,7 +1897,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2000,Defense,Facilities and Construction,S,Always Small Vendor,PDuns,1,1,1,6,6,8,428659
 2000,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,5,5,29,354626
 2000,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,121,121,1585,432691986
-2000,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,1,38001
+2000,Defense,Facilities and Construction,U,NULL,Duns,NULL,1,1,1,1,1,38001
 2000,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,152,837704386
 2000,Defense,Land Vehicles,L,Large Vendor,PDuns,0,1,1,5,12,31,5738335
 2000,Defense,Land Vehicles,L,Large Vendor,PID,0,1,1,36,36,534,1024398278
@@ -1981,7 +1981,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2000,Defense,Other Products,S,Always Small Vendor,PDuns,1,0,1,1,1,1,30239
 2000,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,1,1,1,28000
 2000,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,23,23,113,290502782
-2000,Defense,Other Products,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,11,2172000
+2000,Defense,Other Products,U,NULL,Duns,NULL,1,1,1,1,11,2172000
 2000,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,3,3,18,2587977
 2000,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,2672,1509980813
 2000,Defense,Other R&D and Knowledge Based,J,Large: Big 5 JV,PDuns,0,1,1,1,3,17,5115623
@@ -2155,7 +2155,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2001,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PDuns,1,1,1,2,2,3,119097
 2001,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,4,4,5,96417
 2001,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,132,132,872,233892493
-2001,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,NULL,1,1,1,1,1,42156
+2001,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,NULL,1,1,1,1,1,42156
 2001,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,1,1,2,64194
 2001,Defense,Facilities and Construction,B,Big Five,PDuns,0,1,1,2,11,39,4702384
 2001,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,519,455241142.3
@@ -2196,7 +2196,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2001,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,2,2,2,5680
 2001,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,7,7,13,236816
 2001,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,131,131,2004,377072955
-2001,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,1,76000
+2001,Defense,Facilities and Construction,U,NULL,Duns,NULL,1,1,1,1,1,76000
 2001,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,1,5,12,711615
 2001,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,253,896784904
 2001,Defense,Land Vehicles,L,Large Vendor,PDuns,0,1,1,5,9,95,97239126
@@ -2286,7 +2286,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2001,Defense,Other Products,S,Always Small Vendor,PDuns,0,1,1,1733,1748,6738,1413620313
 2001,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,1,1,1,28899
 2001,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,23,23,112,187380059
-2001,Defense,Other Products,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,31,10304567
+2001,Defense,Other Products,U,NULL,Duns,NULL,1,1,1,1,31,10304567
 2001,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,1,1,1,2,54,21757821
 2001,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,2854,1285886299
 2001,Defense,Other R&D and Knowledge Based,J,Large: Big 5 JV,PDuns,0,1,1,1,3,10,4330981
@@ -2479,7 +2479,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2002,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,0,2,2,2,-45518
 2002,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,7,7,22,180011
 2002,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,126,126,1010,227591583
-2002,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,NULL,1,1,1,1,4,913661
+2002,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,NULL,1,1,1,1,4,913661
 2002,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,4,4,71,14589297
 2002,Defense,Facilities and Construction,B,Big Five,PDuns,0,1,1,2,2,22,902185
 2002,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,1077,509136173.4
@@ -2524,8 +2524,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2002,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,4,4,4,8837
 2002,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,11,11,15,190626
 2002,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,139,139,2148,332534523.7
-2002,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,NULL,0,0,1,1,0,0
-2002,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,8,474042
+2002,Defense,Facilities and Construction,U,NULL,Duns,NULL,0,0,1,1,0,0
+2002,Defense,Facilities and Construction,U,NULL,Duns,NULL,1,1,1,1,8,474042
 2002,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,451,1490947916
 2002,Defense,Land Vehicles,L,Large Vendor,PDuns,0,1,1,4,11,29,3690002
 2002,Defense,Land Vehicles,L,Large Vendor,PDuns,1,1,1,1,4,13,1285526
@@ -2625,7 +2625,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2002,Defense,Other Products,S,Always Small Vendor,PDuns,0,0,1,877,879,1462,17783050.5
 2002,Defense,Other Products,S,Always Small Vendor,PDuns,0,1,1,2127,2149,8083,1435486483
 2002,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,19,19,351,170774755
-2002,Defense,Other Products,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,40,38895978
+2002,Defense,Other Products,U,NULL,Duns,NULL,1,1,1,1,40,38895978
 2002,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,4,4,4,574281
 2002,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,1,1,1,6,6,1987879
 2002,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,4970,2137588176
@@ -2662,7 +2662,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2002,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,0,2,2,3,2050
 2002,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,1,2,2,2,17230
 2002,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,1,1,119,119,1096,271468691.9
-2002,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,1,65000
+2002,Defense,Other R&D and Knowledge Based,U,NULL,Duns,NULL,1,1,1,1,1,65000
 2002,Defense,Other Services,B,Big Five,PID,0,1,1,5,5,812,628707340
 2002,Defense,Other Services,L,Large Vendor,PDuns,0,1,1,11,11,34,2132604
 2002,Defense,Other Services,L,Large Vendor,PDuns,1,1,1,1,1,2,337314
@@ -2696,7 +2696,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2002,Defense,Other Services,S,Always Small Vendor,PID,0,0,0,1,1,1,2759
 2002,Defense,Other Services,S,Always Small Vendor,PID,0,0,1,1,1,1,4900
 2002,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,38,38,491,203548940
-2002,Defense,Other Services,U,Unlabeled Vendor,Duns,NULL,1,1,1,1,3,86036
+2002,Defense,Other Services,U,NULL,Duns,NULL,1,1,1,1,3,86036
 2002,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,2,2,12,705591
 2002,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,1,2,10,453693
 2002,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,3315,8636672732
@@ -2837,7 +2837,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2003,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,0,4,4,5,12255
 2003,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,6,6,12,69196
 2003,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,137,137,1442,288156485.6
-2003,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,1,1,1,1,5,519440
+2003,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,1,1,1,1,5,519440
 2003,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,3,3,67,40804983
 2003,Defense,Facilities and Construction,B,Big Five,PDuns,0,1,1,1,1,2,9639524
 2003,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,1444,568485224
@@ -2885,7 +2885,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2003,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,5,5,6,-164854
 2003,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,12,12,36,269142
 2003,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,163,163,3640,679591803.5
-2003,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,1,1,8,561959
+2003,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,1,1,8,561959
 2003,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,1,1,14,2428612
 2003,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,749,1435934131
 2003,Defense,Land Vehicles,L,Large Vendor,PDuns,0,0,1,1,1,0,0
@@ -2918,7 +2918,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2003,Defense,Land Vehicles,S,Always Small Vendor,PID,0,0,0,1,1,2,2400
 2003,Defense,Land Vehicles,S,Always Small Vendor,PID,0,0,1,2,2,2,22317
 2003,Defense,Land Vehicles,S,Always Small Vendor,PID,0,1,1,19,19,51,6332259
-2003,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,1,1,1,2,2,3,1379613.125
+2003,Defense,Land Vehicles,U,NULL,Duns,1,1,1,2,2,3,1379613.125
 2003,Defense,Missile Defense,B,Big Five,PID,0,1,1,5,5,566,3230868488
 2003,Defense,Missile Defense,L,Large Vendor,PDuns,0,1,1,1,1,1,221975
 2003,Defense,Missile Defense,L,Large Vendor,PID,0,1,1,20,20,812,392122839.5
@@ -3004,7 +3004,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2003,Defense,Other Products,S,Always Small Vendor,PID,0,0,0,2,2,2,7890
 2003,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,2,2,3,33581
 2003,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,33,33,604,443904183
-2003,Defense,Other Products,U,Unlabeled Vendor,Duns,1,1,1,1,1,18,8884736
+2003,Defense,Other Products,U,NULL,Duns,1,1,1,1,1,18,8884736
 2003,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,4,4,5,4460905
 2003,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,5414,2594806859
 2003,Defense,Other R&D and Knowledge Based,J,Large: Big 5 JV,PDuns,0,1,1,1,2,4,399488
@@ -3040,8 +3040,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2003,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PDuns,1,0,0,1,1,1,0
 2003,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,1,4,4,5,51687
 2003,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,1,1,121,121,1149,289671234.4
-2003,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,1250426
-2003,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Name,1,1,1,1,1,1,107200
+2003,Defense,Other R&D and Knowledge Based,U,NULL,Duns,1,1,1,1,1,1,1250426
+2003,Defense,Other R&D and Knowledge Based,U,NULL,Name,1,1,1,1,1,1,107200
 2003,Defense,Other Services,B,Big Five,PDuns,0,0,1,1,1,1,3595
 2003,Defense,Other Services,B,Big Five,PID,0,1,1,5,5,735,512728051
 2003,Defense,Other Services,L,Large Vendor,PDuns,0,0,1,1,2,8,308770
@@ -3080,8 +3080,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2003,Defense,Other Services,S,Always Small Vendor,PDuns,1,1,1,1,1,2,0
 2003,Defense,Other Services,S,Always Small Vendor,PID,0,0,1,3,3,3,21981
 2003,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,46,46,426,158515671
-2003,Defense,Other Services,U,Unlabeled Vendor,Duns,0,0,0,1,1,1,-905967
-2003,Defense,Other Services,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,33106
+2003,Defense,Other Services,U,NULL,Duns,0,0,0,1,1,1,-905967
+2003,Defense,Other Services,U,NULL,Duns,1,1,1,1,1,1,33106
 2003,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,2,2,29,1553850
 2003,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,1,2,3,128521
 2003,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,3483,7537996160
@@ -3143,9 +3143,9 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2004,Defense,NULL,S,Always Small Vendor,PDuns,0,1,1,20,21,35,2819126.408
 2004,Defense,NULL,S,Always Small Vendor,PDuns,1,0,1,1,1,1,4850
 2004,Defense,NULL,S,Always Small Vendor,PID,0,1,1,1,1,3,669312
-2004,Defense,NULL,U,Unlabeled Vendor,Duns,1,0,1,1,1,1,11701.9199
-2004,Defense,NULL,U,Unlabeled Vendor,Name,1,0,0,1,1,1,2878.3401
-2004,Defense,NULL,U,Unlabeled Vendor,Name,1,1,1,1,1,2,18584
+2004,Defense,NULL,U,NULL,Duns,1,0,1,1,1,1,11701.9199
+2004,Defense,NULL,U,NULL,Name,1,0,0,1,1,1,2878.3401
+2004,Defense,NULL,U,NULL,Name,1,1,1,1,1,2,18584
 2004,Defense,Aircraft,NULL,NULL,PID,NULL,NULL,NULL,4,4,63,25536234
 2004,Defense,Aircraft,B,Big Five,PDuns,0,1,1,1,2,11,987246
 2004,Defense,Aircraft,B,Big Five,PID,0,1,1,5,5,8253,26101275467
@@ -3182,7 +3182,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2004,Defense,Aircraft,S,Always Small Vendor,PID,NULL,0,1,1,1,0,0
 2004,Defense,Aircraft,S,Always Small Vendor,PID,0,0,1,3,3,5,139374
 2004,Defense,Aircraft,S,Always Small Vendor,PID,0,1,1,34,34,252,36478357.6
-2004,Defense,Aircraft,U,Unlabeled Vendor,Duns,1,0,0,1,1,1,2635
+2004,Defense,Aircraft,U,NULL,Duns,1,0,0,1,1,1,2635
 2004,Defense,"Electronics, Comms, & Sensors",NULL,NULL,PID,NULL,NULL,NULL,7,7,29,7331307
 2004,Defense,"Electronics, Comms, & Sensors",B,Big Five,PDuns,0,0,1,1,2,2,156740
 2004,Defense,"Electronics, Comms, & Sensors",B,Big Five,PDuns,0,1,1,1,1,1,374994
@@ -3229,7 +3229,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2004,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,0,3,3,6,15306
 2004,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,8,8,17,152204
 2004,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,108,108,1069,324150698.1
-2004,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,1,1,1,1,5,149298
+2004,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,1,1,1,1,5,149298
 2004,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,4,4,121,29584813
 2004,Defense,Facilities and Construction,B,Big Five,PDuns,0,0,1,1,1,1,12195
 2004,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,1892,619308573.3
@@ -3284,11 +3284,11 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2004,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,7,7,9,14178
 2004,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,9,9,25,200946
 2004,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,116,116,2203,740012748
-2004,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,0,0,1,1,1,1,6299.6499
-2004,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,0,1,2,1,2,14343.77
-2004,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,30640
-2004,Defense,Facilities and Construction,U,Unlabeled Vendor,Name,0,0,0,1,1,1,3125
-2004,Defense,Facilities and Construction,U,Unlabeled Vendor,Name,1,0,1,3,1,3,23710.6001
+2004,Defense,Facilities and Construction,U,NULL,Duns,0,0,1,1,1,1,6299.6499
+2004,Defense,Facilities and Construction,U,NULL,Duns,1,0,1,2,1,2,14343.77
+2004,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,1,1,1,30640
+2004,Defense,Facilities and Construction,U,NULL,Name,0,0,0,1,1,1,3125
+2004,Defense,Facilities and Construction,U,NULL,Name,1,0,1,3,1,3,23710.6001
 2004,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,1,1,1,57155
 2004,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,1,1,1,224578
 2004,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,818,1468271552
@@ -3323,8 +3323,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2004,Defense,Land Vehicles,S,Always Small Vendor,PDuns,1,0,0,1,1,1,2625
 2004,Defense,Land Vehicles,S,Always Small Vendor,PID,NULL,0,0,1,1,0,0
 2004,Defense,Land Vehicles,S,Always Small Vendor,PID,0,1,1,18,18,61,24887032
-2004,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,1,0,0,1,1,1,3582
-2004,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,1,1,1,1,1,3,203436.1289
+2004,Defense,Land Vehicles,U,NULL,Duns,1,0,0,1,1,1,3582
+2004,Defense,Land Vehicles,U,NULL,Duns,1,1,1,1,1,3,203436.1289
 2004,Defense,Missile Defense,B,Big Five,PID,0,1,1,5,5,890,4660859971
 2004,Defense,Missile Defense,L,Large Vendor,PID,0,1,1,41,41,1010,507794245.8
 2004,Defense,Missile Defense,M,Medium Vendor,PDuns,0,0,0,3,3,6,-36788
@@ -3419,7 +3419,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2004,Defense,Other Products,S,Always Small Vendor,PID,0,0,0,1,1,1,100
 2004,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,2,2,2,19748
 2004,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,40,40,211,353359489
-2004,Defense,Other Products,U,Unlabeled Vendor,Name,1,1,1,1,1,1,29571.4492
+2004,Defense,Other Products,U,NULL,Name,1,1,1,1,1,1,29571.4492
 2004,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,4,4,9,3443969
 2004,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,1,1,2,2,88,24005386
 2004,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,5441,2995188139
@@ -3469,9 +3469,9 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2004,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,0,1,1,1,2975
 2004,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,1,5,5,6,98377
 2004,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,1,1,125,125,1008,393553800.4
-2004,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Duns,1,0,0,1,1,1,976.17
-2004,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Name,1,0,0,4,1,5,8021.4899
-2004,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Name,1,1,1,4,1,4,248197.5313
+2004,Defense,Other R&D and Knowledge Based,U,NULL,Duns,1,0,0,1,1,1,976.17
+2004,Defense,Other R&D and Knowledge Based,U,NULL,Name,1,0,0,4,1,5,8021.4899
+2004,Defense,Other R&D and Knowledge Based,U,NULL,Name,1,1,1,4,1,4,248197.5313
 2004,Defense,Other Services,B,Big Five,PID,0,1,1,5,5,806,563015297.6
 2004,Defense,Other Services,L,Large Vendor,PDuns,0,1,1,12,65,421,12158212
 2004,Defense,Other Services,L,Large Vendor,PID,0,0,1,1,1,0,0
@@ -3511,8 +3511,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2004,Defense,Other Services,S,Always Small Vendor,PID,0,0,0,2,2,4,15240
 2004,Defense,Other Services,S,Always Small Vendor,PID,0,0,1,2,2,45,151041
 2004,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,27,27,342,85567156
-2004,Defense,Other Services,U,Unlabeled Vendor,Duns,1,1,1,5,1,11,468127.1455
-2004,Defense,Other Services,U,Unlabeled Vendor,Name,1,1,1,4,1,8,316249.58
+2004,Defense,Other Services,U,NULL,Duns,1,1,1,5,1,11,468127.1455
+2004,Defense,Other Services,U,NULL,Name,1,1,1,4,1,8,316249.58
 2004,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,2,2,6,146264
 2004,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,3795,9157819959
 2004,Defense,Ships & Submarines,L,Large Vendor,PDuns,0,1,1,13,26,98,13469142
@@ -3738,7 +3738,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2005,Defense,Land Vehicles,S,Always Small Vendor,PDuns,1,1,1,1,1,1,38580
 2005,Defense,Land Vehicles,S,Always Small Vendor,PID,0,0,1,1,1,1,458
 2005,Defense,Land Vehicles,S,Always Small Vendor,PID,0,1,1,16,16,150,158679887
-2005,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,18788.8398
+2005,Defense,Land Vehicles,U,NULL,Duns,1,1,1,1,1,1,18788.8398
 2005,Defense,Missile Defense,B,Big Five,PID,0,1,1,5,5,643,4981999244
 2005,Defense,Missile Defense,L,Large Vendor,PDuns,0,1,1,6,7,26,22003419
 2005,Defense,Missile Defense,L,Large Vendor,PID,0,1,1,36,36,1205,658685979
@@ -3833,7 +3833,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2005,Defense,Other Products,S,Always Small Vendor,PID,0,0,0,2,2,4,13300
 2005,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,9,9,31,219044
 2005,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,34,34,112,207677528
-2005,Defense,Other Products,U,Unlabeled Vendor,Duns,1,0,1,1,1,1,16669.7598
+2005,Defense,Other Products,U,NULL,Duns,1,0,1,1,1,1,16669.7598
 2005,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,6,6,8,2248602
 2005,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,1,1,1,4,9,2431633
 2005,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,5253,3701847670
@@ -3876,7 +3876,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2005,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,0,2,2,2,5290
 2005,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,1,7,7,10,103525
 2005,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,1,1,125,125,1087,766807471.4
-2005,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Name,1,0,0,1,1,1,1743.17
+2005,Defense,Other R&D and Knowledge Based,U,NULL,Name,1,0,0,1,1,1,1743.17
 2005,Defense,Other Services,B,Big Five,PDuns,0,1,1,1,2,6,905706
 2005,Defense,Other Services,B,Big Five,PID,0,1,1,5,5,990,642165858.1
 2005,Defense,Other Services,L,Large Vendor,Duns,1,1,1,1,1,121,168156
@@ -3918,8 +3918,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2005,Defense,Other Services,S,Always Small Vendor,PDuns,1,1,1,5,5,15,1081698.6
 2005,Defense,Other Services,S,Always Small Vendor,PID,0,0,1,6,6,15,109973
 2005,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,38,38,771,231859261.3
-2005,Defense,Other Services,U,Unlabeled Vendor,Duns,1,1,1,3,1,9,926908.8848
-2005,Defense,Other Services,U,Unlabeled Vendor,Name,1,1,1,5,2,23,1723906.563
+2005,Defense,Other Services,U,NULL,Duns,1,1,1,3,1,9,926908.8848
+2005,Defense,Other Services,U,NULL,Name,1,1,1,5,2,23,1723906.563
 2005,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,3,3,4,248504
 2005,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,1,6,255,34225239.59
 2005,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,7439,9543812621
@@ -4073,8 +4073,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2006,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,0,3,3,5,7880
 2006,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,4,4,19,189808
 2006,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,125,125,1679,337503057.6
-2006,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,0,0,1,1,2,2267
-2006,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,0,1,1,1,1,-3366
+2006,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,0,0,1,1,2,2267
+2006,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,0,1,1,1,1,-3366
 2006,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,5,5,285,53924812
 2006,Defense,Facilities and Construction,B,Big Five,PDuns,0,0,1,1,3,22,22610883.19
 2006,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,1267,561409072.2
@@ -4126,8 +4126,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2006,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,4,4,8,4338
 2006,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,14,14,20,38826
 2006,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,127,127,1505,409848600.2
-2006,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,0,0,2,1,3,3466
-2006,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,91144
+2006,Defense,Facilities and Construction,U,NULL,Duns,1,0,0,2,1,3,3466
+2006,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,1,1,1,91144
 2006,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,2,2,10,45751004
 2006,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,1499,5441019830
 2006,Defense,Land Vehicles,L,Large Vendor,PDuns,0,0,1,1,2,7,343176
@@ -4300,7 +4300,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2006,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PDuns,1,1,1,22,22,36,1706979.34
 2006,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,1,8,8,14,83653
 2006,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,1,1,120,120,1192,655716778.4
-2006,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Name,1,0,1,1,1,1,-4208
+2006,Defense,Other R&D and Knowledge Based,U,NULL,Name,1,0,1,1,1,1,-4208
 2006,Defense,Other Services,B,Big Five,PDuns,0,0,1,1,1,2,15000
 2006,Defense,Other Services,B,Big Five,PID,0,1,1,5,5,1217,1219855708
 2006,Defense,Other Services,L,Large Vendor,Duns,0,1,1,1,1,10,301540
@@ -4343,10 +4343,10 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2006,Defense,Other Services,S,Always Small Vendor,PDuns,1,1,1,18,18,29,1664825
 2006,Defense,Other Services,S,Always Small Vendor,PID,0,0,1,4,4,10,81038
 2006,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,32,32,762,98300673.39
-2006,Defense,Other Services,U,Unlabeled Vendor,Duns,1,0,0,1,1,1,-3333
-2006,Defense,Other Services,U,Unlabeled Vendor,Duns,1,1,1,4,1,5,31.03
-2006,Defense,Other Services,U,Unlabeled Vendor,Name,1,0,1,1,1,1,-2800
-2006,Defense,Other Services,U,Unlabeled Vendor,Name,1,1,1,6,2,11,-15674.0801
+2006,Defense,Other Services,U,NULL,Duns,1,0,0,1,1,1,-3333
+2006,Defense,Other Services,U,NULL,Duns,1,1,1,4,1,5,31.03
+2006,Defense,Other Services,U,NULL,Name,1,0,1,1,1,1,-2800
+2006,Defense,Other Services,U,NULL,Name,1,1,1,6,2,11,-15674.0801
 2006,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,6,6,10,369003
 2006,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,6968,11145805031
 2006,Defense,Ships & Submarines,L,Large Vendor,Duns,0,1,1,1,1,1,31304
@@ -4498,7 +4498,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2007,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,0,5,5,10,8013
 2007,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,4,4,7,25424
 2007,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,109,109,1998,461500411.9
-2007,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,1,1,1,1,1,54188
+2007,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,1,1,1,1,1,54188
 2007,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,5,5,28,1572936.094
 2007,Defense,Facilities and Construction,B,Big Five,PDuns,0,0,1,1,4,28,34261589
 2007,Defense,Facilities and Construction,B,Big Five,PDuns,0,1,1,5,9,65,6444091
@@ -4549,9 +4549,9 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2007,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,2,2,2,6808
 2007,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,15,15,33,172135
 2007,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,121,121,1922,482778470.9
-2007,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,0,0,2,1,2,2092
-2007,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,47761
-2007,Defense,Facilities and Construction,U,Unlabeled Vendor,Name,1,0,0,1,1,1,-2079
+2007,Defense,Facilities and Construction,U,NULL,Duns,1,0,0,2,1,2,2092
+2007,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,1,1,1,47761
+2007,Defense,Facilities and Construction,U,NULL,Name,1,0,0,1,1,1,-2079
 2007,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,4,4,32,2519370.039
 2007,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,3,3,32,10864613
 2007,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,1838,6822488563
@@ -4689,7 +4689,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2007,Defense,Other Products,S,Always Small Vendor,PID,0,0,0,1,1,1,-4041
 2007,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,2,2,2,9496
 2007,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,38,38,348,282456673.3
-2007,Defense,Other Products,U,Unlabeled Vendor,Name,1,0,1,1,1,2,-1140
+2007,Defense,Other Products,U,NULL,Name,1,0,1,1,1,2,-1140
 2007,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,3,3,13,7695711
 2007,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,0,1,1,5,37,386467
 2007,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,1,1,4,12,65,22249690
@@ -4733,7 +4733,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2007,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PDuns,1,1,1,59,61,134,2080442.43
 2007,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,1,4,4,5,16551
 2007,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,1,1,108,108,1372,295112948.8
-2007,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Duns,1,0,0,1,1,1,1231
+2007,Defense,Other R&D and Knowledge Based,U,NULL,Duns,1,0,0,1,1,1,1231
 2007,Defense,Other Services,B,Big Five,PDuns,0,0,1,1,1,2,15000
 2007,Defense,Other Services,B,Big Five,PDuns,0,1,1,3,3,11,972744
 2007,Defense,Other Services,B,Big Five,PID,0,1,1,5,5,1308,897612920.8
@@ -4780,8 +4780,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2007,Defense,Other Services,S,Always Small Vendor,PID,0,0,1,1,1,1,7137
 2007,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,43,43,555,171688917
 2007,Defense,Other Services,S,Always Small Vendor,PID,1,1,1,1,1,1,27367
-2007,Defense,Other Services,U,Unlabeled Vendor,Duns,1,1,1,3,1,16,842959
-2007,Defense,Other Services,U,Unlabeled Vendor,Name,1,1,1,4,1,16,1351879
+2007,Defense,Other Services,U,NULL,Duns,1,1,1,3,1,16,842959
+2007,Defense,Other Services,U,NULL,Name,1,1,1,4,1,16,1351879
 2007,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,3,3,11,365869.4439
 2007,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,3,7,118,1724874.533
 2007,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,8798,11366486717
@@ -4821,7 +4821,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2007,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,0,0,1,1,1,69
 2007,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,0,1,2,2,1,-1205
 2007,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,1,1,27,27,214,37784957.16
-2007,Defense,Ships & Submarines,U,Unlabeled Vendor,Duns,1,1,1,1,1,2,1413684
+2007,Defense,Ships & Submarines,U,NULL,Duns,1,1,1,1,1,2,1413684
 2007,Defense,Space Systems,B,Big Five,PDuns,0,1,1,1,1,4,549066
 2007,Defense,Space Systems,B,Big Five,PID,0,1,1,5,5,1323,5734406397
 2007,Defense,Space Systems,J,Large: Big 5 JV,PID,0,1,1,2,2,39,33114552.42
@@ -4992,8 +4992,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2008,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,2,2,5,1650
 2008,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,8,8,16,88947.75
 2008,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,100,100,2043,432191982.4
-2008,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,0,0,1,1,1,0
-2008,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,2,1,18,1066280
+2008,Defense,Facilities and Construction,U,NULL,Duns,1,0,0,1,1,1,0
+2008,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,2,1,18,1066280
 2008,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,2,2,18,1233612.004
 2008,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,1,1,4,225098
 2008,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,3432,8010438522
@@ -5030,7 +5030,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2008,Defense,Land Vehicles,S,Always Small Vendor,PDuns,1,1,1,13,13,22,440187.832
 2008,Defense,Land Vehicles,S,Always Small Vendor,PID,0,0,1,1,1,1,13181
 2008,Defense,Land Vehicles,S,Always Small Vendor,PID,0,1,1,15,15,105,3849027.586
-2008,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,0,1,1,1,1,0,0
+2008,Defense,Land Vehicles,U,NULL,Duns,0,1,1,1,1,0,0
 2008,Defense,Missile Defense,B,Big Five,PID,0,1,1,5,5,1961,6842733945
 2008,Defense,Missile Defense,L,Large Vendor,PDuns,0,1,1,4,5,13,1017570.5
 2008,Defense,Missile Defense,L,Large Vendor,PID,0,1,1,32,32,1379,624864002.9
@@ -5128,8 +5128,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2008,Defense,Other Products,S,Always Small Vendor,PID,0,0,0,1,1,1,3918
 2008,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,1,1,1,0
 2008,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,21,21,313,279237090.5
-2008,Defense,Other Products,U,Unlabeled Vendor,Duns,0,1,1,1,1,0,0
-2008,Defense,Other Products,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,77
+2008,Defense,Other Products,U,NULL,Duns,0,1,1,1,1,0,0
+2008,Defense,Other Products,U,NULL,Duns,1,1,1,1,1,1,77
 2008,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,5,5,32,7412535.51
 2008,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,1,1,1,1,6,1394439
 2008,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,8479,4522704438
@@ -5174,7 +5174,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2008,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PDuns,1,1,1,71,71,149,5027926.751
 2008,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,1,3,3,5,51075
 2008,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,1,1,100,100,1114,271174221.7
-2008,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Duns,1,0,0,1,1,2,0
+2008,Defense,Other R&D and Knowledge Based,U,NULL,Duns,1,0,0,1,1,2,0
 2008,Defense,Other Services,B,Big Five,PDuns,0,1,1,1,1,7,39471
 2008,Defense,Other Services,B,Big Five,PID,0,1,1,5,5,1506,1681181275
 2008,Defense,Other Services,L,Large Vendor,Duns,0,1,1,1,1,1,3203.78
@@ -5220,8 +5220,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2008,Defense,Other Services,S,Always Small Vendor,PID,0,0,1,2,2,2,2079
 2008,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,34,34,291,78268732.24
 2008,Defense,Other Services,S,Always Small Vendor,PID,1,1,1,1,1,1,-2565
-2008,Defense,Other Services,U,Unlabeled Vendor,Duns,1,0,1,1,1,1,16927
-2008,Defense,Other Services,U,Unlabeled Vendor,Duns,1,1,1,1,1,7,11165.4298
+2008,Defense,Other Services,U,NULL,Duns,1,0,1,1,1,1,16927
+2008,Defense,Other Services,U,NULL,Duns,1,1,1,1,1,7,11165.4298
 2008,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,2,2,6,94077
 2008,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,1,1,10,254671
 2008,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,10430,12363723633
@@ -5379,8 +5379,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2009,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,0,4,4,6,3468.75
 2009,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,2,2,10,15783.5405
 2009,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,83,83,981,271102330.7
-2009,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,0,0,1,1,1,3333.1101
-2009,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,1,1,3,1,4,1062656.844
+2009,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,0,0,1,1,1,3333.1101
+2009,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,1,1,3,1,4,1062656.844
 2009,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,3,3,14,362537.4122
 2009,Defense,Facilities and Construction,B,Big Five,PDuns,0,1,1,1,1,18,2098356.87
 2009,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,2377,791243554.3
@@ -5435,7 +5435,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2009,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,6,6,10,68560.9902
 2009,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,86,86,1138,218000877.7
 2009,Defense,Facilities and Construction,S,Always Small Vendor,PID,1,1,1,1,1,2,2192481
-2009,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,2,1,5,6492980.5
+2009,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,2,1,5,6492980.5
 2009,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,3,3,22,940369.027
 2009,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,2982,6875969194
 2009,Defense,Land Vehicles,L,Large Vendor,PDuns,0,0,0,1,1,9,182059.3
@@ -5653,7 +5653,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2009,Defense,Other Services,S,Always Small Vendor,PID,0,0,0,1,1,1,815
 2009,Defense,Other Services,S,Always Small Vendor,PID,0,0,1,2,2,3,15699
 2009,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,36,36,177,180632570.6
-2009,Defense,Other Services,U,Unlabeled Vendor,Duns,1,0,1,1,1,2,0
+2009,Defense,Other Services,U,NULL,Duns,1,0,1,1,1,2,0
 2009,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,2,2,2,11304
 2009,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,1,1,2,95904
 2009,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,11220,13549259109
@@ -5691,7 +5691,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2009,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,0,0,1,1,1,-231.96
 2009,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,0,1,1,1,1,3300
 2009,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,1,1,19,19,268,235180263.3
-2009,Defense,Ships & Submarines,U,Unlabeled Vendor,Duns,1,0,1,1,1,1,5320
+2009,Defense,Ships & Submarines,U,NULL,Duns,1,0,1,1,1,1,5320
 2009,Defense,Space Systems,B,Big Five,PID,0,1,1,5,5,1285,6874628014
 2009,Defense,Space Systems,J,Large: Big 5 JV,PID,0,1,1,2,2,71,863170724.9
 2009,Defense,Space Systems,L,Large Vendor,PDuns,0,1,1,3,3,19,24349494
@@ -5804,7 +5804,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2010,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,NULL,1,1,1,1,0,0
 2010,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,0,2,2,2,268.5
 2010,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,80,80,1104,342189964.8
-2010,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,1,1,2,1,3,0
+2010,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,1,1,2,1,3,0
 2010,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,5,5,17,573561.2208
 2010,Defense,Facilities and Construction,B,Big Five,PDuns,0,1,1,4,8,73,10713858.8
 2010,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,2698,723848099.8
@@ -5857,7 +5857,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2010,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,6,6,10,51851.1501
 2010,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,73,73,1095,234400771.8
 2010,Defense,Facilities and Construction,S,Always Small Vendor,PID,1,1,1,1,1,2,2302645
-2010,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,2,1,5,8565746.961
+2010,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,2,1,5,8565746.961
 2010,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,2,2,31,2364859.926
 2010,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,3,6,26,8593588.187
 2010,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,2915,4409636506
@@ -6072,7 +6072,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2010,Defense,Other Services,S,Always Small Vendor,PID,NULL,1,1,1,1,0,0
 2010,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,24,24,500,215999121.7
 2010,Defense,Other Services,S,Always Small Vendor,PID,1,1,1,2,2,4,0
-2010,Defense,Other Services,U,Unlabeled Vendor,Duns,1,0,1,1,1,1,-6714.2998
+2010,Defense,Other Services,U,NULL,Duns,1,0,1,1,1,1,-6714.2998
 2010,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,3,3,2,2946744
 2010,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,2,5,13,404430.8193
 2010,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,11993,9208885113
@@ -6109,7 +6109,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2010,Defense,Ships & Submarines,S,Always Small Vendor,PDuns,1,0,1,1,1,1,9415.9199
 2010,Defense,Ships & Submarines,S,Always Small Vendor,PDuns,1,1,1,4,4,6,49140.7969
 2010,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,1,1,13,13,687,319716309.8
-2010,Defense,Ships & Submarines,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,0
+2010,Defense,Ships & Submarines,U,NULL,Duns,1,1,1,1,1,1,0
 2010,Defense,Space Systems,NULL,NULL,PID,NULL,NULL,NULL,1,1,1,940000
 2010,Defense,Space Systems,B,Big Five,PID,0,1,1,5,5,1206,6094273146
 2010,Defense,Space Systems,J,Large: Big 5 JV,PID,0,1,1,2,2,69,169305769
@@ -6281,7 +6281,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2011,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,1,1,1,14650
 2011,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,76,76,1093,156067153.4
 2011,Defense,Facilities and Construction,S,Always Small Vendor,PID,1,1,1,1,1,5,1157664.125
-2011,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,24243.2695
+2011,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,1,1,1,24243.2695
 2011,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,2,2,59,1338651.652
 2011,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,1,3,9,169299.8477
 2011,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,1915,3758011746
@@ -6690,7 +6690,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2012,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,1,1,1,3123.8501
 2012,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,3,3,5,30498
 2012,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,71,71,1039,205363256.6
-2012,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,2,1,5,4209114.86
+2012,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,2,1,5,4209114.86
 2012,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,3,3,87,3488948.945
 2012,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,2,2,9,1036013.828
 2012,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,2208,2247862565
@@ -7088,7 +7088,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2013,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,0,1,1,1,-1740
 2013,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,3,3,5,30787.23
 2013,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,56,56,864,116945172.7
-2013,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,1,1,2,1664347.04
+2013,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,1,1,2,1664347.04
 2013,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,2,2,55,966230.45
 2013,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,2,2,7,730980.22
 2013,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,2766,1896213306
@@ -7475,7 +7475,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2014,Defense,Facilities and Construction,S,Always Small Vendor,PID,NULL,1,1,1,1,0,0
 2014,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,3,3,4,23481.88
 2014,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,53,53,765,188839953.7
-2014,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,1,1,6,822256.53
+2014,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,1,1,6,822256.53
 2014,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,2,2,94,57942557.4
 2014,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,3,3,7,260770.94
 2014,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,2729,1565983610
@@ -7511,8 +7511,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2014,Defense,Land Vehicles,S,Always Small Vendor,PDuns,1,0,0,1,1,2,168240
 2014,Defense,Land Vehicles,S,Always Small Vendor,PDuns,1,1,1,2,2,2,203168.78
 2014,Defense,Land Vehicles,S,Always Small Vendor,PID,0,1,1,4,4,18,2997752.41
-2014,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,0,1,1,1,1,3,0
-2014,Defense,Land Vehicles,U,Unlabeled Vendor,Name,0,1,1,1,1,NULL,0
+2014,Defense,Land Vehicles,U,NULL,Duns,0,1,1,1,1,3,0
+2014,Defense,Land Vehicles,U,NULL,Name,0,1,1,1,1,NULL,0
 2014,Defense,Missile Defense,B,Big Five,PID,0,1,1,5,5,2618,6915867782
 2014,Defense,Missile Defense,L,Large Vendor,PDuns,0,1,1,1,1,1,0
 2014,Defense,Missile Defense,L,Large Vendor,PID,0,1,1,27,27,854,442414513.4
@@ -7639,7 +7639,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2014,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,NULL,1,1,2,2,0,0
 2014,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,0,1,1,1,1,3840
 2014,Defense,Other R&D and Knowledge Based,S,Always Small Vendor,PID,0,1,1,61,61,595,129555452.2
-2014,Defense,Other R&D and Knowledge Based,U,Unlabeled Vendor,Duns,0,1,1,1,1,1,-15.74
+2014,Defense,Other R&D and Knowledge Based,U,NULL,Duns,0,1,1,1,1,1,-15.74
 2014,Defense,Other Services,NULL,NULL,PID,NULL,NULL,NULL,1,1,1,-3208
 2014,Defense,Other Services,B,Big Five,PDuns,0,1,1,2,3,3,-77179.58
 2014,Defense,Other Services,B,Big Five,PID,0,1,1,5,5,2979,1662536146
@@ -7677,7 +7677,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2014,Defense,Other Services,S,Always Small Vendor,PDuns,1,0,1,8,8,8,-27675.23
 2014,Defense,Other Services,S,Always Small Vendor,PDuns,1,1,1,86,86,3410,225359677.7
 2014,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,18,18,657,328081041.2
-2014,Defense,Other Services,U,Unlabeled Vendor,Duns,0,1,1,1,1,69,39008348.86
+2014,Defense,Other Services,U,NULL,Duns,0,1,1,1,1,69,39008348.86
 2014,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,1,1,3,1303476
 2014,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,5,13,282,5007282.69
 2014,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,6260,10144000583
@@ -7812,9 +7812,9 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2015,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PDuns,1,1,1,21,21,36,912697.57
 2015,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,3,3,4,6724.4
 2015,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,43,43,787,140898937.3
-2015,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,0,1,1,1,1,5,41582.58
-2015,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,0,1,1,1,1,9050
-2015,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,1,1,5,1,12,14486647.61
+2015,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,0,1,1,1,1,5,41582.58
+2015,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,0,1,1,1,1,9050
+2015,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,1,1,5,1,12,14486647.61
 2015,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,6,6,32,788411.11
 2015,Defense,Facilities and Construction,B,Big Five,PDuns,0,1,1,2,10,43,779113
 2015,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,1737,273536398.6
@@ -7859,10 +7859,10 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2015,Defense,Facilities and Construction,S,Always Small Vendor,PDuns,1,1,1,38,38,122,38272556.2
 2015,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,3,3,4,14596.64
 2015,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,59,59,840,143037901.2
-2015,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,0,1,1,1,1,11930,33288591.32
-2015,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,0,0,3,1,7,2047.5
-2015,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,0,1,1,1,2,8383
-2015,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,14,1,40,4436011.46
+2015,Defense,Facilities and Construction,U,NULL,Duns,0,1,1,1,1,11930,33288591.32
+2015,Defense,Facilities and Construction,U,NULL,Duns,1,0,0,3,1,7,2047.5
+2015,Defense,Facilities and Construction,U,NULL,Duns,1,0,1,1,1,2,8383
+2015,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,14,1,40,4436011.46
 2015,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,4,4,88,1380226.67
 2015,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,2,2,7,133829.35
 2015,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,21367,943084691.5
@@ -7900,9 +7900,9 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2015,Defense,Land Vehicles,S,Always Small Vendor,PDuns,1,0,1,2,2,2,18539.6
 2015,Defense,Land Vehicles,S,Always Small Vendor,PDuns,1,1,1,1,1,1,0
 2015,Defense,Land Vehicles,S,Always Small Vendor,PID,0,1,1,5,5,34,9332519.56
-2015,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,0,1,1,1,1,79,494936.35
-2015,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,1,1,1,1,1,1,119100
-2015,Defense,Land Vehicles,U,Unlabeled Vendor,Name,1,0,0,1,1,2,5689.33
+2015,Defense,Land Vehicles,U,NULL,Duns,0,1,1,1,1,79,494936.35
+2015,Defense,Land Vehicles,U,NULL,Duns,1,1,1,1,1,1,119100
+2015,Defense,Land Vehicles,U,NULL,Name,1,0,0,1,1,2,5689.33
 2015,Defense,Missile Defense,B,Big Five,PID,0,1,1,5,5,2185,7753019461
 2015,Defense,Missile Defense,L,Large Vendor,PDuns,0,1,1,2,2,3,-387.7
 2015,Defense,Missile Defense,L,Large Vendor,PID,0,1,1,28,28,795,538051631.3
@@ -7987,8 +7987,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2015,Defense,Other Products,S,Always Small Vendor,PDuns,1,1,1,8,8,22,-6501946.63
 2015,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,1,1,1,4200
 2015,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,17,17,3273,272130312.4
-2015,Defense,Other Products,U,Unlabeled Vendor,Duns,0,1,1,2,2,2231,19024900.28
-2015,Defense,Other Products,U,Unlabeled Vendor,Duns,1,1,1,2,1,4,615298.82
+2015,Defense,Other Products,U,NULL,Duns,0,1,1,2,2,2231,19024900.28
+2015,Defense,Other Products,U,NULL,Duns,1,1,1,2,1,4,615298.82
 2015,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,3,3,13,1930539.6
 2015,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,1,1,2,3,6,912691.55
 2015,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,4932,3593501474
@@ -8072,8 +8072,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2015,Defense,Other Services,S,Always Small Vendor,PDuns,1,1,1,80,80,196,11751124.71
 2015,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,21,21,225,243543709.2
 2015,Defense,Other Services,S,Always Small Vendor,PID,1,1,1,1,1,2447,40530753.59
-2015,Defense,Other Services,U,Unlabeled Vendor,Duns,0,1,1,2,2,78,22167758.3
-2015,Defense,Other Services,U,Unlabeled Vendor,Duns,1,1,1,3,1,14,384803.8
+2015,Defense,Other Services,U,NULL,Duns,0,1,1,2,2,78,22167758.3
+2015,Defense,Other Services,U,NULL,Duns,1,1,1,3,1,14,384803.8
 2015,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,5,5,19,4954590.99
 2015,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,3,10,195,947430.58
 2015,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,6117,8095745561
@@ -8112,7 +8112,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2015,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,0,0,1,1,1,300
 2015,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,0,1,2,2,2,7900
 2015,Defense,Ships & Submarines,S,Always Small Vendor,PID,0,1,1,8,8,36,3033320.32
-2015,Defense,Ships & Submarines,U,Unlabeled Vendor,Duns,0,1,1,2,2,2,9956
+2015,Defense,Ships & Submarines,U,NULL,Duns,0,1,1,2,2,2,9956
 2015,Defense,Space Systems,NULL,NULL,PID,NULL,NULL,NULL,1,1,2,0
 2015,Defense,Space Systems,B,Big Five,PID,0,1,1,5,5,926,2417807730
 2015,Defense,Space Systems,J,Large: Big 5 JV,PDuns,0,1,1,1,1,4,4372209.12
@@ -8217,7 +8217,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2016,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,0,1,1,2,0
 2016,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,0,1,3,3,5,27007.25
 2016,Defense,"Electronics, Comms, & Sensors",S,Always Small Vendor,PID,0,1,1,46,46,636,123923930.5
-2016,Defense,"Electronics, Comms, & Sensors",U,Unlabeled Vendor,Duns,1,1,1,3,1,8,219523.1719
+2016,Defense,"Electronics, Comms, & Sensors",U,NULL,Duns,1,1,1,3,1,8,219523.1719
 2016,Defense,Facilities and Construction,NULL,NULL,PID,NULL,NULL,NULL,6,6,27,161788.5009
 2016,Defense,Facilities and Construction,B,Big Five,PDuns,0,1,1,2,4,14,262561.91
 2016,Defense,Facilities and Construction,B,Big Five,PID,0,1,1,5,5,1535,301793804.9
@@ -8262,7 +8262,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2016,Defense,Facilities and Construction,S,Always Small Vendor,PDuns,1,1,1,55,55,86,2338337.022
 2016,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,0,1,4,4,9,24038.9399
 2016,Defense,Facilities and Construction,S,Always Small Vendor,PID,0,1,1,48,48,619,116385735.6
-2016,Defense,Facilities and Construction,U,Unlabeled Vendor,Duns,1,1,1,9,1,21,237371.1749
+2016,Defense,Facilities and Construction,U,NULL,Duns,1,1,1,9,1,21,237371.1749
 2016,Defense,Land Vehicles,NULL,NULL,PID,NULL,NULL,NULL,3,3,88,1139704.392
 2016,Defense,Land Vehicles,B,Big Five,PDuns,0,1,1,2,4,120,1203983.708
 2016,Defense,Land Vehicles,B,Big Five,PID,0,1,1,5,5,112283,1043616921
@@ -8296,8 +8296,8 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2016,Defense,Land Vehicles,S,Always Small Vendor,PDuns,1,1,1,4,4,18,4062164.32
 2016,Defense,Land Vehicles,S,Always Small Vendor,PID,0,0,1,1,1,1,0
 2016,Defense,Land Vehicles,S,Always Small Vendor,PID,0,1,1,5,5,29,6828470.035
-2016,Defense,Land Vehicles,U,Unlabeled Vendor,Duns,1,1,1,1,1,3,-6783.9805
-2016,Defense,Land Vehicles,U,Unlabeled Vendor,Name,1,1,1,1,1,2,41146.67
+2016,Defense,Land Vehicles,U,NULL,Duns,1,1,1,1,1,3,-6783.9805
+2016,Defense,Land Vehicles,U,NULL,Name,1,1,1,1,1,2,41146.67
 2016,Defense,Missile Defense,B,Big Five,PID,0,1,1,5,5,2211,8217641606
 2016,Defense,Missile Defense,J,Large: Big 5 JV,PID,0,1,1,1,1,1,0
 2016,Defense,Missile Defense,L,Large Vendor,PDuns,0,1,1,5,6,102,6348378.221
@@ -8386,7 +8386,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2016,Defense,Other Products,S,Always Small Vendor,PID,NULL,1,1,1,1,0,0
 2016,Defense,Other Products,S,Always Small Vendor,PID,0,0,1,2,2,3,15436
 2016,Defense,Other Products,S,Always Small Vendor,PID,0,1,1,17,17,552,298160787.1
-2016,Defense,Other Products,U,Unlabeled Vendor,Duns,1,1,1,2,1,3,-153528.5831
+2016,Defense,Other Products,U,NULL,Duns,1,1,1,2,1,3,-153528.5831
 2016,Defense,Other R&D and Knowledge Based,NULL,NULL,PID,NULL,NULL,NULL,3,3,21,25580638.94
 2016,Defense,Other R&D and Knowledge Based,B,Big Five,PDuns,0,1,1,3,7,23,9643470.618
 2016,Defense,Other R&D and Knowledge Based,B,Big Five,PID,0,1,1,5,5,4730,3401065608
@@ -8467,7 +8467,7 @@ fiscal_year,Customer,PlatformPortfolio,EntitySizeCode,EntitySizeText,EntityCateg
 2016,Defense,Other Services,S,Always Small Vendor,PDuns,1,0,1,2,2,2,18254.8999
 2016,Defense,Other Services,S,Always Small Vendor,PDuns,1,1,1,64,64,119,6756747.967
 2016,Defense,Other Services,S,Always Small Vendor,PID,0,1,1,14,14,166,241970374.6
-2016,Defense,Other Services,U,Unlabeled Vendor,Duns,1,1,1,2,1,2,39190.2305
+2016,Defense,Other Services,U,NULL,Duns,1,1,1,2,1,2,39190.2305
 2016,Defense,Ships & Submarines,NULL,NULL,PID,NULL,NULL,NULL,5,5,23,4914533.278
 2016,Defense,Ships & Submarines,B,Big Five,PDuns,0,1,1,3,7,26,1176071.117
 2016,Defense,Ships & Submarines,B,Big Five,PID,0,1,1,5,5,8159,9647345909

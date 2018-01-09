@@ -47,7 +47,7 @@ format_data_for_plot <- function(
   ){  
 
   shown_data <- incoming_data
-  breakouts <- c(input$color_var, input$facet_var)
+  breakouts <- c(input$color_var, input$facet_var, input$color_var_2)
   breakouts <- breakouts[breakouts != "None"]
   
   # account for potential spaces in breakouts and fy_var
@@ -313,6 +313,47 @@ build_plot_from_input <- function(
     }
   }
   
+  if(input$chart_geom == "Double Stacked"){
+    if(input$color_var == "None"){
+      mainplot <- mainplot +
+        geom_bar(aes_q(
+          x = as.name(names(plot_data)[1]),
+          y = as.name(input$y_var)
+        ),
+        stat = "identity")
+    } else {
+      mainplot <- mainplot +
+        geom_bar(aes_q(
+          x = as.name(names(plot_data)[1]),
+          y = as.name(input$y_var),
+          fill = as.name(input$color_var_2)
+        ),
+        stat = "identity")
+    }
+  }
+  
+  if(input$chart_geom == "Double Stacked" & input$chart_geom == "Line Chart"){
+    if(input$facet_var == "None"){
+      mainplot <- mainplot +
+        geom_bar(aes_q(
+          x = as.name(names(plot_data)[1]),
+          y = as.name(input$y_var)
+        ),
+        stat = "identity")
+    }else {
+      mainplot <- mainplot +
+        geom_bar(aes_q(
+          x = as.name(names(plot_data)[1]),
+          y = as.name(input$y_var),
+          fill = as.name(input$facet_var)
+        ),
+        stat = "identity")
+    }
+  }
+    
+      
+  
+  
   # add a second geom if requested
   if(input$chart_geom == "Line Chart" & input$y_var_2 != "None"){
     if(input$color_var == "None"){
@@ -548,11 +589,13 @@ choose_data_frame <- function(
   # define which variables are used
   use_sub <- (
     input$color_var == double_count_vars["SubCustomer"] |
+    input$color_var_2 == double_count_vars["SubCustomer"] |
     input$facet_var == double_count_vars["SubCustomer"] |
     length(unique(platform_sub[[double_count_vars["SubCustomer"]]])) == 1)
   
   use_platform <- (
     input$color_var == double_count_vars["PlatformPortfolio"] |
+    input$color_var_2 == double_count_vars["PlatformPortfolio"] |
     input$facet_var == double_count_vars["PlatformPortfolio"] |
     length(unique(platform_sub[[double_count_vars["PlatformPortfolio"]]])) == 1)
   

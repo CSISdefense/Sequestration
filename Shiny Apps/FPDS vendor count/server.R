@@ -5,13 +5,19 @@
 ################################################################################
 
 library(shiny)
+library(csis360)
 library(magrittr)
 library(forcats)
 library(Cairo)
 library(shinyBS)
 library(stringr)
 library(tidyverse)
-library(csis360)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(gtable)
+library(ggpubr)
+
 
 shinyServer(function(input, output, session) {
   options(scipen = 99)
@@ -136,14 +142,14 @@ shinyServer(function(input, output, session) {
   )
   
   output$download_image <- downloadHandler(
-    filename = "plot_image.jpg",
+    filename = "VC_plot_image.png",
     content = function(file){
       ggsave(
-      filename = file,
-      plot = mainplot(),
-      width = input$save_plot_width,
-      height = input$save_plot_height,
-      units = "in")
+        filename = file,
+        plot = mainplot(),
+        width = input$save_plot_width,
+        height = input$save_plot_height,
+        units = "in")
     }
   )
   # populate and depopulate ui elements when the user changes tabs
@@ -238,7 +244,7 @@ shinyServer(function(input, output, session) {
       session,
       inputId = "current_tab",
       selected = "Charts"
-      )
+    )
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
     update_title(get(vars$frame), input, vars$user_title)
@@ -269,7 +275,7 @@ shinyServer(function(input, output, session) {
     update_title(get(vars$frame), input, vars$user_title)
     removeUI(selector = "#edit_var_select")
     populate_edit_var(changed_platform_sub, input)
-
+    
     
   })
   
@@ -316,7 +322,7 @@ shinyServer(function(input, output, session) {
       if(input$edit_var == vars$fiscal_year) {
         vars$fiscal_year <- input$rename_var_txt
       }
-     
+      
       removeUI(selector = "#edit_var_select")
       populate_edit_var(changed_platform_sub, input)
       removeUI(selector = "#edit_value_select")
@@ -327,31 +333,31 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$rename_value_btn, {
     if(input$rename_value_txt != "" &
-    input$edit_value != "*Not a Category Variable*") {
+       input$edit_value != "*Not a Category Variable*") {
       
       changed_top_level <<- rename_value(changed_top_level, input)
       changed_platform_sub <<- rename_value(changed_platform_sub, input)
       changed_platform_only <<- rename_value(changed_platform_only, input)
       changed_sub_only <<- rename_value(changed_sub_only, input)
       
-
+      
       if(input$edit_var == vars$double_counted["SubCustomer"]) {
         vars$double_counted["SubCustomer"] <- input$rename_var_txt
       }
-
+      
       if(input$edit_var == vars$double_counted["PlatformPortfolio"]) {
         vars$double_counted["PlatformPortfolio"] <- input$rename_var_txt
       }
-
+      
       if(input$edit_var == vars$fiscal_year) {
         vars$fiscal_year <- input$rename_var_txt
       }
-
+      
       removeUI(selector = "#edit_value_select")
       create_edit_values_list(changed_platform_sub, input)
     }
   })
-
+  
   observeEvent(input$edit_value, {
     updateTextInput(
       session,
@@ -360,5 +366,5 @@ shinyServer(function(input, output, session) {
     )
   })
   
-    
+  
 })

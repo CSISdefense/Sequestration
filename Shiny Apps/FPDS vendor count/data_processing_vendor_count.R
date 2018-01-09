@@ -221,6 +221,12 @@ prepare_vendor<-function(data)
     data<-replace_nas_with_unlabeled(data,"PlatformPortfolio")
   }
   data
+  if("EntitySizeText" %in% colnames(data)){
+    if(!is.factor(data$EntitySizeText))
+      data$EntitySizeText<-factor(data$EntitySizeText)
+    data<-replace_nas_with_unlabeled(data,"EntitySizeText")
+  }
+  data
 }
 
 

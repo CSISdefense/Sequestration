@@ -26,7 +26,7 @@ shinyUI(fluidPage(
         radioButtons(
           inputId = "chart_geom",
           label = NULL,
-          choices = c("Bar Chart", "Line Chart"),
+          choices = c("Bar Chart", "Line Chart", "Double Stacked"),
           selected = "Line Chart"
         ),
         selectInput(
@@ -44,6 +44,17 @@ shinyUI(fluidPage(
           selected = "None",
           width = "100%",
           selectize = TRUE
+        ),
+        conditionalPanel(
+          condition = "input.chart_geom == 'Double Stacked'",
+        selectInput(
+          inputId = "color_var_2",
+          label = "Stacked Bar Chart Breakout",
+          choices = "None",
+          selected = "None",
+          width = "100%",
+          selectize = TRUE
+        )
         )
       ),
       wellPanel(
