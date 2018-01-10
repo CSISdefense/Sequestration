@@ -7,15 +7,15 @@ library(tidyverse)
 library(forcats)
 library(csis360)
 
-  platform_sub <- read_csv(
-    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv",
-    na=c("NA","NULL"))
-  sub_only <- read_csv(
-    "Defense_Vendor_sp_EntityCountHistorySubCustomer.csv",
-    na=c("NA","NULL"))
-  platform_only <- read_csv(
-    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.csv",
-    na=c("NA","NULL"))
+  platform_sub <- read_delim(
+    "Defense_Vendor_sp_EntityCountHistoryPlatformSubCustomer.txt",
+    na=c("NA","NULL"),delim="\t")
+  sub_only <- read_delim(
+    "Defense_Vendor_sp_EntityCountHistorySubCustomer.txt",
+    na=c("NA","NULL"),delim="\t")
+  platform_only <- read_delim(
+    "Defense_Vendor_sp_EntityCountHistoryPlatformCustomer.txt",
+    na=c("NA","NULL"),delim="\t")
   top_level <- read_delim(
     "Vendor_sp_EntityCountHistoryCustomer.txt",
     na=c("NA","NULL"),delim="\t")
@@ -225,7 +225,7 @@ prepare_vendor<-function(data)
   if("EntitySizeText" %in% colnames(data)){
     if(!is.factor(data$EntitySizeText))
       data$EntitySizeText<-factor(data$EntitySizeText)
-    data<-replace_nas_with_unlabeled(data,"EntitySizeText")
+    data<-replace_nas_with_unlabeled(data,"EntitySizeText","Unlabeled Vendor")
   }
   if("AnyEntityUSplaceOfPerformance" %in% colnames(data)){
     if(!is.factor(data$AnyEntityUSplaceOfPerformance))
@@ -251,7 +251,6 @@ platform_sub<-prepare_vendor(platform_sub)
 top_level<-prepare_vendor(top_level)
 sub_only<-prepare_vendor(sub_only)
 platform_only<-prepare_vendor(platform_only)
-
 
 
 labels_and_colors<-csis360::prepare_labels_and_colors(platform_sub)
