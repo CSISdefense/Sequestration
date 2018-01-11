@@ -27,11 +27,12 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-
-	
 	update ccid
 	set
-	 IsAbove1990constantReportingThreshold=iif( contracttotal.SumOfobligatedAmountConstant1990>=25000 or
+	IsAbove2016constantOneMillionThreshold=iif( contracttotal.SumOfobligatedAmountConstant2016>=1000000 or
+		contracttotal.SumOfbaseandexercisedoptionsvalue>=mtt.OneMillionThreshold2016constant or
+		contracttotal.SumOfBaseandalloptionsvalue>=mtt.OneMillionThreshold2016constant ,1,0) 
+	 ,IsAbove1990constantReportingThreshold=iif( contracttotal.SumOfobligatedAmountConstant1990>=25000 or
 		contracttotal.SumOfbaseandexercisedoptionsvalue>=mtt.MicroTransactionThreshold1990constant  or
 		contracttotal.SumOfBaseandalloptionsvalue>=mtt.MicroTransactionThreshold1990constant ,1,0) 
 	 ,IsAbove2016constantReportingThreshold=iif( contracttotal.SumOfobligatedAmountConstant2016>=3500 or
@@ -118,6 +119,9 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		) is not null
 
 
+	
+	
+	
 
 	--Assign EntitySize and related states to ParentIDHistory
 	update ph
@@ -136,17 +140,21 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		Then 'U'
 		ELSE 'M'
 	END 
+	,IsEntityAbove2016constantOneMillionThreshold=IsAbove2016constantOneMillionThreshold
 	,IsEntityAbove1990constantReportingThreshold=IsAbove1990constantReportingThreshold
 	,IsEntityAbove2016constantReportingThreshold=IsAbove2016constantReportingThreshold	
-	,AnyEntityUSplaceOfPerformance=interior.MinOfPlaceOfPerformanceIsForeign 
+	,AnyEntityUSplaceOfPerformance=~interior.MinOfPlaceOfPerformanceIsForeign 
+	,AnyEntityForeignPlaceOfPerformance=interior.MaxOfPlaceOfPerformanceIsForeign
 	from Vendor.ParentIDhistory ph
 	inner join
 		(
 		SELECT parent.parentid
 		,fiscal_year
+		,max(cast(IsAbove2016constantOneMillionThreshold as integer)) as IsAbove2016constantOneMillionThreshold
 		,max(cast(IsAbove1990constantReportingThreshold as integer)) as IsAbove1990constantReportingThreshold
 		,max(cast(IsAbove2016constantReportingThreshold as integer)) as IsAbove2016constantReportingThreshold
 		,min(cast(coalesce(country.isforeign, ~ sc.usa) as tinyint)) as MinOfPlaceOfPerformanceIsForeign
+		,max(cast(coalesce(country.isforeign, ~ sc.usa) as tinyint)) as MaxOfPlaceOfPerformanceIsForeign
 		, Max(IIF(C.contractingofficerbusinesssizedetermination='S'
 				,1
 				,0)) AS MaxOfSmall
@@ -180,7 +188,7 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 	on pid.parentid=interior.ParentID
 
 
-
+	
 	
 	--Assign EntitySize and related states via parentDunsnumber
 	update ParentDtPCH
@@ -199,18 +207,22 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		Then 'U'
 		ELSE 'M'
 	END 
+	,IsEntityAbove2016constantOneMillionThreshold=IsAbove2016constantOneMillionThreshold
 	,IsEntityAbove1990constantReportingThreshold=IsAbove1990constantReportingThreshold
 	,IsEntityAbove2016constantReportingThreshold=IsAbove2016constantReportingThreshold	
-	,AnyEntityUSplaceOfPerformance=interior.MinOfPlaceOfPerformanceIsForeign 
+	,AnyEntityUSplaceOfPerformance=~interior.MinOfPlaceOfPerformanceIsForeign 
+	,AnyEntityForeignPlaceOfPerformance=interior.MaxOfPlaceOfPerformanceIsForeign
 	from Contractor.DunsnumberToParentContractorHistory ParentDtPCH
 	inner join
 		(
 		SELECT parent.parentid
 		,c.parentdunsnumber
 		,fiscal_year
+		,max(cast(IsAbove2016constantOneMillionThreshold as integer)) as IsAbove2016constantOneMillionThreshold
 		,max(cast(IsAbove1990constantReportingThreshold as integer)) as IsAbove1990constantReportingThreshold
 		,max(cast(IsAbove2016constantReportingThreshold as integer)) as IsAbove2016constantReportingThreshold
 		,min(cast(coalesce(country.isforeign, ~ sc.usa) as tinyint)) as MinOfPlaceOfPerformanceIsForeign
+		,max(cast(coalesce(country.isforeign, ~ sc.usa) as tinyint)) as MaxOfPlaceOfPerformanceIsForeign
 		, Max(IIF(C.contractingofficerbusinesssizedetermination='S'
 				,1
 				,0)) AS MaxOfSmall
@@ -269,18 +281,22 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		Then 'U'
 		ELSE 'M'
 	END 
+	,IsEntityAbove2016constantOneMillionThreshold=IsAbove2016constantOneMillionThreshold
 	,IsEntityAbove1990constantReportingThreshold=IsAbove1990constantReportingThreshold
 	,IsEntityAbove2016constantReportingThreshold=IsAbove2016constantReportingThreshold	
-	,AnyEntityUSplaceOfPerformance=interior.MinOfPlaceOfPerformanceIsForeign 
+	,AnyEntityUSplaceOfPerformance=~interior.MinOfPlaceOfPerformanceIsForeign 
+	,AnyEntityForeignPlaceOfPerformance=interior.MaxOfPlaceOfPerformanceIsForeign
 	from Contractor.DunsnumberToParentContractorHistory DtPCH
 	inner join
 		(
 		SELECT parent.parentid
 		,c.dunsnumber
 		,c.fiscal_year
+		,max(cast(IsAbove2016constantOneMillionThreshold as integer)) as IsAbove2016constantOneMillionThreshold
 		,max(cast(IsAbove1990constantReportingThreshold as integer)) as IsAbove1990constantReportingThreshold
 		,max(cast(IsAbove2016constantReportingThreshold as integer)) as IsAbove2016constantReportingThreshold
 		,min(cast(coalesce(country.isforeign, ~ sc.usa) as tinyint)) as MinOfPlaceOfPerformanceIsForeign
+		,max(cast(coalesce(country.isforeign, ~ sc.usa) as tinyint)) as MaxOfPlaceOfPerformanceIsForeign
 		, Max(IIF(C.contractingofficerbusinesssizedetermination='S'
 				,1
 				,0)) AS MaxOfSmall
@@ -345,21 +361,27 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		Then 'U'
 		ELSE 'M'
 	END )
+	,IsEntityAbove2016constantOneMillionThreshold=coalesce(pidh.IsEntityAbove2016constantOneMillionThreshold
+		,interior.IsAbove2016constantOneMillionThreshold)
 	,IsEntityAbove1990constantReportingThreshold=coalesce(pidh.IsEntityAbove1990constantReportingThreshold
 		,interior.IsAbove1990constantReportingThreshold)
 	,IsEntityAbove2016constantReportingThreshold=coalesce(pidh.IsEntityAbove2016constantReportingThreshold
 		,interior.IsAbove2016constantReportingThreshold)	
 	,AnyEntityUSplaceOfPerformance=coalesce(pidh.AnyEntityUSplaceOfPerformance
-		,interior.MinOfPlaceOfPerformanceIsForeign)	
+		,~interior.MinOfPlaceOfPerformanceIsForeign)	
+	,AnyEntityForeignPlaceOfPerformance=coalesce(pidh.AnyEntityForeignPlaceOfPerformance
+		,interior.MaxOfPlaceOfPerformanceIsForeign)	
 	from Contract.UnlabeledDunsnumberUniqueTransactionIDentityIDhistory u
 	inner join
 		(
 		SELECT parent.parentid
 		,u.StandardizedVendorName
 		,u.fiscal_year
+		,max(cast(IsAbove2016constantOneMillionThreshold as integer)) as IsAbove2016constantOneMillionThreshold
 		,max(cast(IsAbove1990constantReportingThreshold as integer)) as IsAbove1990constantReportingThreshold
 		,max(cast(IsAbove2016constantReportingThreshold as integer)) as IsAbove2016constantReportingThreshold
 		,min(cast(coalesce(country.isforeign, ~ sc.usa) as tinyint)) as MinOfPlaceOfPerformanceIsForeign
+		,max(cast(coalesce(country.isforeign, ~ sc.usa) as tinyint)) as MaxOfPlaceOfPerformanceIsForeign
 		, Max(IIF(C.contractingofficerbusinesssizedetermination='S'
 				,1
 				,0)) AS MaxOfSmall

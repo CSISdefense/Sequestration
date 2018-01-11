@@ -49,12 +49,9 @@ shinyServer(function(input, output, session) {
   
   # fill the variable lists in the ui with variables from current_platform_sub
   populate_ui_var_lists(current_platform_sub)
-  
-  if("EntityCount" %in% tolower(colnames(current_platform_sub))){
-    input$y_var <- "EntityCount"
-  }
-  
+
   mainplot <- reactive({
+    # browser()
     # Builds a ggplot based on user settings, for display on the main panel.
     # Reactive binding will cause the ggplot to update when the user changes any
     # relevant setting.  
@@ -62,6 +59,7 @@ shinyServer(function(input, output, session) {
     # Returns:
     #   a fully built ggplot object
     # get appropriately formatted data to use in the plot
+
     vars$frame <- 
       choose_data_frame(current_platform_sub, input, vars$double_counted)
     plot_data <- csis360::format_data_for_plot(data=get(vars$frame),

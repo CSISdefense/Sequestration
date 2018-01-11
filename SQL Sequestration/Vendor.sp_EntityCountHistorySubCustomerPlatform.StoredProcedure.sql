@@ -27,6 +27,8 @@ AS
 			,esc.EntitySizeText
 			,EntityCategory
 		  ,AnyEntityUSplaceOfPerformance
+		  ,AnyEntityForeignPlaceOfPerformance
+		  ,IsEntityAbove2016constantOneMillionThreshold
 		  ,IsEntityAbove1990constantReportingThreshold
 		  ,IsEntityAbove2016constantReportingThreshold
 		  ,count(distinct [Entity]) [EntityCount]
@@ -47,6 +49,8 @@ AS
 	  ,esc.EntitySizeText
 	  ,EntityCategory
 	  ,AnyEntityUSplaceOfPerformance
+	  ,AnyEntityForeignPlaceOfPerformance
+	  		  ,IsEntityAbove2016constantOneMillionThreshold
 	  ,IsEntityAbove1990constantReportingThreshold
 		  ,IsEntityAbove2016constantReportingThreshold
 		--End of your query
@@ -62,6 +66,8 @@ AS
 			,esc.EntitySizeText
 			,EntityCategory
 		  ,AnyEntityUSplaceOfPerformance
+		  ,AnyEntityForeignPlaceOfPerformance
+		  		  ,IsEntityAbove2016constantOneMillionThreshold
 		  ,IsEntityAbove1990constantReportingThreshold
 		  ,IsEntityAbove2016constantReportingThreshold
 		  ,count(distinct [Entity]) [EntityCounty]
@@ -79,6 +85,8 @@ AS
 	  ,esc.EntitySizeText
 	  ,EntityCategory
 	  ,AnyEntityUSplaceOfPerformance
+	  ,AnyEntityForeignPlaceOfPerformance
+	  		  ,IsEntityAbove2016constantOneMillionThreshold
 	  ,IsEntityAbove1990constantReportingThreshold
 		  ,IsEntityAbove2016constantReportingThreshold
 		--End of your query

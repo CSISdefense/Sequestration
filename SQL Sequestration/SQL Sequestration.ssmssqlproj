@@ -3,7 +3,7 @@
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
       <Items>
-        <ConnectionNode Name="VMDatabase:CSIS\gsanders">
+        <ConnectionNode Name="VMDatabase:CSIS\GSanders">
           <Created>2017-03-16T12:29:30.4807425-04:00</Created>
           <Type>SQL</Type>
           <Server>VMDatabase</Server>
@@ -37,6 +37,12 @@
           <AssociatedConnUserName />
           <FullPath>Contract.ContractMergerFPDSandFSRS.View.sql</FullPath>
         </FileNode>
+        <FileNode Name="Contract.ContractPlatformBucket.View.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Contract.ContractPlatformBucket.View.sql</FullPath>
+        </FileNode>
         <FileNode Name="Contract.FSRSinFPDShistory.View.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
@@ -61,17 +67,65 @@
           <AssociatedConnUserName />
           <FullPath>Contract.FSRSprimeHistoryCustomer.View.sql</FullPath>
         </FileNode>
+        <FileNode Name="Economic_MicroTransactionThreshold.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Economic_MicroTransactionThreshold.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.EntitySizeHistoryBucketPlatformSubCustomer.View.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.EntitySizeHistoryBucketPlatformSubCustomer.View.sql</FullPath>
+        </FileNode>
         <FileNode Name="Vendor.FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.View.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Vendor.FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.View.sql</FullPath>
         </FileNode>
+        <FileNode Name="Vendor.sp_AutomatedEntityIDupdates.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_AutomatedEntityIDupdates.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistoryCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistoryCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistoryCustomerPlatform.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistoryCustomerPlatform.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistorySubCustomer.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistorySubCustomer.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor.sp_EntityCountHistorySubCustomerPlatform.StoredProcedure.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor.sp_EntityCountHistorySubCustomerPlatform.StoredProcedure.sql</FullPath>
+        </FileNode>
         <FileNode Name="Vendor.SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.StoredProcedure.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Vendor.SP_FSRSinFPDSVendorSizeHistorySubCustomerBucketPlatform.StoredProcedure.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Vendor_SP_Update_Vendor_Counts.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:VMDatabase:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>VMDatabase</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Vendor_SP_Update_Vendor_Counts.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>

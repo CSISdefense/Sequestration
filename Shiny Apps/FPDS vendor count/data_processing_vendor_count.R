@@ -22,7 +22,7 @@ library(csis360)
 
   # remove unused variables
   platform_sub %<>%
-    select(-Customer, -EntityCategory, -EntitySizeCode) %>%
+    select(-Customer) %>%
     mutate(
       SumOfNumberOfActions = as.character(SumOfNumberOfActions),
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
@@ -32,6 +32,7 @@ library(csis360)
       SumOfObligatedAmount = as.numeric(
         ifelse(is.na(SumOfObligatedAmount), 0, SumOfObligatedAmount))) %>%
     mutate(
+      EntitySizeText.detail = EntitySizeText,
       EntitySizeText = fct_recode(
         EntitySizeText,
         Small = "Always Small Vendor",
@@ -41,10 +42,13 @@ library(csis360)
         "Large+" = "Large Vendor",
         "Large+" = "Large: Big 5 JV")) %>%
     group_by(
-      fiscal_year, SubCustomer, PlatformPortfolio, EntitySizeText,
+      fiscal_year, SubCustomer, PlatformPortfolio, EntitySizeText, EntitySizeText.detail,
+      EntityCategory,
       AnyEntityUSplaceOfPerformance,
+      AnyEntityForeignPlaceOfPerformance,
       IsEntityAbove1990constantReportingThreshold,
-      IsEntityAbove2016constantReportingThreshold) %>%
+      IsEntityAbove2016constantReportingThreshold
+      ) %>%
     summarize(
       EntityCount = sum(EntityCount), 
       AllContractorCount = sum(AllContractorCount),
@@ -55,7 +59,7 @@ library(csis360)
   
   
   platform_only %<>%
-    select(-Customer, -EntityCategory, -EntitySizeCode) %>%
+    select(-Customer) %>%
     rename(EntityCount = EntityCount) %>%
     mutate(
       SumOfNumberOfActions = as.character(SumOfNumberOfActions),
@@ -66,6 +70,7 @@ library(csis360)
       SumOfObligatedAmount = as.numeric(
         ifelse(is.na(SumOfObligatedAmount), 0, SumOfObligatedAmount))) %>%
     mutate(
+      EntitySizeText.detail = EntitySizeText,
       EntitySizeText = fct_recode(
         EntitySizeText,
         Small = "Always Small Vendor",
@@ -75,8 +80,11 @@ library(csis360)
         "Large+" = "Large Vendor",
         "Large+" = "Large: Big 5 JV")) %>%
     group_by(
-      fiscal_year, PlatformPortfolio, EntitySizeText,
+      fiscal_year, PlatformPortfolio, EntitySizeText, EntitySizeText.detail,
+      EntityCategory,
       AnyEntityUSplaceOfPerformance,
+      AnyEntityForeignPlaceOfPerformance,
+      IsEntityAbove2016constantOneMillionThreshold,
       IsEntityAbove1990constantReportingThreshold,
       IsEntityAbove2016constantReportingThreshold) %>%
     summarize(
@@ -90,7 +98,7 @@ library(csis360)
   names(sub_only)[1] <- "fiscal_year"
   
   sub_only %<>%
-    select(-Customer, -EntityCategory, -EntitySizeCode) %>%
+    select(-Customer) %>%
     mutate(
       SumOfNumberOfActions = as.character(SumOfNumberOfActions),
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
@@ -100,6 +108,7 @@ library(csis360)
       SumOfObligatedAmount = as.numeric(
         ifelse(is.na(SumOfObligatedAmount), 0, SumOfObligatedAmount))) %>%
     mutate(
+      EntitySizeText.detail = EntitySizeText,
       EntitySizeText = fct_recode(
         EntitySizeText,
         Small = "Always Small Vendor",
@@ -109,8 +118,10 @@ library(csis360)
         "Large+" = "Large Vendor",
         "Large+" = "Large: Big 5 JV")) %>%
     group_by(
-      fiscal_year, SubCustomer, EntitySizeText,
+      fiscal_year, SubCustomer, EntitySizeText, EntitySizeText.detail,
+      EntityCategory,
       AnyEntityUSplaceOfPerformance,
+      AnyEntityForeignPlaceOfPerformance,
       IsEntityAbove1990constantReportingThreshold,
       IsEntityAbove2016constantReportingThreshold) %>%
     summarize(
@@ -125,7 +136,7 @@ library(csis360)
   top_level %<>%
     filter(Customer == "Defense") %>%
     rename(EntityCount = EntityCount) %>%
-    select(-Customer, -EntityCategory, -EntitySizeCode) %>%
+    select(-Customer) %>%
     mutate(
       SumOfNumberOfActions = as.character(SumOfNumberOfActions), 
       SumOfObligatedAmount = as.character(SumOfObligatedAmount)) %>%
@@ -135,6 +146,7 @@ library(csis360)
       SumOfObligatedAmount = as.numeric(
         ifelse(is.na(SumOfObligatedAmount), 0, SumOfObligatedAmount))) %>%
     mutate(
+      EntitySizeText.detail = EntitySizeText,
       EntitySizeText = fct_recode(
         EntitySizeText,
         Small = "Always Small Vendor",
@@ -144,8 +156,11 @@ library(csis360)
         "Large+" = "Large Vendor",
         "Large+" =  "Large: Big 5 JV")) %>%
     group_by(
-      fiscal_year, EntitySizeText,
+      fiscal_year, EntitySizeText, EntitySizeText.detail,
+      EntityCategory,
       AnyEntityUSplaceOfPerformance,
+      AnyEntityForeignPlaceOfPerformance,
+      IsEntityAbove2016constantOneMillionThreshold,
       IsEntityAbove1990constantReportingThreshold,
       IsEntityAbove2016constantReportingThreshold) %>%
     summarize(
@@ -227,10 +242,20 @@ prepare_vendor<-function(data)
       data$EntitySizeText<-factor(data$EntitySizeText)
     data<-replace_nas_with_unlabeled(data,"EntitySizeText","Unlabeled Vendor")
   }
+  if("EntitySizeText.detail" %in% colnames(data)){
+    if(!is.factor(data$EntitySizeText.detail))
+      data$EntitySizeText.detail<-factor(data$EntitySizeText.detail)
+    data<-replace_nas_with_unlabeled(data,"EntitySizeText.detail","Unlabeled Vendor")
+  }
   if("AnyEntityUSplaceOfPerformance" %in% colnames(data)){
     if(!is.factor(data$AnyEntityUSplaceOfPerformance))
       data$AnyEntityUSplaceOfPerformance<-factor(data$AnyEntityUSplaceOfPerformance)
     data<-replace_nas_with_unlabeled(data,"AnyEntityUSplaceOfPerformance")
+  }
+  if("AnyEntityForeignPlaceOfPerformance" %in% colnames(data)){
+    if(!is.factor(data$AnyEntityForeignPlaceOfPerformance))
+      data$AnyEntityForeignPlaceOfPerformance<-factor(data$AnyEntityForeignPlaceOfPerformance)
+    data<-replace_nas_with_unlabeled(data,"AnyEntityForeignPlaceOfPerformance")
   }
   if("IsEntityAbove1990constantReportingThreshold" %in% colnames(data)){
     if(!is.factor(data$IsEntityAbove1990constantReportingThreshold))
@@ -242,15 +267,27 @@ prepare_vendor<-function(data)
       data$IsEntityAbove2016constantReportingThreshold<-factor(data$IsEntityAbove2016constantReportingThreshold)
     data<-replace_nas_with_unlabeled(data,"IsEntityAbove2016constantReportingThreshold")
   }
+  if("IsEntityAbove2016constantOneMillionThreshold" %in% colnames(data)){
+    if(!is.factor(data$IsEntityAbove2016constantOneMillionThreshold))
+      data$IsEntityAbove2016constantOneMillionThreshold<-factor(data$IsEntityAbove2016constantOneMillionThreshold)
+    data<-replace_nas_with_unlabeled(data,"IsEntityAbove2016constantOneMillionThreshold")
+  }
+  
+  if("EntityCategory" %in% colnames(data)){
+    if(!is.factor(data$EntityCategory))
+      data$EntityCategory<-factor(data$EntityCategory)
+    data<-replace_nas_with_unlabeled(data,"EntityCategory")
+  }
+  
   
   data
 }
-
 
 platform_sub<-prepare_vendor(platform_sub)
 top_level<-prepare_vendor(top_level)
 sub_only<-prepare_vendor(sub_only)
 platform_only<-prepare_vendor(platform_only)
+
 
 
 labels_and_colors<-csis360::prepare_labels_and_colors(platform_sub)

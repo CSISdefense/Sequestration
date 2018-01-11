@@ -15,6 +15,7 @@ as
 SELECT [Fiscal_Year]
       ,3500*GDPdeflator2016 as MicroTransactionThreshold2016constant
       ,25000*GDPdeflator1990 as MicroTransactionThreshold1990constant
+	  ,1000000*GDPdeflator2016 as OneMillionThreshold2016constant
   FROM [DIIG].[Economic].[Deflators]
 
 GO
