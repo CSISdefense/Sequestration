@@ -46,6 +46,7 @@ library(csis360)
       EntityCategory,
       AnyEntityUSplaceOfPerformance,
       AnyEntityForeignPlaceOfPerformance,
+      IsEntityAbove2016constantOneMillionThreshold,
       IsEntityAbove1990constantReportingThreshold,
       IsEntityAbove2016constantReportingThreshold
       ) %>%

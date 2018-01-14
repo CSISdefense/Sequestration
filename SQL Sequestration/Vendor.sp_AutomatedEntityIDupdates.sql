@@ -27,6 +27,54 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
+	select  DUNSnumber
+	,dtpch.StandardizedTopContractor
+	,dtpch.ParentID
+	,sum(dtpch.totalAmount) as SumOfTotalAmount
+	,max(dtpch.TopVendorNameTotalAmount/nullif(dtpch.TotalAmount,0)) as MaxOfTopVendorNamePercent
+	,min(dtpch.fiscalyear) MinOfFiscal_Year
+	,max(dtpch.fiscalyear) MaxOfFiscal_Year
+	,CSISmodifiedBy
+	from contractor.DunsnumberToParentContractorHistory dtpch
+	where dunsnumber in (select distinct DUNSnumber
+	from contractor.DunsnumberToParentContractorHistory dtpch
+	left outer join contractor.ParentContractor p
+	on dtpch.ParentID=p.ParentID
+	where p.UnknownCompany=1
+	)
+	group by DUNSnumber
+	,dtpch.StandardizedTopContractor
+	,dtpch.ParentID
+	,CSISmodifiedBy
+	order by DUNSnumber
+	
+
+	delete contractor.DunsnumberToParentContractorHistory
+	where DUNSnumber in ('7902388510000','7902386380000')
+
+
+--Automated proporagation un unknown vendor parentIDs for those dunsnumber where it is uncontroversial	
+	update dtpch
+	set parentid=interior.parentid,
+	CSISmodifiedBy='Automated unknown vendor spreading by '+CURRENT_USER,
+	CSISmodifiedDate=GETDATE()
+	from contractor.DunsnumberToParentContractorHistory dtpch
+	inner join
+	(select dunsnumber, max(ParentID) as ParentID
+	,min(fiscalyear) as MinOfFiscalYear
+	from contractor.DunsnumberToParentContractorHistory dtpch
+	where dunsnumber in (select distinct DUNSnumber
+	from contractor.DunsnumberToParentContractorHistory dtpch
+	left outer join contractor.ParentContractor p
+	on dtpch.ParentID=p.ParentID
+	where p.UnknownCompany=1
+	)
+	group by DUNSnumber
+	having min(parentid)=max(parentid)) interior
+	on interior.DUNSnumber=dtpch.DUNSnumber
+	where 	dtpch.parentid is null
+	and FiscalYear>=MinOfFiscalYear
+
 	update ccid
 	set
 	IsAbove2016constantOneMillionThreshold=iif( contracttotal.SumOfobligatedAmountConstant2016>=1000000 or
@@ -189,7 +237,6 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 
 
 	
-	
 	--Assign EntitySize and related states via parentDunsnumber
 	update ParentDtPCH
 	set EntitySizeCode=CASE
@@ -207,6 +254,7 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		Then 'U'
 		ELSE 'M'
 	END 
+	,ChildCount=interior.ChildCount
 	,IsEntityAbove2016constantOneMillionThreshold=IsAbove2016constantOneMillionThreshold
 	,IsEntityAbove1990constantReportingThreshold=IsAbove1990constantReportingThreshold
 	,IsEntityAbove2016constantReportingThreshold=IsAbove2016constantReportingThreshold	
@@ -218,6 +266,9 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		SELECT parent.parentid
 		,c.parentdunsnumber
 		,fiscal_year
+		,count(distinct c.dunsnumber)+min(iif(not c.parentdunsnumber =c.dunsnumber,1,0 )) as ChildCount
+		--This lists how many dunsnumbers reference a given parentdunsnumber.
+		--The second clause is to make sure that parentduns inlude themselves in the child count.
 		,max(cast(IsAbove2016constantOneMillionThreshold as integer)) as IsAbove2016constantOneMillionThreshold
 		,max(cast(IsAbove1990constantReportingThreshold as integer)) as IsAbove1990constantReportingThreshold
 		,max(cast(IsAbove2016constantReportingThreshold as integer)) as IsAbove2016constantReportingThreshold
