@@ -49,9 +49,6 @@ BEGIN
 	order by DUNSnumber
 	
 
-	delete contractor.DunsnumberToParentContractorHistory
-	where DUNSnumber in ('7902388510000','7902386380000')
-
 
 --Automated proporagation un unknown vendor parentIDs for those dunsnumber where it is uncontroversial	
 	update dtpch
@@ -264,7 +261,9 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 	inner join
 		(
 		SELECT parent.parentid
-		,c.parentdunsnumber
+		,iif(c.parentdunsnumber is not null and parentsquared.UnknownCompany=0
+			,c.parentdunsnumber 
+			,dtpch.parentdunsnumber) as ParentDunsnumber
 		,fiscal_year
 		,count(distinct c.dunsnumber)+min(iif(not c.parentdunsnumber =c.dunsnumber,1,0 )) as ChildCount
 		--This lists how many dunsnumbers reference a given parentdunsnumber.
@@ -290,6 +289,12 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 			ON ParentDtPCH.FiscalYear=C.fiscal_year  AND  ParentDtPCH.DUNSnumber=C.parentdunsnumber
 		LEFT OUTER JOIN Contractor.ParentContractor as PARENTsquared
 			ON PARENTsquared.ParentID= ParentDtPCH.ParentID 
+		LEFT OUTER JOIN Contractor.DunsnumbertoParentContractorHistory as ParentDtPCHimputed
+			ON ParentDtPCHimputed.FiscalYear=C.fiscal_year  AND  ParentDtPCHimputed.DUNSnumber=DtPCH.parentdunsnumber
+		LEFT OUTER JOIN Contractor.Dunsnumber as ParentDUNSimputed
+			ON ParentDUNSimputed.Dunsnumber=ParentDtPCHimputed.Dunsnumber
+		LEFT OUTER JOIN Contractor.ParentContractor as PARENTsquaredImputed
+			ON PARENTsquaredImputed.ParentID= ParentDtPCHimputed.ParentID 
 		left outer join contract.CSIStransactionID ctid
 			on ctid.CSIStransactionID=c.CSIStransactionID
 		left outer join contract.CSIScontractID ccid
@@ -301,10 +306,13 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		left outer join FPDSTypeTable.statecode sc
 		on sc.statecode=c.pop_state_code 
 	WHERE (Parent.ParentID is null or isnull(Parent.UnknownCompany,0)=1 ) and
-		 c.parentdunsnumber is not null and isnull(ParentSquared.UnknownCompany,0)=0 
+		 c.parentdunsnumber is not null and isnull(ParentSquared.UnknownCompany,0)=0 and 
+		 dtpch.parentdunsnumber is not null and isnull(ParentSquaredimputed.UnknownCompany,0)=0 
 	GROUP BY 
 		C.fiscal_year
-		,c.parentdunsnumber
+		,iif(c.parentdunsnumber is not null and parentsquared.UnknownCompany=0
+			,c.parentdunsnumber 
+			,dtpch.parentdunsnumber)
 		,parent.parentid
 		) as interior
 	on ParentDtPCH.DUNSnumber=interior.ParentDunsnumber
@@ -364,6 +372,12 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 			ON ParentDtPCH.FiscalYear=C.fiscal_year  AND  ParentDtPCH.DUNSnumber=C.parentdunsnumber
 		LEFT OUTER JOIN Contractor.ParentContractor as PARENTsquared
 			ON PARENTsquared.ParentID= ParentDtPCH.ParentID 
+		LEFT OUTER JOIN Contractor.DunsnumbertoParentContractorHistory as ParentDtPCHimputed
+			ON ParentDtPCHimputed.FiscalYear=C.fiscal_year  AND  ParentDtPCHimputed.DUNSnumber=DtPCH.parentdunsnumber
+		LEFT OUTER JOIN Contractor.Dunsnumber as ParentDUNSimputed
+			ON ParentDUNSimputed.Dunsnumber=ParentDtPCHimputed.Dunsnumber
+		LEFT OUTER JOIN Contractor.ParentContractor as PARENTsquaredImputed
+			ON PARENTsquaredImputed.ParentID= ParentDtPCHimputed.ParentID 
 		left outer join contract.CSIStransactionID ctid
 			on ctid.CSIStransactionID=c.CSIStransactionID
 		left outer join contract.CSIScontractID ccid
@@ -379,6 +393,7 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		and u.fiscal_year=c.fiscal_year
 	WHERE (Parent.ParentID is null or isnull(Parent.UnknownCompany,0)=1 ) and
 		( c.parentdunsnumber is null or isnull(ParentSquared.UnknownCompany,0)=1) and 
+		( dtpch.parentdunsnumber is null or isnull(ParentSquaredimputed.UnknownCompany,0)=1) and 
 		((c.dunsnumber is not null and isnull(Parent.UnknownCompany,0)=0) or
 		u.unique_transaction_id is null)
 	GROUP BY 
@@ -393,9 +408,8 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 	
 
 	
-	
 	--Assign EntitySize and related states via Unique_Transaction_ID/StandardizedVendorName
-	update u
+	update v
 	set EntitySizeCode=coalesce(pidh.EntitySizeCode
 		,CASE
 		WHEN pid.Top6=1 and pid.JointVenture=1
@@ -422,7 +436,7 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		,~interior.MinOfPlaceOfPerformanceIsForeign)	
 	,AnyEntityForeignPlaceOfPerformance=coalesce(pidh.AnyEntityForeignPlaceOfPerformance
 		,interior.MaxOfPlaceOfPerformanceIsForeign)	
-	from Contract.UnlabeledDunsnumberUniqueTransactionIDentityIDhistory u
+	from [Vendor].[StandardizedVendorNameHistory] v
 	inner join
 		(
 		SELECT parent.parentid
@@ -471,8 +485,8 @@ on ccid.CSIScontractID =contracttotal.CSIScontractID
 		,u.StandardizedVendorName			
 		,parent.parentid
 		) as interior
-		on u.StandardizedVendorName=interior.StandardizedVendorName
-		and u.fiscal_year=interior.fiscal_year
+		on v.StandardizedVendorName=interior.StandardizedVendorName
+		and v.fiscal_year=interior.fiscal_year
 	left outer join Contractor.ParentContractor pid
 	on pid.parentid=interior.ParentID
 	left outer join Vendor.ParentIDHistory pidh
