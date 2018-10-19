@@ -31,13 +31,13 @@ shinyServer(function(input, output, session) {
   source("FPDS_breakdowns_functions.R")
   
   # read data
-  load("2016_unaggregated_FPDS.Rda")
+  load("2017_unaggregated_FPDS.Rda")
   original_data<-full_data
   # original_data <- read_csv("2016_unaggregated_FPDS.csv")
   
   # in case user renames the data-frame choosing variables
   vars <- reactiveValues(
-    fiscal_year = "Fiscal.Year",
+    fiscal_year = "fiscal_year",
     user_title = "None")
   
   # create working copies of the data for user modification, while retaining
@@ -56,6 +56,7 @@ shinyServer(function(input, output, session) {
     # Returns:
     #   a fully built ggplot object
     # get appropriately formatted data to use in the plot
+    # browser()
     total_data <- csis360::format_data_for_plot(data=current_data,
                                        share=FALSE,
                                        fy_var=vars$fiscal_year,
@@ -132,7 +133,7 @@ shinyServer(function(input, output, session) {
                                  "Lookup_Fiscal_Year_Period.csv",
                                  directory="economic/",
                                  path="https://raw.githubusercontent.com/CSISdefense/Lookup-Tables/master/",
-                                 by="Fiscal.Year",
+                                 by="fiscal_year",
                                  add_var="sequestration.period"
       )
       

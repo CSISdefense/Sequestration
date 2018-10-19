@@ -20,9 +20,9 @@ library(magrittr)
 library(csis360)
 
 # read in data
-full_data <- read_csv(
-  "Data//2016_SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.csv",
-  col_names = TRUE, col_types = "ccccccccccc",na=c("NA","NULL"))
+full_data <- read_delim(
+  "Data//Summary.SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.txt",delim = "\t",
+  col_names = TRUE, col_types = "cccccccccc",na=c("NA","NULL"))
 
 
 full_data<-standardize_variable_names(full_data)
@@ -37,15 +37,18 @@ full_data %<>% filter(Fiscal.Year >= 2000)
 
 full_data<-deflate(full_data,
                   money_var = "Action.Obligation",
-                  deflator_var="Deflator.2016"
+                  deflator_var="Deflator.2017"
 )
   
 
 #Consolidate categories for Vendor Size
+
 full_data<-csis360::read_and_join(full_data,
   "LOOKUP_Contractor_Size.csv",
   by="Vendor.Size",
-  add_var="Shiny.VendorSize"
+  add_var="Shiny.VendorSize",
+  path="https://raw.githubusercontent.com/CSISdefense/R-scripts-and-data/master/",
+  dir="Lookups/"
 )
 
 
@@ -58,16 +61,21 @@ full_data<-csis360::read_and_join(full_data,
   add_var=c("Competition.sum",
     "Competition.multisum",
     "Competition.effective.only",
-    "No.Competition.sum")
+    "No.Competition.sum"),
+  path="https://raw.githubusercontent.com/CSISdefense/R-scripts-and-data/master/",
+  dir="Lookups/"
 )
 
 
 #Classify Product or Service Codes
 full_data<-csis360::read_and_join(full_data,
   "LOOKUP_Buckets.csv",
-  by="ProductOrServiceArea",
-  replace_na_var="ProductOrServiceArea",
-  add_var="ProductServiceOrRnDarea.sum"
+  # by="ProductOrServiceArea",
+  by="ProductServiceOrRnDarea",
+  replace_na_var="ProductServiceOrRnDarea",
+  add_var="ProductServiceOrRnDarea.sum",
+  path="https://raw.githubusercontent.com/CSISdefense/R-scripts-and-data/master/",
+  dir="Lookups/"
 )
 
 
@@ -75,7 +83,9 @@ full_data<-replace_nas_with_unlabeled(full_data,"SubCustomer","Uncategorized")
 full_data<-csis360::read_and_join(full_data,
                         "Lookup_SubCustomer.csv",
                         by=c("Customer","SubCustomer"),
-                        add_var="SubCustomer.platform"
+                        add_var="SubCustomer.platform",
+                        path="https://raw.githubusercontent.com/CSISdefense/R-scripts-and-data/master/",
+                        dir="Lookups/"
 )
 
 
@@ -93,7 +103,7 @@ full_data %<>%
   # select(-ClassifyNumberOfOffers) %>%
   mutate(SubCustomer = factor(SubCustomer)) %>%
   mutate(SubCustomer.platform = factor(SubCustomer.platform)) %>%
-  mutate(ProductOrServiceArea = factor(ProductOrServiceArea)) %>%
+  mutate(ProductServiceOrRnDarea = factor(ProductServiceOrRnDarea)) %>%
   mutate(PlatformPortfolio = factor(PlatformPortfolio)) %>%
   mutate(Shiny.VendorSize = factor(Shiny.VendorSize)) %>%
   mutate(ProductServiceOrRnDarea.sum = factor(ProductServiceOrRnDarea.sum)) %>%
@@ -102,6 +112,9 @@ full_data %<>%
   mutate(Competition.multisum = factor(Competition.multisum))  %>%
   mutate(No.Competition.sum = factor(No.Competition.sum))
 
+colnames(full_data)[colnames(full_data)=="Fiscal.Year"]<-"fiscal_year"
+
 
 # write output to CleanedVendorSize.csv
-save(full_data,labels_and_colors,column_key, file="Shiny Apps//FPDS_chart_maker//2016_unaggregated_FPDS.Rda")
+# save(full_data,labels_and_colors,column_key, file="Shiny Apps//FPDS_chart_maker//2017_unaggregated_FPDS.Rda")
+save(full_data,labels_and_colors,column_key, file="2017_unaggregated_FPDS.Rda")
