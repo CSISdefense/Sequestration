@@ -407,7 +407,9 @@ shinyServer(function(input, output, session) {
   # )
   
   ##Xinyi's work
+  # test<-filename = gsub(" ", "", paste("plot_image."))#,tolower(input$Download_format)))
   output$download_image <- downloadHandler(
+    
     filename = gsub(" ", "", paste("plot_image.",tolower(input$Download_format))),
     content = function(file){
       ggsave(
@@ -418,6 +420,7 @@ shinyServer(function(input, output, session) {
         units = "in")
     }
   )
+  browser()
   
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
