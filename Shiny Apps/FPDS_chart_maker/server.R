@@ -417,7 +417,8 @@ shinyServer(function(input, output, session) {
         plot = mainplot(),
         width = input$save_plot_width,
         height = input$save_plot_height,
-        units = "in")
+        units = "in",
+        dpi = 600)
     }
   )
   browser()

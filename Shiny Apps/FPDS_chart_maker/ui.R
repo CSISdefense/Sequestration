@@ -113,7 +113,7 @@ shinyUI(fluidPage(
                 ),
                 downloadButton(
                   outputId = "download_image",
-                  label = "Save The Plot (300 DPI)",
+                  label = "Save The Plot (600 DPI)",
                   width = "100%"
                 ),
                 br(),
