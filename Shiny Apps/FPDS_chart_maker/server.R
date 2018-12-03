@@ -392,12 +392,26 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  ##Orginal code
   # runs the download PNG button
+  # output$download_image <- downloadHandler(
+  #   filename = "plot_image.png",
+  #   content = function(file){
+  #     ggsave(
+  #       file = filename,
+  #       plot = mainplot(),
+  #       width = input$save_plot_width,
+  #       height = input$save_plot_height,
+  #       units = "in")
+  #   }
+  # )
+  
+  ##Xinyi's work
   output$download_image <- downloadHandler(
-    filename = "plot_image.png",
+    filename = gsub(" ", "", paste("plot_image.",tolower(input$Download_format))),
     content = function(file){
       ggsave(
-        filename = file,
+        file = filename,
         plot = mainplot(),
         width = input$save_plot_width,
         height = input$save_plot_height,
