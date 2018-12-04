@@ -393,32 +393,45 @@ shinyServer(function(input, output, session) {
   )
   
   ##Orginal code
-  # runs the download PNG button
-  # output$download_image <- downloadHandler(
-  #   filename = "plot_image.png",
-  #   content = function(file){
-  #     ggsave(
-  #       file = filename,
-  #       plot = mainplot(),
-  #       width = input$save_plot_width,
-  #       height = input$save_plot_height,
-  #       units = "in")
-  #   }
-  # )
-  
+  #runs the download PNG button
+   # output$download_image <- downloadHandler(
+   #   filename = "plot_image.png",
+   #   content = function(file){
+   #     ggsave(
+   #     filename = file,
+   #     plot = mainplot(),
+   #     width = input$save_plot_width,
+   #     height = input$save_plot_height,
+   #     units = "in")
+   #   }
+   # )
+  # 
   ##Xinyi's work
-  output$download_image <- downloadHandler(
-    filename = gsub(" ", "", paste("plot_image.",tolower(input$Download_format))),
-    content = function(file){
-      ggsave(
-        file = filename,
-        plot = mainplot(),
-        width = input$save_plot_width,
-        height = input$save_plot_height,
-        units = "in",
-        dpi = 600)
-    }
-  )
+   output$download_image_PNG <- downloadHandler(
+     filename = "plot_image.png",
+     content = function(file){
+       ggsave(
+         filename = file,
+         plot = mainplot(),
+         width = input$save_plot_width,
+         height = input$save_plot_height,
+         units = "in",
+         dpi = 600)
+     }
+   )
+   
+   output$download_image_EPS <- downloadHandler(
+     filename = "plot_image.eps",
+     content = function(file){
+       ggsave(
+         filename = file,
+         plot = mainplot(),
+         width = input$save_plot_width,
+         height = input$save_plot_height,
+         units = "in",
+         dpi = 600)
+     }
+   )
   
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
