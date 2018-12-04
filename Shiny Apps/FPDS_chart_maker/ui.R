@@ -119,6 +119,7 @@ shinyUI(fluidPage(
                 ),
                 br(),
                 br(),
+                
                 fluidRow(
                   column(
                     width = 6,
