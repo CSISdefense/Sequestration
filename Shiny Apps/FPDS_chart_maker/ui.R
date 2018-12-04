@@ -105,19 +105,21 @@ shinyUI(fluidPage(
                 # ),
                 
                 ##Xinyi's work
-                radioButtons(
-                  inputId = "Download_format",
-                  label = "Download the plot as: ",
-                  choices =  c("PNG", "EPS"),
-                  selected = "PNG"
-                ),
                 downloadButton(
-                  outputId = "download_image",
-                  label = "Save The Plot (600 DPI)",
+                   outputId = "download_image_PNG",
+                   label = "Save Plot as PNG(600 DPI)",
+                   width = "100%"
+                 ),
+                 br(),
+                 br(),
+                downloadButton(
+                  outputId = "download_image_EPS",
+                  label = "Save Plot as EPS(600 DPI)",
                   width = "100%"
                 ),
                 br(),
                 br(),
+                
                 fluidRow(
                   column(
                     width = 6,
