@@ -407,31 +407,33 @@ shinyServer(function(input, output, session) {
    # )
   # 
   ##Xinyi's work
-   output$download_image_EPS <- downloadHandler(
-         plot = mainplot(),
   output$download_image_PNG <- downloadHandler(
-     filename = "plot_image.png",
-       ggsave(
-         height = input$save_plot_height,
-         width = input$save_plot_width,
-         units = "in",
-         filename = file,
-     content = function(file){
-   )
-   
-         plot = mainplot(),
-     filename = "plot_image.eps",
-         filename = file,
-     content = function(file){
-       ggsave(
-         dpi = 600)
-     }
-         height = input$save_plot_height,
-         width = input$save_plot_width,
-         units = "in",
-     }
-   )
-         dpi = 600)
+    filename = "plot_image.png",
+    content = function(file){
+      ggsave(
+        filename = file,
+        plot = mainplot(),
+        width = input$save_plot_width,
+        height = input$save_plot_height,
+        device = "png",
+        units = "in",
+        dpi = 600)
+    }
+  )
+  
+  output$download_image_EPS <- downloadHandler(
+    filename = "plot_image.eps",
+    content = function(file){
+      ggsave(
+        filename = file,
+        plot = mainplot(),
+        device = "eps",
+        width = input$save_plot_width,
+        height = input$save_plot_height,
+        units = "in",
+        dpi = 600)
+    }
+  )
   
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
