@@ -23,9 +23,12 @@ library(gridExtra)
 library(grid)
 library(gtable)
 library(ggpubr)
+library(showtext)
+font_add_google("Open Sans")
 
 
 shinyServer(function(input, output, session) {
+  showtext.auto()
   options(scipen = 99)
   options(shiny.maxRequestSize=1000*1024^2)
   source("FPDS_breakdowns_functions.R")
@@ -410,9 +413,11 @@ shinyServer(function(input, output, session) {
   output$download_image_PNG <- downloadHandler(
     filename = "plot_image.png",
     content = function(file){
+  #   plot_for_save <- mainplot()
+      
       ggsave(
         filename = file,
-        plot = mainplot(),
+        plot = mainplot() + theme(text = element_text(size = 50)),
         width = input$save_plot_width,
         height = input$save_plot_height,
         device = "png",
@@ -426,7 +431,7 @@ shinyServer(function(input, output, session) {
     content = function(file){
       ggsave(
         filename = file,
-        plot = mainplot(),
+        plot = mainplot() + theme(text = element_text(size = 50)),
         device = "eps",
         width = input$save_plot_width,
         height = input$save_plot_height,
