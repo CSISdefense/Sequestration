@@ -413,8 +413,6 @@ shinyServer(function(input, output, session) {
   output$download_image_PNG <- downloadHandler(
     filename = "plot_image.png",
     content = function(file){
-  #   plot_for_save <- mainplot()
-      
       ggsave(
         filename = file,
         plot = mainplot() + theme(text = element_text(size = 50)),
