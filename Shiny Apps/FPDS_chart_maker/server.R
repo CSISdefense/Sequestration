@@ -147,7 +147,7 @@ shinyServer(function(input, output, session) {
                                           labels_and_colors=labels_and_colors)
       
       
-      #Doing this manually for nowz
+      #Doing this manually for now
       period_data<-as.data.frame(period_data)
       period_data[,"sequestration.period"] <- ordered(period_data[,"sequestration.period"],
                                                       levels=c("Out of Period",
@@ -181,11 +181,12 @@ shinyServer(function(input, output, session) {
                            common.legend = TRUE, legend = "bottom",
                            nrow=2,
                            heights = c(1.2,0.8))
-        P2 <- annotate_figure(P1, 
-                              bottom = text_grob("Source: FPDS; CSIS analysis",
-                                                 hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
-        
-        P2
+        # P2 <- annotate_figure(P1, 
+        #                       bottom = text_grob("Source: FPDS; CSIS analysis",
+        #                                          hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
+        # 
+        # P2
+        P1
   
       }
       else{
@@ -257,21 +258,23 @@ shinyServer(function(input, output, session) {
             common.legend = TRUE, legend = "bottom",
             nrow=2,
             heights = c(1.2,0.8))
-          P2 <- annotate_figure(P1, 
-            bottom = text_grob("Source: FPDS; CSIS analysis",
-              hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
-          
-          P2
+          # P2 <- annotate_figure(P1, 
+          #   bottom = text_grob("Source: FPDS; CSIS analysis",
+          #     hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
+          # 
+          # P2
+          P1
         }
         else{ P1 <- ggarrange(bar_plot, line_plot,
           common.legend = FALSE,
           nrow=2,
           heights = c(1.2,0.8))
-        P2 <- annotate_figure(P1, 
-          bottom = text_grob("Source: FPDS; CSIS analysis",
-            hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
-        
-        P2
+        # P2 <- annotate_figure(P1, 
+        #   bottom = text_grob("Source: FPDS; CSIS analysis",
+        #     hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
+        # 
+        # P2
+        P1
         }
       }
       
@@ -306,7 +309,8 @@ shinyServer(function(input, output, session) {
                                facet_var=input$facet_var,
                                labels_and_colors=labels_and_colors,
                                column_key=column_key,
-                               legend= FALSE)
+                               legend= FALSE,
+                               caption = FALSE)  #Xinyi, remove caption: basic bar/line plot
       }
       else {
         mainplot <- build_plot(data=plot_data,
@@ -317,7 +321,8 @@ shinyServer(function(input, output, session) {
                                color_var=input$color_var,
                                facet_var=input$facet_var,
                                labels_and_colors=labels_and_colors,
-                               column_key=column_key)
+                               column_key=column_key,
+                               caption = FALSE)  #Xinyi, remove caption: basic bar/line plot
       }
       
       if (input$show_period == "Yes")
@@ -340,7 +345,21 @@ shinyServer(function(input, output, session) {
   
   # calls mainplot(), defined above, to create a plot for the plot output area
   output$plot <- renderPlot({
-    mainplot()
+    annotate_figure(mainplot(), 
+                    bottom = text_grob("Source:FPDS; CSIS analysis",
+                                       hjust = 1,
+                                       x = 1,
+                                       family = "Open Sans",
+                                       color = "#003366",
+                                       face = "italic",
+                                       size = 8))
+    
+    # P2 <- annotate_figure(P1, 
+    #   bottom = text_grob("Source: FPDS; CSIS analysis",
+    #     hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
+    # 
+    
+    
   })
   
   # runs the download data button on the edit page
@@ -415,7 +434,14 @@ shinyServer(function(input, output, session) {
     content = function(file){
       ggsave(
         filename = file,
-        plot = mainplot() + theme(text = element_text(size = 50)),
+        plot = annotate_figure(mainplot() + theme(text = element_text(size = 50)),
+                               bottom = text_grob("Source:FPDS; CSIS analysis",
+                                                  hjust = 1,
+                                                  x = 1,
+                                                  family = "Open Sans",
+                                                  color = "#003366",
+                                                  face = "italic",
+                                                  size = 35)),
         width = input$save_plot_width,
         height = input$save_plot_height,
         device = "png",
@@ -424,12 +450,22 @@ shinyServer(function(input, output, session) {
     }
   )
   
+  
+  
+  
   output$download_image_EPS <- downloadHandler(
     filename = "plot_image.eps",
     content = function(file){
       ggsave(
         filename = file,
-        plot = mainplot() + theme(text = element_text(size = 50)),
+        plot = annotate_figure(mainplot() + theme(text = element_text(size = 50)),
+                               bottom = text_grob("Source:FPDS; CSIS analysis",
+                                                  hjust = 1,
+                                                  x = 1,
+                                                  family = "Open Sans",
+                                                  color = "#003366",
+                                                  face = "italic",
+                                                  size = 35)),
         device = "eps",
         width = input$save_plot_width,
         height = input$save_plot_height,
