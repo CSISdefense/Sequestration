@@ -23,9 +23,12 @@ library(gridExtra)
 library(grid)
 library(gtable)
 library(ggpubr)
+library(showtext)
+font_add_google("Open Sans")
 
 
 shinyServer(function(input, output, session) {
+  showtext.auto()
   options(scipen = 99)
   options(shiny.maxRequestSize=1000*1024^2)
   source("FPDS_breakdowns_functions.R")
@@ -48,7 +51,21 @@ shinyServer(function(input, output, session) {
   # fill the variable lists in the ui with variables from current_data
   populate_ui_var_lists(current_data)
   
-  mainplot <- reactive({
+
+  
+  
+  make_chart_from_input <- function(
+    chart_geom,
+    y_var,
+    color_var = "None",
+    facet_var = "None",
+    labels_and_colors,
+    start_fy = NULL,
+    end_fy = NULL,
+    show_period = "No",
+    y_total_or_share = "As Total", #Default to As Total? I'm not sure what it should be.
+    filetype = NULL
+  ){
     # Builds a ggplot based on user settings, for display on the main panel.
     # Reactive binding will cause the ggplot to update when the user changes any
     # relevant setting.
@@ -58,53 +75,53 @@ shinyServer(function(input, output, session) {
     # get appropriately formatted data to use in the plot
     # browser()
     total_data <- csis360::format_data_for_plot(data=current_data,
-                                       share=FALSE,
-                                       fy_var=vars$fiscal_year,
-                                       start_fy=input$year[1],
-                                       end_fy=input$year[2],
-                                       y_var=input$y_var,
-                                       color_var=input$color_var,
-                                       facet_var=input$facet_var,
-                                       labels_and_colors=labels_and_colors)
+                                                share=FALSE,
+                                                fy_var=vars$fiscal_year,
+                                                start_fy=start_fy,
+                                                end_fy=end_fy,
+                                                y_var=y_var,
+                                                color_var=color_var,
+                                                facet_var=facet_var,
+                                                labels_and_colors=labels_and_colors)
     share_data <- csis360::format_data_for_plot(data=current_data,
-                                       share=TRUE,
-                                       fy_var=vars$fiscal_year,
-                                       start_fy=input$year[1],
-                                       end_fy=input$year[2],
-                                       y_var=input$y_var,
-                                       color_var=input$color_var,
-                                       facet_var=input$facet_var,
-                                       labels_and_colors=labels_and_colors)
+                                                share=TRUE,
+                                                fy_var=vars$fiscal_year,
+                                                start_fy=start_fy,
+                                                end_fy=end_fy,
+                                                y_var=y_var,
+                                                color_var=color_var,
+                                                facet_var=facet_var,
+                                                labels_and_colors=labels_and_colors)
     
     # build plot with user-specified geoms
     # build plot with user-specified geoms
-    if(input$chart_geom == "Period Stacked"){
+    if(chart_geom == "Period Stacked"){
       # make the stacked plot
       # produce the single bar plot and line plot
       bar_plot <-  build_plot(data=total_data,
                               chart_geom="Bar Chart",
                               share=FALSE,
                               x_var=vars$fiscal_year,
-                              y_var=input$y_var,
-                              color_var=input$color_var,
-                              facet_var=input$facet_var,
+                              y_var=y_var,
+                              color_var=color_var,
+                              facet_var=facet_var,
                               labels_and_colors=labels_and_colors,
                               column_key=column_key,
                               legend=FALSE,
                               caption=FALSE)
-      if (input$show_period == "Yes")
+      if (show_period == "Yes")
         bar_plot <-  add_period(bar_plot,total_data,"Bar Chart",
                                 text=FALSE)
       
       
       #If there is a breakout, extract the legend
-      if(input$color_var!="None"){
+      if(color_var!="None"){
         bar_legend<-get_legend(bar_plot+theme(legend.position = "bottom", legend.margin = margin(t=-1, unit="cm")
                                               
                                               
                                               
                                               
-                                              ))
+        ))
       }
       
       bar_plot<-bar_plot+theme(legend.position = "none")
@@ -112,15 +129,15 @@ shinyServer(function(input, output, session) {
                               chart_geom="Line Chart",
                               share=TRUE,
                               x_var=vars$fiscal_year,
-                              y_var=input$y_var,
-                              color_var=input$color_var,
-                              facet_var=input$facet_var,
+                              y_var=y_var,
+                              color_var=color_var,
+                              facet_var=facet_var,
                               labels_and_colors=labels_and_colors,
                               column_key=column_key,
                               legend=FALSE,
                               caption=FALSE
       )
-      if (input$show_period == "Yes")
+      if (show_period == "Yes")
         line_plot <-  add_period(line_plot,share_data,"Line Chart",
                                  text=FALSE)
       
@@ -139,12 +156,12 @@ shinyServer(function(input, output, session) {
       
       period_data <-format_period_average(data=period_data,
                                           period_var="sequestration.period",
-                                          y_var=input$y_var,
-                                          breakout=c(input$color_var,input$facet_var),
+                                          y_var=y_var,
+                                          breakout=c(color_var,facet_var),
                                           labels_and_colors=labels_and_colors)
       
       
-      #Doing this manually for nowz
+      #Doing this manually for now
       period_data<-as.data.frame(period_data)
       period_data[,"sequestration.period"] <- ordered(period_data[,"sequestration.period"],
                                                       levels=c("Out of Period",
@@ -160,9 +177,9 @@ shinyServer(function(input, output, session) {
                               chart_geom="Bar Chart",
                               share=FALSE,
                               x_var="sequestration.period",
-                              y_var=input$y_var,
-                              color_var=input$color_var,
-                              facet_var=input$facet_var,
+                              y_var=y_var,
+                              color_var=color_var,
+                              facet_var=facet_var,
                               labels_and_colors=labels_and_colors,
                               column_key=column_key,
                               legend=FALSE,
@@ -170,20 +187,21 @@ shinyServer(function(input, output, session) {
       )
       
       
-      if(input$color_var!="None"){
+      if(color_var!="None"){
         # lay the stacked plots
         
         P1 <- ggarrange(bar_plot, 
-                            ggarrange(line_plot, period_plot, ncol=2, widths = c(2.12,2.88)),
-                           common.legend = TRUE, legend = "bottom",
-                           nrow=2,
-                           heights = c(1.2,0.8))
-        P2 <- annotate_figure(P1, 
-                              bottom = text_grob("Source: FPDS; CSIS analysis",
-                                                 hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
+                        ggarrange(line_plot, period_plot, ncol=2, widths = c(2.12,2.88)),
+                        common.legend = TRUE, legend = "bottom",
+                        nrow=2,
+                        heights = c(1.2,0.8))
+        # P2 <- annotate_figure(P1, 
+        #                       bottom = text_grob("Source: FPDS; CSIS analysis",
+        #                                          hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
+        # 
+        # 
+        P1
         
-        P2
-  
       }
       else{
         # lay the stacked plots
@@ -192,153 +210,268 @@ shinyServer(function(input, output, session) {
                      c(1,1,1,1),
                      c(2,2,3,3),
                      c(2,2,3,3))
+        
+        if(filetype == "png"){
+          grid.arrange(bar_plot + 
+                         font("xy.title", size = 50) +
+                         font("xy.text", size = 50) +
+                         font("legend.text", size = 50),
+                       line_plot +
+                         font("xy.title", size = 50) +
+                         font("xy.text", size = 50) +
+                         font("legend.text", size = 50),
+                       period_plot,
+                       layout_matrix = lay)
+                       
+        } else{
         grid.arrange(bar_plot,
                      line_plot,
                      period_plot,
                      layout_matrix = lay)
-        
+        }
       }
       # build plot with user-specified geoms
-    } else if(input$chart_geom == "Double Stacked"){
+    } 
+    
+    else if(chart_geom == "Double Stacked"){
       # make the stacked plot
       # produce the single bar plot and line plot
       bar_plot <-  build_plot(data=total_data,
                               chart_geom="Bar Chart",
                               share=FALSE,
                               x_var=vars$fiscal_year,
-                              y_var=input$y_var,
-                              color_var=input$color_var,
-                              facet_var=input$facet_var,
+                              y_var=y_var,
+                              color_var=color_var,
+                              facet_var=facet_var,
                               labels_and_colors=labels_and_colors,
                               column_key=column_key,
                               legend=FALSE,
                               caption=FALSE)
-      if (input$show_period == "Yes")
+      if (show_period == "Yes")
         bar_plot <-  add_period(bar_plot,total_data,"Bar Chart",
                                 text=FALSE)
       
       bar_plot <- bar_plot + theme(plot.margin=unit(c(.25,0.25,-.2,0.25), "cm"))
-
+      
       
       #The line plot limits are shifted to align with the bar plot.
       line_plot <- build_plot(data=share_data,
                               chart_geom="Line Chart",
                               share=TRUE,
                               x_var=vars$fiscal_year,
-                              y_var=input$y_var,
-                              color_var=input$color_var,
-                              facet_var=input$facet_var,
+                              y_var=y_var,
+                              color_var=color_var,
+                              facet_var=facet_var,
                               labels_and_colors=labels_and_colors,
                               legend = FALSE,
                               caption = FALSE,
-                              column_key=column_key)+         scale_x_continuous(
-                                limits = c(input$year[1]-0.5, input$year[2]+0.5),
-                                breaks = function(x){seq(input$year[1], input$year[2], by = 1)},
+                              column_key=column_key) + scale_x_continuous(
+                                limits = c(start_fy-0.5, end_fy+0.5),
+                                breaks = function(x){seq(start_fy, end_fy, by = 1)},
                                 labels = function(x){str_sub(as.character(x), -2, -1)}
                               )
-      line_plot <-    line_plot + theme(plot.margin=unit(c(-0.3,0.25,0,0.25), "cm"))
+      line_plot <- line_plot + theme(plot.margin=unit(c(-0.3,0.25,0,0.25), "cm"))
       bar_plot$width<-line_plot$width
-      if (input$show_period == "Yes")
+      if (show_period == "Yes")
         line_plot <-  add_period(line_plot,share_data,"Line Chart",
                                  text=FALSE)
       
       
-      
-      
-      if(input$color_var!="None"){
+      if(color_var!="None"){
         # lay the stacked plots
         
         
-        if(input$show_legend == "Yes"){
-          P1 <- ggarrange(bar_plot, line_plot,
-            common.legend = TRUE, legend = "bottom",
-            nrow=2,
-            heights = c(1.2,0.8))
-          P2 <- annotate_figure(P1, 
-            bottom = text_grob("Source: FPDS; CSIS analysis",
-              hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
+        if(show_legend == "Yes"){
           
-          P2
+          #increase the font size for downloading plot version "png"
+          if(filetype == "png") {
+            P1 <- ggarrange(barplot + 
+                              font("xy.title", size = 50) +
+                              font("xy.text", size = 50) +
+                              font("legend.text", size = 50),
+                            line_plot +
+                              font("xy.title", size = 50) +
+                              font("xy.text", size = 50) +
+                              font("legend.text", size = 50),
+                            common.legend = TRUE,
+                            legend = "bottom",
+                            nrow = 2)
+            P1
+          } else{
+            P1 <- ggarrange(bar_plot, line_plot,
+                          common.legend = TRUE, legend = "bottom",
+                          nrow=2,
+                          heights = c(1.2,0.8))
+          # P2 <- annotate_figure(P1, 
+          #   bottom = text_grob("Source: FPDS; CSIS analysis",
+          #     hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
+          # 
+          # P2
+          P1
+          }
         }
-        else{ P1 <- ggarrange(bar_plot, line_plot,
-          common.legend = FALSE,
-          nrow=2,
-          heights = c(1.2,0.8))
-        P2 <- annotate_figure(P1, 
-          bottom = text_grob("Source: FPDS; CSIS analysis",
-            hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
-        
-        P2
+        else{ 
+          
+          #increase the font size for downloading plot version "png"
+          if(filetype == "png"){
+             P1 <- ggarrange(bar_plot +
+                               font("xy.title", size = 50) +
+                               font("xy.text", size = 50) +
+                               font("legend.text", size = 50),
+                             line_plot +
+                               font("xy.title", size = 50) +
+                               font("xy.text", size = 50) +
+                               font("legend.text", size = 50),
+                             common.legend = FALSE,
+                             nrow = 2,
+                             heights = c(1.2, 0.8)
+                             )
+             P1
+          } else{
+            P1 <- ggarrange(bar_plot,
+                            line_plot,
+                            common.legend = FALSE,
+                            nrow = 2,
+                            heights = c(1.2, 0.8))
+            P1
+          }
         }
       }
       
       else{
-      # lay the stacked plots
-      lay <- rbind(c(1,1,1,1),
-                   c(1,1,1,1),
-                   c(1,1,1,1),
-                   c(2,2,2,2),
-                   c(2,2,2,2))
-      grid.arrange(bar_plot,
-                   line_plot, 
-                   layout_matrix = lay)
+        
+        #increase the font size for downloading plot version "png"
+        
+        # lay the stacked plots
+        lay <- rbind(c(1,1,1,1),
+                     c(1,1,1,1),
+                     c(1,1,1,1),
+                     c(2,2,2,2),
+                     c(2,2,2,2))
+        
+        if(filetype == "png") {
+          grid.arrange(bar_plot +
+                         font("xy.title", size = 50) +
+                         font("xy.text", size = 50) +
+                         font("legend.text", size = 50),
+                       line_plot +
+                         font("xy.title", size = 50) +
+                         font("xy.text", size = 50) +
+                         font("legend.text", size = 50),
+                       layout_matrix = lay)
+        }
+        else{
+          grid.arrange(bar_plot,
+                       line_plot, 
+                       layout_matrix = lay)
+        }
       }
-    }  else {
+    }
+    
+    else {
       # make the bar plot or line plot (total or share)
       # set the dataset for plot
-      if(input$y_total_or_share == "As Share"){
+      if(y_total_or_share == "As Share"){
         plot_data <- share_data
       } else {plot_data <- total_data}
       
       
       # build bar plot or line plot
-    
-      if(input$show_legend == "No"){
+      
+      if(show_legend == "No"){
         mainplot <- build_plot(data=plot_data,
-                               chart_geom=input$chart_geom,
-                               share= ifelse(input$y_total_or_share == "As Share",TRUE,FALSE),
+                               chart_geom=chart_geom,
+                               share= ifelse(y_total_or_share == "As Share",TRUE,FALSE),
                                x_var=vars$fiscal_year,
-                               y_var=input$y_var,
-                               color_var=input$color_var,
-                               facet_var=input$facet_var,
+                               y_var=y_var,
+                               color_var=color_var,
+                               facet_var=facet_var,
                                labels_and_colors=labels_and_colors,
                                column_key=column_key,
-                               legend= FALSE)
+                               legend= FALSE,
+                               caption = FALSE)  #Xinyi, remove caption: basic bar/line plot
       }
       else {
         mainplot <- build_plot(data=plot_data,
-                               chart_geom=input$chart_geom,
-                               share= ifelse(input$y_total_or_share == "As Share",TRUE,FALSE),
+                               chart_geom=chart_geom,
+                               share= ifelse(y_total_or_share == "As Share",TRUE,FALSE),
                                x_var=vars$fiscal_year,
-                               y_var=input$y_var,
-                               color_var=input$color_var,
-                               facet_var=input$facet_var,
+                               y_var=y_var,
+                               color_var=color_var,
+                               facet_var=facet_var,
                                labels_and_colors=labels_and_colors,
-                               column_key=column_key)
+                               column_key=column_key,
+                               caption = FALSE)  #Xinyi, remove caption: basic bar/line plot
       }
       
-      if (input$show_period == "Yes")
-        mainplot <-  add_period(mainplot,plot_data,input$chart_geom,
+      if (show_period == "Yes")
+        mainplot <-  add_period(mainplot,plot_data,chart_geom,
                                 text=FALSE)
-        
+      
       
       
       #diigtheme1:::diiggraph()
       
-      if(input$show_title == TRUE){
-        mainplot <- mainplot + ggtitle(input$title_text)
+      if(show_title == TRUE){
+        mainplot <- mainplot + ggtitle(title_text)
       }
       
       # return the built plot
       mainplot
     } # END OF ELSE(bar or line plot)
     
-  })
-  
+  }
+  browser()
   # calls mainplot(), defined above, to create a plot for the plot output area
-  output$plot <- renderPlot({
-    mainplot()
+  # mainplot <- reactive({
+  # 
+  #   
+  # })
+  
+  mainplot <- reactive({
+    renderPlot({make_chart_from_input(
+      chart_geom = renderPrint({input$chart_geom}),
+      y_var = renderPrint({input$y_var}),
+      color_var = renderPrint({input$color_var}),
+      facet_var = renderPrint({input$facet_var}),
+      labels_and_colors = labels_and_colors,
+      start_fy = renderPrint({input$year[1]}),
+      end_fy = renderPrint({input$year[2]}),
+      show_period = renderPrint({input$show_period}),
+      y_total_or_share = renderPrint({input$y_total_or_share}), #Default to As Total? I'm not sure what it should be.
+      filetype = NULL
+    )
+    })
   })
+  output$plot <- mainplot()
+  # output$plot <- renderPlot({
+  #   
+  #   reactive({
+  #     make_chart_from_input(
+  #       chart_geom = input$chart_geom,
+  #       y_var = input$y_var,
+  #       color_var = input$color_var,
+  #       facet_var = input$facet_var,
+  #       labels_and_colors = labels_and_colors,
+  #       start_fy = input$year[1],
+  #       end_fy = input$year[2],
+  #       show_period = input$show_period,
+  #       y_total_or_share = input$y_total_or_share, #Default to As Total? I'm not sure what it should be.
+  #       filetype = NULL
+  #     )
+  #   })
+    
+    # annotate_figure(mainplot(), 
+    #                 bottom = text_grob("Source:FPDS; CSIS analysis",
+    #                                    hjust = 1,
+    #                                    x = 1,
+    #                                    family = "Open Sans",
+    #                                    color = "#003366",
+    #                                    face = "italic",
+    #                                    size = 8))
+    
+  # })
+  
   
   # runs the download data button on the edit page
   output$download_current <- downloadHandler(
@@ -393,35 +526,84 @@ shinyServer(function(input, output, session) {
   )
   
   ##Orginal code
-  # runs the download PNG button
-  # output$download_image <- downloadHandler(
-  #   filename = "plot_image.png",
-  #   content = function(file){
-  #     ggsave(
-  #       file = filename,
-  #       plot = mainplot(),
-  #       width = input$save_plot_width,
-  #       height = input$save_plot_height,
-  #       units = "in")
-  #   }
-  # )
-  
+  #runs the download PNG button
+   # output$download_image <- downloadHandler(
+   #   filename = "plot_image.png",
+   #   content = function(file){
+   #     ggsave(
+   #     filename = file,
+   #     plot = mainplot(),
+   #     width = input$save_plot_width,
+   #     height = input$save_plot_height,
+   #     units = "in")
+   #   }
+   # )
+  # 
   ##Xinyi's work
+  output$download_image_PNG <- downloadHandler(
+    filename = "plot_image.png",
+    content = function(file){
+      png(file, 
+          width = input$save_plot_width,
+          height = input$save_plot_height,
+          res = 600,
+          units = "in")
+      mainplot <- reactive({
+        make_chart_from_input(
+          chart_geom = input$chart_geom,
+          y_var = input$y_var,
+          color_var = input$color_var,
+          facet_var = input$facet_var,
+          labels_and_colors = labels_and_colors,
+          start_fy = input$year[1],
+          end_fy = input$year[2],
+          show_period = input$show_period,
+          y_total_or_share = input$y_total_or_share,
+          filetype = "png"
+        )
+      })
+      dev.off()
+      # ggsave(
+      #   filename = file,
+      #   plot = annotate_figure(mainplot + theme(text = element_text(size = 50)),
+      #                          bottom = text_grob("Source:FPDS; CSIS analysis",
+      #                                             hjust = 1,
+      #                                             x = 1,
+      #                                             family = "Open Sans",
+      #                                             color = "#003366",
+      #                                             face = "italic",
+      #                                             size = 35)),
+      #   width = input$save_plot_width,
+      #   height = input$save_plot_height,
+      #   device = "png",
+      #   units = "in",
+      #   dpi = 600)
+    }
+  )
   
-  output$download_image <- downloadHandler(
-    
-    filename = paste("plot_image.",tolower(input$Download_format),sep=""),
+  
+  
+  
+  output$download_image_EPS <- downloadHandler(
+    filename = "plot_image.eps",
     content = function(file){
       ggsave(
-        file = filename,
-        plot = mainplot(),
+        filename = file,
+        plot = annotate_figure(mainplot() + theme(text = element_text(size = 50)),
+                               bottom = text_grob("Source:FPDS; CSIS analysis",
+                                                  hjust = 1,
+                                                  x = 1,
+                                                  family = "Open Sans",
+                                                  color = "#003366",
+                                                  face = "italic",
+                                                  size = 35)),
+        device = "eps",
         width = input$save_plot_width,
         height = input$save_plot_height,
         units = "in",
         dpi = 600)
     }
   )
-  browser()
   
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
