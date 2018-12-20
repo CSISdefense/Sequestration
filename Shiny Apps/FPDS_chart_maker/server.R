@@ -67,7 +67,7 @@ shinyServer(function(input, output, session) {
     show_period = input$show_period,
     show_title = input$show_title,
     y_total_or_share = input$y_total_or_share,
-    filetype = NULL
+    filetype = "None"
   )
     })  
   
