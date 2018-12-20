@@ -307,7 +307,7 @@ make_chart_from_input <- function(
   show_title= "No",
   show_period = "No",
   y_total_or_share = "As Total", #Default to As Total? I'm not sure what it should be.
-  filetype = NULL
+  filetype = "None"
 ){
   # Builds a ggplot based on user settings, for display on the main panel.
   # Reactive binding will cause the ggplot to update when the user changes any
