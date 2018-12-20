@@ -50,7 +50,7 @@ shinyServer(function(input, output, session) {
   
   # fill the variable lists in the ui with variables from current_data
   populate_ui_var_lists(current_data)
-debug(make_chart_from_input)
+# undebug(make_chart_from_input)
 # undebug(format_data_for_plot)
   mainplot<-reactive({make_chart_from_input(
     current_data=current_data,
@@ -70,6 +70,12 @@ debug(make_chart_from_input)
     filetype = NULL
   )
     })  
+  
+  
+    
+    
+    
+  })  
   # mainplot <- reactive({
   #   # Builds a ggplot based on user settings, for display on the main panel.
   #   # Reactive binding will cause the ggplot to update when the user changes any
@@ -448,12 +454,30 @@ debug(make_chart_from_input)
    # )
   # 
   ##Xinyi's work
+  pngplot<-reactive({make_chart_from_input(
+    current_data=current_data,
+    chart_geom = input$chart_geom,
+    y_var = input$y_var,
+    fy_var= vars$fiscal_year,
+    color_var = input$color_var,
+    facet_var = input$facet_var,
+    labels_and_colors = labels_and_colors,
+    column_key=column_key,
+    start_fy = input$year[1],
+    end_fy = input$year[2],
+    show_legend=input$show_legend,
+    show_period = input$show_period,
+    show_title = input$show_title,
+    y_total_or_share = input$y_total_or_share,
+    filetype = "png"
+  )
+  
   output$download_image_PNG <- downloadHandler(
     filename = "plot_image.png",
     content = function(file){
       ggsave(
         filename = file,
-        plot = annotate_figure(mainplot() + theme(text = element_text(size = 50)),
+        plot = annotate_figure(pngplot() + theme(text = element_text(size = 50)),
                                bottom = text_grob("Source:FPDS; CSIS analysis",
                                                   hjust = 1,
                                                   x = 1,
@@ -470,14 +494,31 @@ debug(make_chart_from_input)
   )
   
   
-  
+  epsplot<-reactive({make_chart_from_input(
+    current_data=current_data,
+    chart_geom = input$chart_geom,
+    y_var = input$y_var,
+    fy_var= vars$fiscal_year,
+    color_var = input$color_var,
+    facet_var = input$facet_var,
+    labels_and_colors = labels_and_colors,
+    column_key=column_key,
+    start_fy = input$year[1],
+    end_fy = input$year[2],
+    show_legend=input$show_legend,
+    show_period = input$show_period,
+    show_title = input$show_title,
+    y_total_or_share = input$y_total_or_share,
+    filetype = "png"
+  )
+    
   
   output$download_image_EPS <- downloadHandler(
     filename = "plot_image.eps",
     content = function(file){
       ggsave(
         filename = file,
-        plot = annotate_figure(mainplot() + theme(text = element_text(size = 50)),
+        plot = annotate_figure(epsplot() + theme(text = element_text(size = 50)),
                                bottom = text_grob("Source:FPDS; CSIS analysis",
                                                   hjust = 1,
                                                   x = 1,
