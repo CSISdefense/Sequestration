@@ -300,9 +300,11 @@ make_chart_from_input <- function(
   color_var = "None",
   facet_var = "None",
   labels_and_colors,
+  column_key,
   start_fy = NULL,
   end_fy = NULL,
   show_legend= "Yes",
+  show_title= "No",
   show_period = "No",
   y_total_or_share = "As Total", #Default to As Total? I'm not sure what it should be.
   filetype = NULL

@@ -60,10 +60,12 @@ debug(make_chart_from_input)
     color_var = input$color_var,
     facet_var = input$facet_var,
     labels_and_colors = labels_and_colors,
+    column_key=column_key,
     start_fy = input$year[1],
     end_fy = input$year[2],
     show_legend=input$show_legend,
     show_period = input$show_period,
+    show_title = input$show_title,
     y_total_or_share = input$y_total_or_share,
     filetype = NULL
   )
