@@ -50,7 +50,7 @@ shinyServer(function(input, output, session) {
   
   # fill the variable lists in the ui with variables from current_data
   populate_ui_var_lists(current_data)
-# undebug(make_chart_from_input)
+# debug(make_chart_from_input)
 # undebug(format_data_for_plot)
   mainplot<-reactive({make_chart_from_input(
     current_data=current_data,
@@ -72,10 +72,7 @@ shinyServer(function(input, output, session) {
     })  
   
   
-    
-    
-    
-  })  
+  
   # mainplot <- reactive({
   #   # Builds a ggplot based on user settings, for display on the main panel.
   #   # Reactive binding will cause the ggplot to update when the user changes any
@@ -471,6 +468,7 @@ shinyServer(function(input, output, session) {
     y_total_or_share = input$y_total_or_share,
     filetype = "png"
   )
+  })
   
   output$download_image_PNG <- downloadHandler(
     filename = "plot_image.png",
@@ -509,9 +507,9 @@ shinyServer(function(input, output, session) {
     show_period = input$show_period,
     show_title = input$show_title,
     y_total_or_share = input$y_total_or_share,
-    filetype = "png"
+    filetype = "eps"
   )
-    
+  })
   
   output$download_image_EPS <- downloadHandler(
     filename = "plot_image.eps",
