@@ -290,7 +290,17 @@ rename_value <- function(
 }
 
 
-
+get_caption<-function(
+  text_size=10
+){
+  return(
+    labs(caption="Source: FPDS; CSIS analysis")
+    # +
+    # theme(text = element_text(size = text_size))+
+    # theme(plot.caption = element_text(size=text_size*=0.7
+    # )
+    )
+}
 
 make_chart_from_input <- function(
   current_data,
@@ -469,7 +479,7 @@ make_chart_from_input <- function(
       } else{
         grid.arrange(bar_plot,
                      line_plot,
-                     period_plot,
+                     period_plot+ get_caption(),
                      layout_matrix = lay)
       }
     }
@@ -541,7 +551,7 @@ make_chart_from_input <- function(
                           nrow = 2)
           P1
         } else{
-          P1 <- ggarrange(bar_plot, line_plot,
+          P1 <- ggarrange(bar_plot, line_plot+ get_caption(),
                           common.legend = TRUE, legend = "bottom",
                           nrow=2,
                           heights = c(1.2,0.8))
@@ -572,7 +582,7 @@ make_chart_from_input <- function(
           P1
         } else{
           P1 <- ggarrange(bar_plot,
-                          line_plot,
+                          line_plot+ get_caption(),
                           common.legend = FALSE,
                           nrow = 2,
                           heights = c(1.2, 0.8))
@@ -605,7 +615,7 @@ make_chart_from_input <- function(
       }
       else{
         grid.arrange(bar_plot,
-                     line_plot, 
+                     line_plot+ get_caption(), 
                      layout_matrix = lay)
       }
     }
@@ -660,7 +670,7 @@ make_chart_from_input <- function(
     }
     
     # return the built plot
-    mainplot
+    mainplot + get_caption()
   } # END OF ELSE(bar or line plot)
   
 }

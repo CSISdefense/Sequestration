@@ -367,14 +367,15 @@ shinyServer(function(input, output, session) {
   # 
   # calls mainplot(), defined above, to create a plot for the plot output area
   output$plot <- renderPlot({
-    annotate_figure(mainplot(),
-                    bottom = text_grob("Source:FPDS; CSIS analysis",
-                                       hjust = 1,
-                                       x = 1,
-                                       family = "Open Sans",
-                                       color = "#003366",
-                                       face = "italic",
-                                       size = 8))
+    # annotate_figure(
+      mainplot()
+                    # bottom = text_grob("Source:FPDS; CSIS analysis",
+                    #                    hjust = 1,
+                    #                    x = 1,
+                    #                    family = "Open Sans",
+                    #                    color = "#003366",
+                    #                    face = "italic",
+                    #                    size = 8))
 
     # P2 <- annotate_figure(P1,
     #   bottom = text_grob("Source: FPDS; CSIS analysis",
@@ -475,17 +476,8 @@ shinyServer(function(input, output, session) {
     content = function(file){
       ggsave(
         filename = file,
-        plot = annotate_figure(pngplot()
-                               + theme(text = element_text(size = 50))
-                               # ,
-                               # bottom = text_grob("Source:FPDS; CSIS analysis")#,
-                               #                    hjust = 1,
-                               #                    x = 1,
-                               #                    family = "Open Sans",
-                               #                    color = "#003366",
-                               #                    face = "italic",
-                               #                    size = 35)
-                               ),
+        plot = pngplot(),
+
         width = input$save_plot_width,
         height = input$save_plot_height,
         device = "png",
@@ -519,14 +511,13 @@ shinyServer(function(input, output, session) {
     content = function(file){
       ggsave(
         filename = file,
-        plot = annotate_figure(epsplot() + theme(text = element_text(size = 50)),
-                               bottom = text_grob("Source:FPDS; CSIS analysis",
-                                                  hjust = 1,
-                                                  x = 1,
-                                                  family = "Open Sans",
-                                                  color = "#003366",
-                                                  face = "italic",
-                                                  size = 35)),
+        plot = epsplot(), 
+        # annotate_figure(                bottom = text_grob("Source:FPDS; CSIS analysis",
+        #                                           hjust = 1,
+        #                                           x = 1,
+        #                                           family = "Open Sans",
+        #                                           color = "#003366",
+        #                                           face = "italic")),
         device = "eps",
         width = input$save_plot_width,
         height = input$save_plot_height,
