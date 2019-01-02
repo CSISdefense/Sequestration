@@ -528,6 +528,7 @@ make_chart_from_input <- function(
     
     bar_plot <- bar_plot + theme(plot.margin=unit(c(.25,0.25,-.2,0.25), "cm"))
     
+   
     
     #The line plot limits are shifted to align with the bar plot.
     line_plot <- build_plot(data=share_data,
@@ -558,31 +559,100 @@ make_chart_from_input <- function(
       
       if(show_legend == "Yes"){
         
+        
+        #If there is a breakout, extract the legend
+       
+        lay <- rbind(c(1),
+                     c(1),
+                     c(1),
+                     c(1),
+                     c(2),
+                     c(2),
+                     c(2))
+        line_plot<-line_plot+ 
+          theme(legend.position = "bottom")
+        
         #increase the font size for downloading plot version "png"
         if(filetype == "png") {
+          # browser()
+          bar_plot<-bar_plot+theme(text = element_text(size = 50))
+          line_plot<-line_plot+ 
+            theme(text = element_text(size = 50))+get_caption(size=35)
+          # bar_legend<-ggpubr::get_legend(bar_plot+
+          #                          theme(legend.position = "bottom",
+          #                                legend.margin = margin(t=-1, unit="cm"),
+          #                                text = element_text(size = 50))+
+          #                          get_caption(size=35)
+          #                          )
+
           P1 <- #annotate_figure(
-            ggarrange(barplot + 
-                                      font("xy.title", size = 50) +
-                                      font("xy.text", size = 50) +
-                                      font("legend.text", size = 50) +
-                                      theme(text = element_text(size = 50)),
-                          line_plot + 
-                            font("xy.title", size = 50) +
-                            font("xy.text", size = 50) +
-                            font("legend.text", size = 50) +
-                            theme(text = element_text(size = 50)),
-                          common.legend = TRUE,
-                          legend = "bottom",
-                          nrow = 2)#,
+            grid.arrange(
+              bar_plot ,#+
+                # font("xy.title", size = 50) +
+                # font("xy.text", size = 50) +
+                # theme(text = element_text(size = 50)),
+              line_plot ,#+
+                # font("xy.title", size = 50) +
+                # font("xy.text", size = 50) +
+                # theme(text = element_text(size = 50)),
+              # bar_legend,
+              layout_matrix = lay
+              # +font("legend.text", size = 50) +
+              #   theme(text = element_text(size = 50))
+            )
+          # ggarrange(bar_plot +
+          #             font("xy.title", size = 50) +
+          #             font("xy.text", size = 50) +
+          #             font("legend.text", size = 50) +
+          #             theme(text = element_text(size = 50)),
+          #           line_plot +
+          #             font("xy.title", size = 50) +
+          #             font("xy.text", size = 50) +
+          #             font("legend.text", size = 50) +
+          #             theme(text = element_text(size = 50)),
+          #           common.legend = TRUE,
+          #           legend = "bottom",
+          #           font.label = list(size = 50),
+          #           nrow = 2)
+            # font("legend.text", size = 50)#,
                           #bottom=get_bottom(size=35))
           P1
         } else{
-          P1 <- annotate_figure(ggarrange(bar_plot, line_plot,
-                          common.legend = TRUE, legend = "bottom",
-                          nrow=2,
-                          heights = c(1.2,0.8)),
-                          bottom=get_bottom())
-          # P2 <- annotate_figure(P1, 
+          # browser()
+       
+          # bar_legend<-ggpubr::get_legend(bar_plot+
+          #                          theme(legend.position = "bottom",
+          #                                legend.margin = margin(t=-1, unit="cm"))+
+          #                          get_caption(size=35)
+          # )
+          line_plot<-line_plot+get_caption()
+          P1 <- #annotate_figure(
+            grid.arrange(
+              bar_plot# +
+              # font("xy.title", size = 50) +
+              # font("xy.text", size = 50) +
+              #theme(text = element_text(size = 50))
+              ,
+              line_plot ,#+
+              # font("xy.title", size = 50) +
+              # font("xy.text", size = 50) +
+              # theme(text = element_text(size = 50))
+              # bar_legend,#+#font("legend.text", size = 50) +
+              # theme(text = element_text(size = 50)),
+              layout_matrix = lay
+            )
+          
+          
+          # P1 <- annotate_figure(ggarrange(bar_plot, line_plot,
+          #                 common.legend = TRUE, legend = "bottom",
+          #                 nrow=2,
+          #                 heights = c(1.2,0.8)),
+          #                 bottom=get_bottom())
+
+          
+          
+          
+                    # P2 <- annotate_figure(P1, 
           #   bottom = text_grob("Source: FPDS; CSIS analysis",
           #     hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
           # 
@@ -591,32 +661,53 @@ make_chart_from_input <- function(
         }
       }
       else{ 
-        
+        lay <- rbind(c(1),
+                     c(1),
+                    c(1),
+                     c(2),
+          
+                     c(2))
         #increase the font size for downloading plot version "png"
         if(filetype == "png"){
-          P1 <- ggarrange(bar_plot + 
-                            font("xy.title", size = 50) +
-                            font("xy.text", size = 50) +
-                            font("legend.text", size = 50) +
-                            theme(text = element_text(size = 50)),
-                          line_plot + 
-                            font("xy.title", size = 50) +
-                            font("xy.text", size = 50) +
-                            font("legend.text", size = 50) +
-                            theme(text = element_text(size = 50))+ 
-                            get_caption(size=35),
-                          common.legend = FALSE,
-                          nrow = 2,
-                          heights = c(1.2, 0.8)
+          
+          bar_plot<-bar_plot+theme(text = element_text(size = 50))
+          line_plot<-line_plot+ 
+            theme(text = element_text(size = 50))+get_caption(size=35)
+          
+          P1 <- grid.arrange(bar_plot,
+                          line_plot,
+                          layout=lay
           )
+          
+          # P1 <- ggarrange(bar_plot + 
+          #                   font("xy.title", size = 50) +
+          #                   font("xy.text", size = 50) +
+          #                   font("legend.text", size = 50) +
+          #                   theme(text = element_text(size = 50)),
+          #                 line_plot + 
+          #                   font("xy.title", size = 50) +
+          #                   font("xy.text", size = 50) +
+          #                   font("legend.text", size = 50) +
+          #                   theme(text = element_text(size = 50))+ 
+          #                   get_caption(size=35),
+          #                 common.legend = FALSE,
+          #                 nrow = 2,
+          #                 heights = c(1.2, 0.8)
+          # )
           P1
         } else{
-          P1 <- ggarrange(bar_plot,
-                          line_plot+ get_caption(),
-                          common.legend = FALSE,
-                          nrow = 2,
-                          heights = c(1.2, 0.8))
-          P1
+          line_plot<-line_plot+get_caption()
+          
+          P1 <- grid.arrange(bar_plot,
+                             line_plot,
+                             layout=lay
+          )
+          # P1 <- ggarrange(bar_plot,
+          #                 line_plot+ get_caption(),
+          #                 common.legend = FALSE,
+          #                 nrow = 2,
+          #                 heights = c(1.2, 0.8))
+          # P1
         }
       }
     }
