@@ -476,7 +476,9 @@ shinyServer(function(input, output, session) {
     content = function(file){
       ggsave(
         filename = file,
-        plot = pngplot(),
+        plot = pngplot()+
+          theme(text = element_text(size = 50))+
+          theme(plot.caption = element_text(size=35)),
 
         width = input$save_plot_width,
         height = input$save_plot_height,

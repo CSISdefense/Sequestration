@@ -291,16 +291,28 @@ rename_value <- function(
 
 
 get_caption<-function(
-  text_size=10
+  size=NA
 ){
-  return(
-    labs(caption="Source: FPDS; CSIS analysis")
-    # +
-    # theme(text = element_text(size = text_size))+
-    # theme(plot.caption = element_text(size=text_size*=0.7
-    # )
-    )
+  c<-labs(caption="Source: FPDS; CSIS analysis")
+  if(!is.na(size))
+    c<-c+theme(text = element_text(size = size))
+  return(c)
 }
+get_bottom<-function(
+  size=8
+){
+  c<-text_grob("Source: FPDS; CSIS analysis",
+                                   hjust = 1,
+                                   x = 1,
+                                   family = "Open Sans",
+                                   color = "#003366",
+                                   face = "italic",
+                                   size = 8)
+  return(c)
+               
+}
+
+
 
 make_chart_from_input <- function(
   current_data,
@@ -443,11 +455,12 @@ make_chart_from_input <- function(
     if(color_var!="None"){
       # lay the stacked plots
       
-      P1 <- ggarrange(bar_plot, 
+      P1 <- annotate_figure(ggarrange(bar_plot, 
                       ggarrange(line_plot, period_plot, ncol=2, widths = c(2.12,2.88)),
                       common.legend = TRUE, legend = "bottom",
                       nrow=2,
-                      heights = c(1.2,0.8))
+                      heights = c(1.2,0.8)),
+                      bottom=get_bottom())
       # P2 <- annotate_figure(P1, 
       #                       bottom = text_grob("Source: FPDS; CSIS analysis",
       #                                          hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
@@ -468,19 +481,28 @@ make_chart_from_input <- function(
         grid.arrange(bar_plot + 
                        font("xy.title", size = 50) +
                        font("xy.text", size = 50) +
-                       font("legend.text", size = 50),
+                       font("legend.text", size = 50)+
+                       theme(text = element_text(size = 50)),
                      line_plot +
                        font("xy.title", size = 50) +
                        font("xy.text", size = 50) +
-                       font("legend.text", size = 50),
-                     period_plot,
-                     layout_matrix = lay)
+                       font("legend.text", size = 50) +
+                       theme(text = element_text(size = 50))
+                     ,
+                     period_plot+
+                       font("xy.title", size = 50) +
+                       font("xy.text", size = 50) +
+                       font("legend.text", size = 50) +
+                       theme(text = element_text(size = 50)),
+                     layout_matrix = lay,
+                     bottom=get_bottom(size=35))
         
       } else{
         grid.arrange(bar_plot,
                      line_plot,
-                     period_plot+ get_caption(),
-                     layout_matrix = lay)
+                     period_plot,
+                     layout_matrix = lay,
+                     bottom=get_bottom())
       }
     }
     # build plot with user-specified geoms
@@ -538,23 +560,28 @@ make_chart_from_input <- function(
         
         #increase the font size for downloading plot version "png"
         if(filetype == "png") {
-          P1 <- ggarrange(barplot + 
+          P1 <- #annotate_figure(
+            ggarrange(barplot + 
+                                      font("xy.title", size = 50) +
+                                      font("xy.text", size = 50) +
+                                      font("legend.text", size = 50) +
+                                      theme(text = element_text(size = 50)),
+                          line_plot + 
                             font("xy.title", size = 50) +
                             font("xy.text", size = 50) +
-                            font("legend.text", size = 50),
-                          line_plot +
-                            font("xy.title", size = 50) +
-                            font("xy.text", size = 50) +
-                            font("legend.text", size = 50),
+                            font("legend.text", size = 50) +
+                            theme(text = element_text(size = 50)),
                           common.legend = TRUE,
                           legend = "bottom",
-                          nrow = 2)
+                          nrow = 2)#,
+                          #bottom=get_bottom(size=35))
           P1
         } else{
-          P1 <- ggarrange(bar_plot, line_plot+ get_caption(),
+          P1 <- annotate_figure(ggarrange(bar_plot, line_plot,
                           common.legend = TRUE, legend = "bottom",
                           nrow=2,
-                          heights = c(1.2,0.8))
+                          heights = c(1.2,0.8)),
+                          bottom=get_bottom())
           # P2 <- annotate_figure(P1, 
           #   bottom = text_grob("Source: FPDS; CSIS analysis",
           #     hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
@@ -567,14 +594,17 @@ make_chart_from_input <- function(
         
         #increase the font size for downloading plot version "png"
         if(filetype == "png"){
-          P1 <- ggarrange(bar_plot +
+          P1 <- ggarrange(bar_plot + 
                             font("xy.title", size = 50) +
                             font("xy.text", size = 50) +
-                            font("legend.text", size = 50),
-                          line_plot +
+                            font("legend.text", size = 50) +
+                            theme(text = element_text(size = 50)),
+                          line_plot + 
                             font("xy.title", size = 50) +
                             font("xy.text", size = 50) +
-                            font("legend.text", size = 50),
+                            font("legend.text", size = 50) +
+                            theme(text = element_text(size = 50))+ 
+                            get_caption(size=35),
                           common.legend = FALSE,
                           nrow = 2,
                           heights = c(1.2, 0.8)
@@ -603,20 +633,24 @@ make_chart_from_input <- function(
                    c(2,2,2,2))
       
       if(filetype == "png") {
-        grid.arrange(bar_plot +
+        grid.arrange(bar_plot + 
                        font("xy.title", size = 50) +
                        font("xy.text", size = 50) +
-                       font("legend.text", size = 50),
-                     line_plot +
+                       font("legend.text", size = 50) +
+                       theme(text = element_text(size = 50)),
+                     line_plot + 
                        font("xy.title", size = 50) +
                        font("xy.text", size = 50) +
-                       font("legend.text", size = 50),
-                     layout_matrix = lay)
+                       font("legend.text", size = 50) +
+                       theme(text = element_text(size = 50)),
+                     layout_matrix = lay,
+                     bottom=get_bottom(size=35))
       }
       else{
         grid.arrange(bar_plot,
-                     line_plot+ get_caption(), 
-                     layout_matrix = lay)
+                     line_plot, 
+                     layout_matrix = lay,
+                     bottom=get_bottom())
       }
     }
   }
