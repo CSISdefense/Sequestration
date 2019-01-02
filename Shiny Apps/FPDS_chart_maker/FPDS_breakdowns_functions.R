@@ -563,11 +563,11 @@ make_chart_from_input <- function(
         #If there is a breakout, extract the legend
        
         lay <- rbind(c(1),
-                     c(1),
-                     c(1),
-                     c(1),
-                     c(2),
-                     c(2),
+                     # c(1),
+                     # c(1),
+                     # c(1),
+                     # c(2),
+                     # c(2),
                      c(2))
         line_plot<-line_plot+ 
           theme(legend.position = "bottom")
