@@ -301,13 +301,14 @@ get_caption<-function(
 get_bottom<-function(
   size=8
 ){
+  
   c<-text_grob("Source: FPDS; CSIS analysis",
                hjust = 1,
                x = 1,
                family = "Open Sans",
                color = "#003366",
                face = "italic",
-               size = 8)
+               size = size)
   return(c)
   
 }
@@ -376,7 +377,6 @@ make_chart_from_input <- function(
                             legend=FALSE,
                             caption=FALSE)
     
-    bar_plot<-bar_plot+theme(legend.position = "none")
     line_plot <- build_plot(data=share_data,
                             chart_geom="Line Chart",
                             share=TRUE,
@@ -387,8 +387,7 @@ make_chart_from_input <- function(
                             labels_and_colors=labels_and_colors,
                             column_key=column_key,
                             legend=FALSE,
-                            caption=FALSE
-    )
+                            caption=FALSE)
     #The line plot limits are shifted to align with the bar plot.
     
     if (show_period == "Yes"){
@@ -400,13 +399,17 @@ make_chart_from_input <- function(
     
     if(chart_geom =="Period Stacked"){
       #Consolidate categories for Vendor Size
+      if(!"Fiscal.Year" %in% colnames(total_data))
+        colnames(total_data)[colnames(total_data)==fy_var]<-"Fiscal.Year"
       period_data<-read_and_join(total_data,
                                  "Lookup_Fiscal_Year_Period.csv",
                                  directory="economic/",
                                  path="https://raw.githubusercontent.com/CSISdefense/Lookup-Tables/master/",
-                                 by="fiscal_year",
+                                 by="Fiscal.Year",
                                  add_var="sequestration.period"
       )
+      if(!fy_var %in% colnames(total_data))
+        colnames(total_data)[colnames(total_data)=="Fiscal.Year"]<-fy_var
       
       period_data <-format_period_average(data=period_data,
                                           period_var="sequestration.period",
@@ -491,7 +494,7 @@ make_chart_from_input <- function(
                                line_plot,
                                period_plot,
                                layout_matrix = lay,
-                               bottom=get_bottom(ifelse(filetype == "png",35,NA)))
+                               bottom=get_bottom(ifelse(filetype == "png",35,8)))
         #}
       }
       # build plot with user-specified geoms
@@ -538,7 +541,7 @@ make_chart_from_input <- function(
               bar_plot,
               line_plot,
               layout_matrix = lay,
-              bottom=get_bottom(ifelse(filetype == "png",35,NA)))
+              bottom=get_bottom(ifelse(filetype == "png",35,8)))
             
           } else{
             
@@ -663,7 +666,10 @@ make_chart_from_input <- function(
     }
     
     # return the built plot
-    mainplot + get_caption()
+    mainplot<-mainplot + get_caption(ifelse(filetype=="PNG",35,NA))
+    if(filetype == "png") 
+      mainplot<-mainplot+theme(text = element_text(size = 50))
+      
   } # END OF ELSE(bar or line plot)
   mainplot
 }
