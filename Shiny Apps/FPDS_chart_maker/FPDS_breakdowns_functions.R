@@ -470,24 +470,6 @@ make_chart_from_input <- function(
           line_plot<-line_plot+theme(text = element_text(size = 50))
           period_plot<-period_plot+theme(text = element_text(size = 50))
           
-          # grid.arrange(bar_plot, #+ 
-          #                # font("xy.title", size = 50) +
-          #                # font("xy.text", size = 50) +
-          #                # font("legend.text", size = 50)+
-          #                # theme(text = element_text(size = 50)),
-          #              line_plot,# +
-          #                # font("xy.title", size = 50) +
-          #                # font("xy.text", size = 50) +
-          #                # font("legend.text", size = 50) +
-          #                # theme(text = element_text(size = 50))
-          #              period_plot,#+
-          #                # font("xy.title", size = 50) +
-          #                # font("xy.text", size = 50) +
-          #                # font("legend.text", size = 50) +
-          #                # theme(text = element_text(size = 50)),
-          #              layout_matrix = lay,
-          #              bottom=get_bottom(size=35))
-          # 
         }
         # else{
         mainplot<-grid.arrange(bar_plot,
@@ -510,8 +492,8 @@ make_chart_from_input <- function(
         limits = c(start_fy-0.5, end_fy+0.5),
         breaks = function(x){seq(start_fy, end_fy, by = 1)},
         labels = function(x){str_sub(as.character(x), -2, -1)}
-      )+ theme(plot.margin=unit(c(-0.3,0.25,0,0.25), "cm"))
-      
+      )+ theme(plot.margin=unit(c(-0.3,0.25,0.3,0.25), "cm"))
+      bar_plot$width<-line_plot$width
       
       if(color_var!="None"){
         # lay the stacked plots
@@ -535,8 +517,6 @@ make_chart_from_input <- function(
             # browser()
             bar_plot<-bar_plot+theme(text = element_text(size = 50))
             
-            bar_plot$width<-line_plot$width
-            
             mainplot <- grid.arrange(
               bar_plot,
               line_plot,
@@ -545,7 +525,6 @@ make_chart_from_input <- function(
             
           } else{
             
-            bar_plot$width<-line_plot$width
             
             mainplot <- annotate_figure(ggarrange(bar_plot, line_plot,
                                                   common.legend = TRUE, legend = "bottom",
@@ -666,9 +645,10 @@ make_chart_from_input <- function(
     }
     
     # return the built plot
-    mainplot<-mainplot + get_caption(ifelse(filetype=="PNG",35,NA))
     if(filetype == "png") 
       mainplot<-mainplot+theme(text = element_text(size = 50))
+    
+    mainplot<-mainplot + get_caption(size=ifelse(filetype=="png",35,NA)) #This isn't working for png for rasons I do not understand.
       
   } # END OF ELSE(bar or line plot)
   mainplot

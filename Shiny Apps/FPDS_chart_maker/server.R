@@ -476,9 +476,7 @@ shinyServer(function(input, output, session) {
     content = function(file){
       ggsave(
         filename = file,
-        plot = pngplot()+
-          theme(text = element_text(size = 50))+
-          theme(plot.caption = element_text(size=35)),
+        plot = pngplot(),
 
         width = input$save_plot_width,
         height = input$save_plot_height,
@@ -514,12 +512,6 @@ shinyServer(function(input, output, session) {
       ggsave(
         filename = file,
         plot = epsplot(), 
-        # annotate_figure(                bottom = text_grob("Source:FPDS; CSIS analysis",
-        #                                           hjust = 1,
-        #                                           x = 1,
-        #                                           family = "Open Sans",
-        #                                           color = "#003366",
-        #                                           face = "italic")),
         device = "eps",
         width = input$save_plot_width,
         height = input$save_plot_height,
