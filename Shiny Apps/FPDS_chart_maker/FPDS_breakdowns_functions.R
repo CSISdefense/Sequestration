@@ -629,7 +629,7 @@ make_chart_from_input <- function(
                            column_key=column_key,
                            legend= ifelse(show_legend == "No",FALSE,TRUE),
                            
-                           caption = FALSE)  #Xinyi, remove caption: basic bar/line plot
+                           caption = TRUE) #Adding the caption back.
     
     if (show_period == "Yes")
       mainplot <-  add_period(mainplot,plot_data,chart_geom,
@@ -642,8 +642,6 @@ make_chart_from_input <- function(
     }
     
     # return the built plot
-    mainplot<-mainplot + get_caption() #This isn't working for png for rasons I do not understand. size=ifelse(filetype=="png",35,NA
-      
     if(filetype == "png") 
       mainplot<-mainplot+theme(text = element_text(size = 50))+theme(plot.caption = element_text(size=35))
     
