@@ -291,11 +291,8 @@ rename_value <- function(
 
 
 get_caption<-function(
-  size=NA
 ){
   c<-labs(caption="Source: FPDS; CSIS analysis")
-  if(!is.na(size))
-    c<-c+theme(text = element_text(size = size))
   return(c)
 }
 get_bottom<-function(
@@ -560,7 +557,7 @@ make_chart_from_input <- function(
                                     font("xy.text", size = 50) +
                                     font("legend.text", size = 50) +
                                     theme(text = element_text(size = 50))+
-                                    get_caption(size=35),
+                                    get_caption()+theme(plot.caption = element_text(size=35)),
                                   common.legend = FALSE,
                                   nrow = 2,
                                   heights = c(1.2, 0.8)
@@ -645,11 +642,11 @@ make_chart_from_input <- function(
     }
     
     # return the built plot
-    if(filetype == "png") 
-      mainplot<-mainplot+theme(text = element_text(size = 50))
-    
-    mainplot<-mainplot + get_caption(size=ifelse(filetype=="png",35,NA)) #This isn't working for png for rasons I do not understand.
+    mainplot<-mainplot + get_caption() #This isn't working for png for rasons I do not understand. size=ifelse(filetype=="png",35,NA
       
+    if(filetype == "png") 
+      mainplot<-mainplot+theme(text = element_text(size = 50))+theme(plot.caption = element_text(size=35))
+    
   } # END OF ELSE(bar or line plot)
   mainplot
 }
