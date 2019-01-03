@@ -440,38 +440,92 @@ make_chart_from_input <- function(
       if(color_var!="None" & show_legend=="Yes"){
         # lay the stacked plots
         
-        mainplot <- annotate_figure(ggarrange(bar_plot, 
-                                              ggarrange(line_plot, period_plot, ncol=2, widths = c(2.12,2.88)),
-                                              common.legend = TRUE, legend = "bottom",
-                                              nrow=2,
-                                              heights = c(1.2,0.8)),
-                                    bottom=get_bottom())
+        # mainplot <- annotate_figure(ggarrange(bar_plot, 
+        #                                       ggarrange(line_plot, period_plot, ncol=2, widths = c(2.12,2.88)),
+        #                                       common.legend = TRUE, legend = "bottom",
+        #                                       nrow=2,
+        #                                       heights = c(1.2,0.8)),
+        #                             bottom=get_bottom())
+        
         # P2 <- annotate_figure(mainplot, 
         #                       bottom = text_grob("Source: FPDS; CSIS analysis",
         #                                          hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
         # 
         # 
         
+        if(filetype == "png"){
+          lay <- rbind(c(1,1,2,2),
+                       c(1,1,2,2),
+                       c(3,3,3,3),
+                       c(3,3,3,3),
+                       c(3,3,3,3))
+          
+          
+          mainplot <- grid.arrange(line_plot + 
+                                     theme(text = element_text(size = 50)),
+                                   period_plot + 
+                                     theme(text = element_text(size = 50)),
+                                   bar_plot +
+                                     theme(legend.position = "bottom") + 
+                                     theme(text = element_text(size = 50)),
+                                   layout_matrix = lay,
+                                   bottom = get_bottom(size = 35))
+          
+          
+          
+          # mainplot <- annotate_figure(ggarrange(ggarrange(line_plot +
+          #                                                   theme(text = element_text(size = 50)), 
+          #                                                 period_plot +
+          #                                                   theme(text = element_text(size = 50)),
+          #                                                   # get_caption() +
+          #                                                   # theme(plot.caption = element_text(size = 35)), 
+          #                                                 ncol=2, 
+          #                                                 widths = c(2.12,2.88)),
+          #                                       bar_plot +
+          #                                         theme(legend.position = "bottom") + 
+          #                                         theme(text = element_text(size = 50)), 
+          #                                         # get_caption() +
+          #                                         # theme(plot.caption = element_text(size = 35)),
+          #                                       nrow=2, 
+          #                                       heights = c(0.8,1.2)),
+          #                             bottom = get_bottom(size = 35)
+          #                             )
+          #    #                         bottom=get_bottom())
+        }
+        else{
+          mainplot <- annotate_figure(ggarrange(ggarrange(line_plot, 
+                                                          period_plot, 
+                                                          ncol=2, 
+                                                          widths = c(2.12,2.88)),
+                                                bar_plot, 
+                                                common.legend = TRUE, legend = "bottom",
+                                                nrow=2,
+                                                heights = c(0.8,1.2)),
+                                      bottom=get_bottom())
+        }
+        
+        
+        
         
       }
       else{
         # lay the stacked plots
-        lay <- rbind(c(1,1,1,1),
-                     c(1,1,1,1),
-                     c(1,1,1,1),
-                     c(2,2,3,3),
-                     c(2,2,3,3))
+        lay <- rbind(c(1,1,2,2),
+                     c(1,1,2,2),
+                     c(3,3,3,3),
+                     c(3,3,3,3),
+                     c(3,3,3,3))
         
         if(filetype == "png"){
-          bar_plot<-bar_plot+theme(text = element_text(size = 50))
           line_plot<-line_plot+theme(text = element_text(size = 50))
           period_plot<-period_plot+theme(text = element_text(size = 50))
+          bar_plot<-bar_plot+theme(text = element_text(size = 50))
           
         }
         # else{
-        mainplot<-grid.arrange(bar_plot,
-                               line_plot,
+        mainplot<-grid.arrange(line_plot,
                                period_plot,
+                               bar_plot,
                                layout_matrix = lay,
                                bottom=get_bottom(ifelse(filetype == "png",35,8)))
         #}
@@ -542,7 +596,6 @@ make_chart_from_input <- function(
                        c(1),
                        c(1),
                        c(2),
-                       
                        c(2))
           #increase the font size for downloading plot version "png"
           if(filetype == "png"){
