@@ -463,9 +463,9 @@ make_chart_from_input <- function(
                      c(2,2,3,3))
         
         if(filetype == "png"){
-          bar_plot<-bar_plot+theme(text = element_text(size = 50))
-          line_plot<-line_plot+theme(text = element_text(size = 50))
-          period_plot<-period_plot+theme(text = element_text(size = 50))
+          bar_plot<-bar_plot+theme(text = element_text(size = 50,lineheight=0.13))
+          line_plot<-line_plot+theme(text = element_text(size = 50,lineheight=0.13))
+          period_plot<-period_plot+theme(text = element_text(size = 50,lineheight=0.13))
           
         }
         # else{
@@ -509,10 +509,10 @@ make_chart_from_input <- function(
                          c(2))
             line_plot<-line_plot+ 
               theme(legend.position = "bottom",
-                    text = element_text(size = 50))
+                    text = element_text(size = 50,lineheight=0.13))
             
             # browser()
-            bar_plot<-bar_plot+theme(text = element_text(size = 50))
+            bar_plot<-bar_plot+theme(text = element_text(size = 50,lineheight=0.13))
             
             mainplot <- grid.arrange(
               bar_plot,
@@ -551,12 +551,12 @@ make_chart_from_input <- function(
                                     font("xy.title", size = 50) +
                                     font("xy.text", size = 50) +
                                     font("legend.text", size = 50) +
-                                    theme(text = element_text(size = 50)),
+                                    theme(text = element_text(size = 50,lineheight=0.13)),
                                   line_plot +
                                     font("xy.title", size = 50) +
                                     font("xy.text", size = 50) +
                                     font("legend.text", size = 50) +
-                                    theme(text = element_text(size = 50))+
+                                    theme(text = element_text(size = 50,lineheight=0.13))+
                                     get_caption()+theme(plot.caption = element_text(size=35)),
                                   common.legend = FALSE,
                                   nrow = 2,
@@ -591,12 +591,12 @@ make_chart_from_input <- function(
                          font("xy.title", size = 50) +
                          font("xy.text", size = 50) +
                          font("legend.text", size = 50) +
-                         theme(text = element_text(size = 50)),
+                         theme(text = element_text(size = 50,lineheight=0.13)),
                        line_plot + 
                          font("xy.title", size = 50) +
                          font("xy.text", size = 50) +
                          font("legend.text", size = 50) +
-                         theme(text = element_text(size = 50)),
+                         theme(text = element_text(size = 50,lineheight=0.13)),
                        layout_matrix = lay,
                        bottom=get_bottom(size=35))
         }
@@ -643,7 +643,7 @@ make_chart_from_input <- function(
     
     # return the built plot
     if(filetype == "png") 
-      mainplot<-mainplot+theme(text = element_text(size = 50))+theme(plot.caption = element_text(size=35))
+      mainplot<-mainplot+theme(text = element_text(size = 50,lineheight=0.13))+theme(plot.caption = element_text(size=35))
     
   } # END OF ELSE(bar or line plot)
   mainplot
