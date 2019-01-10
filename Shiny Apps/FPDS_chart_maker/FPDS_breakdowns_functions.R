@@ -384,7 +384,7 @@ make_chart_from_input <- function(
                             labels_and_colors=labels_and_colors,
                             column_key=column_key,
                             legend=FALSE,
-                            caption=FALSE)
+                            caption=FALSE) 
     #The line plot limits are shifted to align with the bar plot.
     
     if (show_period == "Yes"){
@@ -435,7 +435,9 @@ make_chart_from_input <- function(
                               column_key=column_key,
                               legend=FALSE,
                               caption=FALSE
-      )
+      )  + 
+       theme(axis.text.x = element_text(vjust = 1,hjust = 1, angle = 35))
+        
       
       if(color_var!="None" & show_legend=="Yes"){
         # lay the stacked plots
@@ -466,7 +468,7 @@ make_chart_from_input <- function(
                                                                lineheight = 0.13)),
                                    period_plot + 
                                      theme(text = element_text(size = 45,
-                                                               lineheight = 0.13)),
+                                                               lineheight = 0.13)) ,
                                    bar_plot +
                                      theme(legend.position = "bottom") + 
                                      theme(text = element_text(size = 45,
@@ -524,8 +526,8 @@ make_chart_from_input <- function(
                                                        lineheight=0.13))
           line_plot<-line_plot+theme(text = element_text(size = 45,
                                                          lineheight=0.13))
-          period_plot<-period_plot+theme(text = element_text(size = 45,
-                                                             lineheight=0.13))
+          period_plot<-period_plot + 
+            theme(text = element_text(size = 45,lineheight=0.13)) 
           
         }
         # else{
