@@ -28,7 +28,7 @@ font_add_google("Open Sans")
 
 
 shinyServer(function(input, output, session) {
-  showtext.auto()
+  showtext_auto()
   options(scipen = 99)
   options(shiny.maxRequestSize=1000*1024^2)
   source("FPDS_breakdowns_functions.R")
