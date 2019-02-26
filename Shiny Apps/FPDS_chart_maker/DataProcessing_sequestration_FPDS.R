@@ -122,14 +122,14 @@ colnames(full_data)[colnames(full_data)=="Fiscal.Year"]<-"fiscal_year"
 
 partial_2018 <- read_delim(
   "Data//Single_Year_Summary_2019-02-25.csv",delim = ",")
-colnames(partial_2018)[colnames(partial_2018)=="X13"]<-"ContractActions"
+colnames(partial_2018)[colnames(partial_2018)=="X9"]<-"ContractActions"
 
 
 partial_2018<-standardize_variable_names(partial_2018)
 colnames(partial_2018)[colnames(partial_2018)=="Contracting.Agency.ID"]<-"AgencyID"
 partial_2018$Action.Obligation<-text_to_number(partial_2018$Action.Obligation)
 partial_2018$Fiscal.Year<-2018
-
+sum(partial_2018$Action.Obligation)
 
 
 partial_2018<-deflate(partial_2018,
@@ -205,3 +205,12 @@ partial_2018$No.Competition.sum<-"Unlabeled"
 full_data<-rbind(full_data,as.data.frame(partial_2018))
 
 save(full_data,labels_and_colors,column_key, file="2018_unaggregated_FPDS.Rda")
+
+
+
+write.csv(full_data%>%group_by(fiscal_year)%>%
+      dplyr::summarize(Action.Obligation.Then.Year=sum(Action.Obligation.Then.Year,na.rm=TRUE),
+                                                         Action.Obligation.OMB.2019=sum(Action.Obligation.OMB.2019,na.rm=TRUE),
+                                                         Number.Of.Actions=sum(Number.Of.Actions,na.rm=TRUE)),
+      file="topline.csv"
+      )
