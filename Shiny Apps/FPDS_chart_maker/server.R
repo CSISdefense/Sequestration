@@ -34,7 +34,7 @@ shinyServer(function(input, output, session) {
   source("FPDS_breakdowns_functions.R")
   
   # read data
-  load("2017_unaggregated_FPDS.Rda")
+  load("2018_unaggregated_FPDS.Rda")
   original_data<-full_data
   # original_data <- read_csv("2016_unaggregated_FPDS.csv")
   
