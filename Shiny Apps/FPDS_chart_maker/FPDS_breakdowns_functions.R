@@ -290,11 +290,7 @@ rename_value <- function(
 }
 
 
-get_caption<-function(
-){
-  c<-labs(caption="Source: FPDS; CSIS analysis")
-  return(c)
-}
+
 get_bottom<-function(
   size=8
 ){
