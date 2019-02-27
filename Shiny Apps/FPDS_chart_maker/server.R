@@ -129,7 +129,7 @@ shinyServer(function(input, output, session) {
         plot_data <- left_join(plotdata, sharedata, by=joinkey)
         names(plot_data)[ncol(plot_data)] <- paste(input$y_var, ".Sharamout")
       } else{
-        csis360::format_data_for_plot(data=current_data,
+        plot_data<-csis360::format_data_for_plot(data=current_data,
                                       share=ifelse(input$y_total_or_share == "As Share",TRUE,FALSE),
                                       fy_var=vars$fiscal_year,
                                       start_fy=input$year[1],
