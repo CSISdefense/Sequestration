@@ -157,7 +157,7 @@ shinyServer(function(input, output, session) {
    # )
   # 
   ##Xinyi's work
-  size<-60
+  size<-45
   pngplot<-reactive({make_chart_from_input(
     current_data=current_data,
     chart_geom = input$chart_geom,
