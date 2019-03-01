@@ -565,14 +565,14 @@ make_chart_from_input <- function(
                          # c(2),
                          # c(2),
                          c(2))
-            line_plot<-line_plot+ 
-              theme(legend.position = "bottom",
-                    text = element_text(size = 45,
-                                        lineheight=0.13))
+            line_plot<-line_plot#+ 
+              # theme(legend.position = "bottom",
+              #       text = element_text(size = 45,
+              #                           lineheight=0.13))
             
             # browser()
-            bar_plot<-bar_plot+theme(text = element_text(size = 45,
-                                                         lineheight=0.13))
+            bar_plot<-bar_plot#+theme(text = element_text(size = 45,
+                                                         # lineheight=0.13))
             
             mainplot <- grid.arrange(
               bar_plot,
@@ -616,7 +616,7 @@ make_chart_from_input <- function(
                                     font("xy.text", size = 45) +
                                     font("legend.text", size = 45) +
                                     theme(text = element_text(size = 45,lineheight=0.13))+
-                                    get_caption()+theme(plot.caption = element_text(size=35)),
+                                    get_caption(),#+theme(plot.caption = element_text(size=35)),
                                   common.legend = FALSE,
                                   nrow = 2,
                                   heights = c(1.2, 0.8)

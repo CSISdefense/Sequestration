@@ -180,15 +180,14 @@ shinyServer(function(input, output, session) {
   output$download_image_PNG <- downloadHandler(
     filename = "plot_image.png",
     content = function(file){
-      ggsave(
+      ggsave600dpi(
         filename = file,
         plot = pngplot(),
 
         width = input$save_plot_width,
         height = input$save_plot_height,
         device = "png",
-        units = "in",
-        dpi = 600)
+        units = "in")
     }
   )
   
@@ -221,8 +220,7 @@ shinyServer(function(input, output, session) {
         device = "eps",
         width = input$save_plot_width,
         height = input$save_plot_height,
-        units = "in",
-        dpi = 600)
+        units = "in")
     }
   )
   
