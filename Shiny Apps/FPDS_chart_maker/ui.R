@@ -97,14 +97,6 @@ shinyUI(fluidPage(
             column(
               width = 5,
               wellPanel(
-                ##Original code
-                # downloadButton(
-                #   outputId = "download_image",
-                #   label = "Save Plot as PNG (300 DPI)",
-                #   width = "100%"
-                # ),
-                
-                ##Xinyi's work
                  downloadButton(
                    outputId = "download_image_PNG",
                    label = "Save Plot as PNG(600 DPI)",
@@ -114,11 +106,18 @@ shinyUI(fluidPage(
                  br(),
                 downloadButton(
                   outputId = "download_image_EPS",
-                  label = "Save Plot as EPS(600 DPI)",
+                  label = "Save Plot as EPS",
                   width = "100%"
                 ),
                 br(),
                 br(),
+                # downloadButton(
+                #   outputId = "download_image_SVG",
+                #   label = "Save Plot as SVG",
+                #   width = "100%"
+                # ),
+                # br(),
+                # br(),
                 
                 fluidRow(
                   column(

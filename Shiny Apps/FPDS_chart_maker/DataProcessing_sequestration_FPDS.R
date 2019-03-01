@@ -120,34 +120,43 @@ colnames(full_data)[colnames(full_data)=="Fiscal.Year"]<-"fiscal_year"
 # save(full_data,labels_and_colors,column_key, file="Shiny Apps//FPDS_chart_maker//2018_unaggregated_FPDS.Rda")
 
 # 
-# partial_2018 <- read_delim(
-#   "Data//Single_Year_Summary_2019-02-25.csv",delim = ",")
-# colnames(partial_2018)[colnames(partial_2018)=="X9"]<-"ContractActions"
+partial_2018 <- read_delim(
+  "Data//Single_Year_Summary_2019-02-25.csv",delim = ",")
+colnames(partial_2018)[colnames(partial_2018)=="X9"]<-"ContractActions"
+
+sum(text_to_number(partial_2018$`Action Obligation`))
 # 
 # 
-# partial_2018<-standardize_variable_names(partial_2018)
-# colnames(partial_2018)[colnames(partial_2018)=="Contracting.Agency.ID"]<-"AgencyID"
-# partial_2018$Action.Obligation<-text_to_number(partial_2018$Action.Obligation)
-# partial_2018$Fiscal.Year<-2018
-# sum(partial_2018$Action.Obligation)
+partial_2018<-standardize_variable_names(partial_2018)
+
+
+colnames(partial_2018)[colnames(partial_2018)=="Contracting.Agency.ID"]<-"AgencyID"
+partial_2018$Action.Obligation<-text_to_number(partial_2018$Action.Obligation)
+partial_2018$Fiscal.Year<-2018
+sum(partial_2018$Action.Obligation)
+
+
+partial_2018<-deflate(partial_2018,
+                   money_var = "Action.Obligation",
+                   deflator_var="OMB.2019"
+)
+
+sum(partial_2018$Action.Obligation.Then.Year)
 # 
-# 
-# partial_2018<-deflate(partial_2018,
-#                    money_var = "Action.Obligation",
-#                    deflator_var="OMB.2019"
-# )
-# 
-# partial_2018<-transform_contract(partial_2018)
-# 
-# 
-# partial_2018<-read_and_join(partial_2018,
-#                             path="https://raw.githubusercontent.com/CSISdefense/Lookup-Tables/master/",
-#                             "Agency_AgencyID.csv",
-#                             dir="",
-#                             by=c("AgencyID"),
-#                             add_var=c("Customer","SubCustomer","Platform"),
-#                             skip_check_var="Platform")
-# 
+partial_2018<-transform_contract(partial_2018)
+
+
+
+partial_2018<-read_and_join(partial_2018,
+                            path="https://raw.githubusercontent.com/CSISdefense/Lookup-Tables/master/",
+                            "Agency_AgencyID.csv",
+                            dir="",
+                            by=c("AgencyID"),
+                            add_var=c("Customer","SubCustomer","Platform"),
+                            skip_check_var="Platform")
+
+sum(partial_2018$Action.Obligation.Then.Year)
+
 # partial_2018<-partial_2018%>%filter(Customer=="Defense")
 # 
 # #Classify Product or Service Codes
@@ -208,9 +217,14 @@ save(full_data,labels_and_colors,column_key, file="2018_unaggregated_FPDS.Rda")
 # 
 # 
 
-write.csv(full_data%>%group_by(fiscal_year)%>%
-      dplyr::summarize(Action.Obligation.Then.Year=sum(Action.Obligation.Then.Year,na.rm=TRUE),
-                                                         Action.Obligation.OMB.2019=sum(Action.Obligation.OMB.2019,na.rm=TRUE),
-                                                         Number.Of.Actions=sum(Number.Of.Actions,na.rm=TRUE)),
-      file="topline_usaspending.csv"
-)
+# write.csv(full_data%>%group_by(fiscal_year)%>%
+#       dplyr::summarize(Action.Obligation.Then.Year=sum(Action.Obligation.Then.Year,na.rm=TRUE),
+#                                                          Action.Obligation.OMB.2019=sum(Action.Obligation.OMB.2019,na.rm=TRUE),
+#                                                          Number.Of.Actions=sum(Number.Of.Actions,na.rm=TRUE)),
+#       file="topline_usaspending.csv"
+# )
+# 
+# 
+# full_data <- read_delim(
+#   "Data//2017_Summary.SP_CompetitionVendorSizeHistoryBucketPlatformSubCustomer.txt",delim = "\t",
+#   col_names = TRUE, col_types = "cccccccccc",na=c("NA","NULL"))

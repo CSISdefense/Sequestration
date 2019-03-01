@@ -11,7 +11,6 @@ library(forcats)
 library(Cairo)
 library(shinyBS)
 library(csis360)
-#library(diigtheme1)
 library(stringr)
 library(plyr)
 library(dplyr)
@@ -24,6 +23,7 @@ library(grid)
 library(gtable)
 library(ggpubr)
 library(showtext)
+#This requires an internet connection and is not ideal, but oddly it'll throw warnings if this isn't called even if the font is available.
 font_add_google("Open Sans")
 
 
@@ -36,8 +36,7 @@ shinyServer(function(input, output, session) {
   # read data
   load("2018_unaggregated_FPDS.Rda")
   original_data<-full_data
-  # original_data <- read_csv("2016_unaggregated_FPDS.csv")
-  
+
   # in case user renames the data-frame choosing variables
   vars <- reactiveValues(
     fiscal_year = "fiscal_year",
@@ -158,6 +157,7 @@ shinyServer(function(input, output, session) {
    # )
   # 
   ##Xinyi's work
+  size<-60
   pngplot<-reactive({make_chart_from_input(
     current_data=current_data,
     chart_geom = input$chart_geom,
@@ -174,16 +174,20 @@ shinyServer(function(input, output, session) {
     show_title = input$show_title,
     y_total_or_share = input$y_total_or_share,
     filetype = "png"
-  )
+  )+
+      theme(text=element_text(size=size,lineheight=0.13),
+            legend.spacing.x = unit(0.1, 'cm'),
+            plot.caption = element_text(size=round(size * 5/6,0))
+      )
   })
   
   output$download_image_PNG <- downloadHandler(
     filename = "plot_image.png",
     content = function(file){
-      ggsave600dpi(
+      ggsave(
         filename = file,
         plot = pngplot(),
-
+        dpi=600,
         width = input$save_plot_width,
         height = input$save_plot_height,
         device = "png",
@@ -223,6 +227,40 @@ shinyServer(function(input, output, session) {
         units = "in")
     }
   )
+  
+  
+  
+  # svgplot<-reactive({make_chart_from_input(
+  #   current_data=current_data,
+  #   chart_geom = input$chart_geom,
+  #   y_var = input$y_var,
+  #   fy_var= vars$fiscal_year,
+  #   color_var = input$color_var,
+  #   facet_var = input$facet_var,
+  #   labels_and_colors = labels_and_colors,
+  #   column_key=column_key,
+  #   start_fy = input$year[1],
+  #   end_fy = input$year[2],
+  #   show_legend=input$show_legend,
+  #   show_period = input$show_period,
+  #   show_title = input$show_title,
+  #   y_total_or_share = input$y_total_or_share,
+  #   filetype = "svg"
+  # )
+  # })
+  # 
+  # output$download_image_SVG <- downloadHandler(
+  #   filename = "plot_image.svg",
+  #   content = function(file){
+  #     ggsave(
+  #       filename = file,
+  #       plot = svgplot(), 
+  #       device = "svg",
+  #       width = input$save_plot_width,
+  #       height = input$save_plot_height,
+  #       units = "in")
+  #   }
+  # )
   
   # populate and depopulate ui elements when the user changes tabs
   observeEvent(input$current_tab, {
@@ -382,7 +420,7 @@ shinyServer(function(input, output, session) {
       input$file_upload$datapath,
       stringsAsFactors = TRUE,
       data.table = FALSE)
-    
+    #This is a bad way to do this.
     vars$fiscal_year <- names(original_data)[1]
     
     if("Action.Obligation" %in% tolower(colnames(original_data))){
