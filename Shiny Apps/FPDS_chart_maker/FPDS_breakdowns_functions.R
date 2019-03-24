@@ -22,6 +22,7 @@ populate_ui_var_lists <- function(
   # put numeric variables in the y_var list
   numerics <- names(data_source)[
     (var_class == "numeric" | var_class == "integer") & colnames(data_source)!="Fiscal.Year"]
+  updateSelectInput(session, "y_var", choices = numerics)
   
   # put categorical variables in the color_var and facet_var lists
   categories <- names(data_source)[var_class == "factor"]
