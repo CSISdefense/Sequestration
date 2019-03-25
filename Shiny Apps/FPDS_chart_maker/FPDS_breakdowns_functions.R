@@ -320,7 +320,7 @@ make_chart_from_input <- function(
   column_key,
   start_fy = NULL,
   end_fy = NULL,
-  show_legend= "Yes",
+  show_legend= TRUE,
   show_title= "No",
   show_period = "No",
   y_total_or_share = "As Total", #Default to As Total? I'm not sure what it should be.
@@ -436,7 +436,7 @@ make_chart_from_input <- function(
        theme(axis.text.x = element_text(vjust = 1,hjust = 1, angle = 35))
         
       
-      if(color_var!="None" & show_legend=="Yes"){
+      if(color_var!="None" & show_legend %in% c("Yes",TRUE)){
         # lay the stacked plots
         
         # mainplot <- annotate_figure(ggarrange(bar_plot, 
@@ -555,7 +555,7 @@ make_chart_from_input <- function(
         # lay the stacked plots
         
         
-        if(show_legend == "Yes"){
+        if(show_legend %in% c("Yes",TRUE)){
           
           #increase the font size for downloading plot version "png"
           if(filetype == "png") {
@@ -685,7 +685,7 @@ make_chart_from_input <- function(
                            facet_var=facet_var,
                            labels_and_colors=labels_and_colors,
                            column_key=column_key,
-                           legend= ifelse(show_legend == "No",FALSE,TRUE),
+                           legend= ifelse(show_legend %in% c("No",FALSE),FALSE,TRUE),
                            
                            caption = TRUE) #Adding the caption back.
     
