@@ -251,7 +251,7 @@ update_title <- function(
     if(input$facet_var != "None"){
       title <- paste(
         title, "by", input$color_var, "and", input$facet_var)
-      if(!is_null(input$second_var)){
+      if(!is.null(input$second_var)){
         title <- paste(
           title, "and", input$secibd_var)
       }
@@ -339,6 +339,7 @@ make_chart_from_input <- function(
   #   a fully built ggplot object
   # get appropriately formatted data to use in the plot
   # browser()
+  if(facet_var==second_var) second_var<-NULL
   total_data <- format_data_for_plot(data=current_data,
                                               share=FALSE,
                                               fy_var=fy_var,
