@@ -339,7 +339,7 @@ make_chart_from_input <- function(
   #   a fully built ggplot object
   # get appropriately formatted data to use in the plot
   # browser()
-  if(second_var %in% c(facet_var,"None")) second_var<-NULL
+  if(!is.null(second_var) &(facet_var==second_var | second_var=="None") )second_var<-NULL
   total_data <- format_data_for_plot(data=current_data,
                                               share=FALSE,
                                               fy_var=fy_var,
