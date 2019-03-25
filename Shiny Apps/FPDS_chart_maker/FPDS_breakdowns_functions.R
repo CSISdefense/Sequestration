@@ -251,6 +251,10 @@ update_title <- function(
     if(input$facet_var != "None"){
       title <- paste(
         title, "by", input$color_var, "and", input$facet_var)
+      if(!is_null(input$second_var)){
+        title <- paste(
+          title, "and", input$secibd_var)
+      }
     } else {
       title <- paste(title, "by", input$color_var)
     }
@@ -316,6 +320,7 @@ make_chart_from_input <- function(
   fy_var,
   color_var = "None",
   facet_var = "None",
+  second_var = NULL,
   labels_and_colors,
   column_key,
   start_fy = NULL,
@@ -342,6 +347,7 @@ make_chart_from_input <- function(
                                               y_var=y_var,
                                               color_var=color_var,
                                               facet_var=facet_var,
+                                              second_var=second_var,
                                               labels_and_colors=labels_and_colors)
   
   share_data <- csis360::format_data_for_plot(data=current_data,
@@ -352,6 +358,7 @@ make_chart_from_input <- function(
                                               y_var=y_var,
                                               color_var=color_var,
                                               facet_var=facet_var,
+                                              second_var=second_var,
                                               labels_and_colors=labels_and_colors)
   
   # build plot with user-specified geoms
@@ -366,6 +373,7 @@ make_chart_from_input <- function(
                             y_var=y_var,
                             color_var=color_var,
                             facet_var=facet_var,
+                            second_var=second_var,
                             labels_and_colors=labels_and_colors,
                             column_key=column_key,
                             legend=FALSE,
@@ -378,6 +386,7 @@ make_chart_from_input <- function(
                             y_var=y_var,
                             color_var=color_var,
                             facet_var=facet_var,
+                            second_var=second_var,
                             labels_and_colors=labels_and_colors,
                             column_key=column_key,
                             legend=FALSE,
@@ -408,7 +417,7 @@ make_chart_from_input <- function(
       period_data <-format_period_average(data=period_data,
                                           period_var="sequestration.period",
                                           y_var=y_var,
-                                          breakout=c(color_var,facet_var),
+                                          breakout=c(color_var,facet_var,second_var),
                                           labels_and_colors=labels_and_colors)
       
       #Doing this manually for now
@@ -428,6 +437,7 @@ make_chart_from_input <- function(
                               y_var=y_var,
                               color_var=color_var,
                               facet_var=facet_var,
+                              second_var=second_var,
                               labels_and_colors=labels_and_colors,
                               column_key=column_key,
                               legend=FALSE,
@@ -683,6 +693,7 @@ make_chart_from_input <- function(
                            y_var=y_var,
                            color_var=color_var,
                            facet_var=facet_var,
+                           second_var=second_var,
                            labels_and_colors=labels_and_colors,
                            column_key=column_key,
                            legend= ifelse(show_legend %in% c("No",FALSE),FALSE,TRUE),
