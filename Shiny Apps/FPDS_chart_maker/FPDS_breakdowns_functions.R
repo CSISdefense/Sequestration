@@ -340,6 +340,7 @@ make_chart_from_input <- function(
   # get appropriately formatted data to use in the plot
   # browser()
   if(all(!is.null(second_var),facet_var==second_var | second_var=="None")) second_var<-NULL
+
   total_data <- format_data_for_plot(data=current_data,
                                               share=FALSE,
                                               fy_var=fy_var,
@@ -700,6 +701,16 @@ make_chart_from_input <- function(
                            legend= ifelse(show_legend %in% c("No",FALSE),FALSE,TRUE),
                            
                            caption = TRUE) #Adding the caption back.
+    
+    #Special handling for variable data sources.
+    if(facet_var=="Source"){
+      if(any(is.null(second_var),second_var=="None")){
+        mainplot<-mainplot+facet_grid(Source ~ ., scales="free_y")#ifelse(input$source_facet & input$facet_var=="None",
+      }
+      else{
+        mainplot<-mainplot+facet_grid(Source ~ !! as.name(second_var), scales="free_y")#ifelse(input$source_facet & input$facet_var=="None",
+      }
+    }
     
     if (show_period == "Yes")
       mainplot <-  add_period(mainplot,plot_data,chart_geom,
