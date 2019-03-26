@@ -708,7 +708,7 @@ make_chart_from_input <- function(
         mainplot<-mainplot+facet_grid(Source ~ ., scales="free_y")#ifelse(input$source_facet & input$facet_var=="None",
       }
       else{
-        mainplot<-mainplot+facet_grid(Source ~ !! as.name(second_var), scales="free_y")#ifelse(input$source_facet & input$facet_var=="None",
+        mainplot<-mainplot+facet_grid(as.formula(paste0("`",facet_var, "` ~ `", second_var, "`")), scales="free_y")
       }
     }
     
