@@ -712,9 +712,9 @@ make_chart_from_input <- function(
         mainplot<-mainplot+facet_grid(as.formula(paste0("`",facet_var, "` ~ `", second_var, "`")), scales="free_y")
       }
       #When calendar and fiscal year are both in the date samplpe
-      if(class(full_data[,x_var])=="Date"){
-        months<-unique(month(full_data[!is.na(full_data[,input$y_var]),x_var]))
-        days<-unique(day(full_data[!is.na(full_data[,input$y_var]),x_var]))
+      if(class(full_data[,fy_var])=="Date"){
+        months<-unique(month(full_data[!is.na(full_data[,y_var]),fy_var]))
+        days<-unique(day(full_data[!is.na(full_data[,y_var]),fy_var]))
         if(all(months %in% c(4,7)) & length(month)==2 & days ==1){
           stop("test")
         }
