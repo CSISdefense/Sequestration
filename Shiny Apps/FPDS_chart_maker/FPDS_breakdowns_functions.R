@@ -300,7 +300,7 @@ get_bottom<-function(
   size=8
 ){
   
-  c<-text_grob("Source: FPDS; CSIS analysis",
+  c<-text_grob(caption,
                hjust = 1,
                x = 1,
                family = "Open Sans",
@@ -460,7 +460,7 @@ make_chart_from_input <- function(
         #                             bottom=get_bottom())
         
         # P2 <- annotate_figure(mainplot, 
-        #                       bottom = text_grob("Source: FPDS; CSIS analysis",
+        #                       bottom = text_grob(caption,
         #                                          hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
         # 
         # 
@@ -602,7 +602,7 @@ make_chart_from_input <- function(
                                         bottom=get_bottom())
             
             # P2 <- annotate_figure(mainplot, 
-            #   bottom = text_grob("Source: FPDS; CSIS analysis",
+            #   bottom = text_grob(caption,
             #     hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
             # 
             # P2
