@@ -628,7 +628,7 @@ make_chart_from_input <- function(
                                     font("xy.text", size = 45) +
                                     font("legend.text", size = 45) +
                                     theme(text = element_text(size = 45,lineheight=0.13))+
-                                    get_caption(caption),#+theme(plot.caption = element_text(size=35)),
+                                    labs(caption=caption),#+theme(plot.caption = element_text(size=35)),
                                   common.legend = FALSE,
                                   nrow = 2,
                                   heights = c(1.2, 0.8)
@@ -701,7 +701,7 @@ make_chart_from_input <- function(
                            column_key=column_key,
                            legend= ifelse(show_legend %in% c("No",FALSE),FALSE,TRUE),
                            
-                           caption = TRUE) #Adding the caption back.
+                           caption = FALSE)+labs(caption=caption)
     
     #Special handling for variable data sources.
     if(facet_var=="Source"){
