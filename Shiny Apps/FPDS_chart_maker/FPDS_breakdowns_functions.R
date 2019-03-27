@@ -714,8 +714,7 @@ make_chart_from_input <- function(
       #When calendar and fiscal year are both in the date samplpe
       if(class(full_data[,fy_var])=="Date"){
         months<-unique(month(full_data[!is.na(full_data[,y_var]),fy_var]))
-        days<-unique(day(full_data[!is.na(full_data[,y_var]),fy_var]))
-        if(all(months %in% c(4,7)) & length(month)==2 & days ==1){
+        if(all(months %in% c(4,7)) & length(month)==2){
           stop("test")
         }
       }
