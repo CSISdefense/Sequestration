@@ -329,7 +329,8 @@ make_chart_from_input <- function(
   show_title= "No",
   show_period = "No",
   y_total_or_share = "As Total", #Default to As Total? I'm not sure what it should be.
-  filetype = "None"
+  filetype = "None",
+  caption = "Source: FPDS; CSIS analysis"
 ){
   # Builds a ggplot based on user settings, for display on the main panel.
   # Reactive binding will cause the ggplot to update when the user changes any
@@ -491,14 +492,14 @@ make_chart_from_input <- function(
           #                                                   theme(text = element_text(size = 50)), 
           #                                                 period_plot +
           #                                                   theme(text = element_text(size = 50)),
-          #                                                   # get_caption() +
+          #                                                   # labs(caption=caption) +
           #                                                   # theme(plot.caption = element_text(size = 35)), 
           #                                                 ncol=2, 
           #                                                 widths = c(2.12,2.88)),
           #                                       bar_plot +
           #                                         theme(legend.position = "bottom") + 
           #                                         theme(text = element_text(size = 50)), 
-          #                                         # get_caption() +
+          #                                         # labs(caption=caption) +
           #                                         # theme(plot.caption = element_text(size = 35)),
           #                                       nrow=2, 
           #                                       heights = c(0.8,1.2)),
@@ -627,7 +628,7 @@ make_chart_from_input <- function(
                                     font("xy.text", size = 45) +
                                     font("legend.text", size = 45) +
                                     theme(text = element_text(size = 45,lineheight=0.13))+
-                                    get_caption(),#+theme(plot.caption = element_text(size=35)),
+                                    get_caption(caption),#+theme(plot.caption = element_text(size=35)),
                                   common.legend = FALSE,
                                   nrow = 2,
                                   heights = c(1.2, 0.8)
@@ -635,7 +636,7 @@ make_chart_from_input <- function(
           } else{
             
             mainplot <- ggarrange(bar_plot,
-                                  line_plot+ get_caption(),
+                                  line_plot+ labs(caption=caption),
                                   common.legend = FALSE,
                                   nrow = 2,
                                   heights = c(1.2, 0.8))
