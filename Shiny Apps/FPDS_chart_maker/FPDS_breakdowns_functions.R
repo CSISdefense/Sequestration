@@ -712,10 +712,14 @@ make_chart_from_input <- function(
         mainplot<-mainplot+facet_grid(as.formula(paste0("`",facet_var, "` ~ `", second_var, "`")), scales="free_y")
       }
       #When calendar and fiscal year are both in the date samplpe
-      if(class(full_data[,fy_var])=="Date"){
+      if(class(full_data[,fy_var])=="Date" & chart_geom=="Bar Chart"){
         months<-unique(month(full_data[!is.na(full_data[,y_var]),fy_var]))
         if(all(months %in% c(4,7)) & length(month)==2){
-          stop("test")
+          if (color_var =="None"){
+            mainplot+geom_bar(aes_q(x = as.name(fy_var),y = as.name(y_var)),width=3.6, stat="identity")
+          } else {
+            mainplot+geom_bar(aes_q(x = as.name(fy_var),y = as.name(y_var),fill = as.name(color_var)),width=3.6, stat="identity")
+          }
         }
       }
     }
