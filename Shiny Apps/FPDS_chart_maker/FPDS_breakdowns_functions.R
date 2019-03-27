@@ -716,9 +716,9 @@ make_chart_from_input <- function(
         months<-unique(month(full_data[!is.na(full_data[,y_var]),fy_var]))
         if(all(months %in% c(4,7)) & length(months)==2){
           if (color_var =="None"){
-            mainplot+geom_bar(aes_q(x = as.name(fy_var),y = as.name(y_var)),width=3.6, stat="identity")
+            mainplot<-mainplot+geom_bar(aes_q(x = as.name(fy_var),y = as.name(y_var)),width=3.6, stat="identity")
           } else {
-            mainplot+geom_bar(aes_q(x = as.name(fy_var),y = as.name(y_var),fill = as.name(color_var)),width=3.6, stat="identity")
+            mainplot<-mainplot+geom_bar(aes_q(x = as.name(fy_var),y = as.name(y_var),fill = as.name(color_var)),width=3.6, stat="identity")
           }
         }
       }
