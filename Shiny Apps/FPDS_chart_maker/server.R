@@ -49,7 +49,7 @@ shinyServer(function(input, output, session) {
   
   # fill the variable lists in the ui with variables from current_data
   populate_ui_var_lists(current_data)
-debug(make_chart_from_input)
+# debug(make_chart_from_input)
 # debug(group_data_for_plot)
   mainplot<-reactive({make_chart_from_input(
     current_data=current_data,
