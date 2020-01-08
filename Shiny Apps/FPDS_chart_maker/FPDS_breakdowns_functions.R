@@ -21,7 +21,9 @@ populate_ui_var_lists <- function(
   
   # put numeric variables in the y_var list
   numerics <- names(data_source)[
-    (var_class == "numeric" | var_class == "integer") & colnames(data_source)!="Fiscal.Year"]
+    (var_class == "numeric" | var_class == "integer") &
+      !tolower(colnames(data_source)) %in% c("fiscal.year","fiscal_year")]
+  updateSelectInput(session, "y_var", choices = numerics)
   
   # put categorical variables in the color_var and facet_var lists
   categories <- names(data_source)[var_class == "factor"]
@@ -250,6 +252,10 @@ update_title <- function(
     if(input$facet_var != "None"){
       title <- paste(
         title, "by", input$color_var, "and", input$facet_var)
+      if(!is.null(input$second_var)){
+        title <- paste(
+          title, "and", input$secibd_var)
+      }
     } else {
       title <- paste(title, "by", input$color_var)
     }
@@ -295,7 +301,7 @@ get_bottom<-function(
   size=8
 ){
   
-  c<-text_grob("Source: FPDS; CSIS analysis",
+  c<-text_grob(caption,
                hjust = 1,
                x = 1,
                family = "Open Sans",
@@ -315,15 +321,17 @@ make_chart_from_input <- function(
   fy_var,
   color_var = "None",
   facet_var = "None",
+  second_var = NULL,
   labels_and_colors,
   column_key,
   start_fy = NULL,
   end_fy = NULL,
-  show_legend= "Yes",
+  show_legend= TRUE,
   show_title= "No",
   show_period = "No",
   y_total_or_share = "As Total", #Default to As Total? I'm not sure what it should be.
-  filetype = "None"
+  filetype = "None",
+  caption = "Source: FPDS; CSIS analysis"
 ){
   # Builds a ggplot based on user settings, for display on the main panel.
   # Reactive binding will cause the ggplot to update when the user changes any
@@ -333,6 +341,8 @@ make_chart_from_input <- function(
   #   a fully built ggplot object
   # get appropriately formatted data to use in the plot
   # browser()
+  if(all(!is.null(second_var),facet_var==second_var | second_var=="None")) second_var<-NULL
+
   total_data <- format_data_for_plot(data=current_data,
                                               share=FALSE,
                                               fy_var=fy_var,
@@ -341,6 +351,7 @@ make_chart_from_input <- function(
                                               y_var=y_var,
                                               color_var=color_var,
                                               facet_var=facet_var,
+                                              second_var=second_var,
                                               labels_and_colors=labels_and_colors)
   
   share_data <- format_data_for_plot(data=current_data,
@@ -351,6 +362,7 @@ make_chart_from_input <- function(
                                               y_var=y_var,
                                               color_var=color_var,
                                               facet_var=facet_var,
+                                              second_var=second_var,
                                               labels_and_colors=labels_and_colors)
   
   # build plot with user-specified geoms
@@ -365,6 +377,7 @@ make_chart_from_input <- function(
                             y_var=y_var,
                             color_var=color_var,
                             facet_var=facet_var,
+                            second_var=second_var,
                             labels_and_colors=labels_and_colors,
                             column_key=column_key,
                             legend=FALSE,
@@ -377,6 +390,7 @@ make_chart_from_input <- function(
                             y_var=y_var,
                             color_var=color_var,
                             facet_var=facet_var,
+                            second_var=second_var,
                             labels_and_colors=labels_and_colors,
                             column_key=column_key,
                             legend=FALSE,
@@ -407,7 +421,7 @@ make_chart_from_input <- function(
       period_data <-format_period_average(data=period_data,
                                           period_var="sequestration.period",
                                           y_var=y_var,
-                                          breakout=c(color_var,facet_var),
+                                          breakout=c(color_var,facet_var,second_var),
                                           labels_and_colors=labels_and_colors)
       
       #Doing this manually for now
@@ -427,6 +441,7 @@ make_chart_from_input <- function(
                               y_var=y_var,
                               color_var=color_var,
                               facet_var=facet_var,
+                              second_var=second_var,
                               labels_and_colors=labels_and_colors,
                               column_key=column_key,
                               legend=FALSE,
@@ -435,7 +450,7 @@ make_chart_from_input <- function(
        theme(axis.text.x = element_text(vjust = 1,hjust = 1, angle = 35))
         
       
-      if(color_var!="None" & show_legend=="Yes"){
+      if(color_var!="None" & show_legend %in% c("Yes",TRUE)){
         # lay the stacked plots
         
         # mainplot <- annotate_figure(ggarrange(bar_plot, 
@@ -446,7 +461,7 @@ make_chart_from_input <- function(
         #                             bottom=get_bottom())
         
         # P2 <- annotate_figure(mainplot, 
-        #                       bottom = text_grob("Source: FPDS; CSIS analysis",
+        #                       bottom = text_grob(caption,
         #                                          hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
         # 
         # 
@@ -478,14 +493,14 @@ make_chart_from_input <- function(
           #                                                   theme(text = element_text(size = 50)), 
           #                                                 period_plot +
           #                                                   theme(text = element_text(size = 50)),
-          #                                                   # get_caption() +
+          #                                                   # labs(caption=caption) +
           #                                                   # theme(plot.caption = element_text(size = 35)), 
           #                                                 ncol=2, 
           #                                                 widths = c(2.12,2.88)),
           #                                       bar_plot +
           #                                         theme(legend.position = "bottom") + 
           #                                         theme(text = element_text(size = 50)), 
-          #                                         # get_caption() +
+          #                                         # labs(caption=caption) +
           #                                         # theme(plot.caption = element_text(size = 35)),
           #                                       nrow=2, 
           #                                       heights = c(0.8,1.2)),
@@ -554,7 +569,7 @@ make_chart_from_input <- function(
         # lay the stacked plots
         
         
-        if(show_legend == "Yes"){
+        if(show_legend %in% c("Yes",TRUE)){
           
           #increase the font size for downloading plot version "png"
           if(filetype == "png") {
@@ -588,7 +603,7 @@ make_chart_from_input <- function(
                                         bottom=get_bottom())
             
             # P2 <- annotate_figure(mainplot, 
-            #   bottom = text_grob("Source: FPDS; CSIS analysis",
+            #   bottom = text_grob(caption,
             #     hjust = 1, x = 1, family = "Open Sans" , color = "#003366", face = "italic", size = 8))
             # 
             # P2
@@ -614,7 +629,7 @@ make_chart_from_input <- function(
                                     font("xy.text", size = 45) +
                                     font("legend.text", size = 45) +
                                     theme(text = element_text(size = 45,lineheight=0.13))+
-                                    get_caption(),#+theme(plot.caption = element_text(size=35)),
+                                    labs(caption=caption),#+theme(plot.caption = element_text(size=35)),
                                   common.legend = FALSE,
                                   nrow = 2,
                                   heights = c(1.2, 0.8)
@@ -622,7 +637,7 @@ make_chart_from_input <- function(
           } else{
             
             mainplot <- ggarrange(bar_plot,
-                                  line_plot+ get_caption(),
+                                  line_plot+ labs(caption=caption),
                                   common.legend = FALSE,
                                   nrow = 2,
                                   heights = c(1.2, 0.8))
@@ -682,11 +697,33 @@ make_chart_from_input <- function(
                            y_var=y_var,
                            color_var=color_var,
                            facet_var=facet_var,
+                           second_var=second_var,
                            labels_and_colors=labels_and_colors,
                            column_key=column_key,
-                           legend= ifelse(show_legend == "No",FALSE,TRUE),
+                           legend= ifelse(show_legend %in% c("No",FALSE),FALSE,TRUE),
                            
-                           caption = TRUE) #Adding the caption back.
+                           caption = FALSE)+labs(caption=caption)
+    
+    #Special handling for variable data sources.
+    if(facet_var=="Source"){
+      if(any(is.null(second_var),second_var=="None")){
+        mainplot<-mainplot+facet_grid(Source ~ ., scales="free_y")#ifelse(input$source_facet & input$facet_var=="None",
+      }
+      else{
+        mainplot<-mainplot+facet_grid(as.formula(paste0("`",facet_var, "` ~ `", second_var, "`")), scales="free_y")
+      }
+      #When calendar and fiscal year are both in the date samplpe
+      # if(class(full_data[,fy_var])=="Date" & chart_geom=="Bar Chart"){
+      #   months<-unique(month(full_data[!is.na(full_data[,y_var]),fy_var]))
+      #   if(all(months %in% c(4,7)) & length(months)==2){
+      #     if (color_var =="None"){
+      #       mainplot<-mainplot+geom_bar(aes_q(x = as.name(fy_var),y = as.name(y_var)),width=3.6, stat="identity")
+      #     } else {
+      #       mainplot<-mainplot+geom_bar(aes_q(x = as.name(fy_var),y = as.name(y_var),fill = as.name(color_var)),width=3.6, stat="identity")
+      #     }
+      #   }
+      # }
+    }
     
     if (show_period == "Yes")
       mainplot <-  add_period(mainplot,plot_data,chart_geom,
